@@ -170,7 +170,7 @@
 																	textAlign="End" description="%" fieldWidth="80%" width="100%"/>
 															</t:template>
 														</t:Column>
-														<t:Column width="10rem">
+														<t:Column width="9rem">
 															<Label text="Amount"/>
 															<t:template>
 																<Input
@@ -192,7 +192,7 @@
 																<StepInput value="{oMdlTerms>Terms}" min="1" max="1000" width="100%"/>
 															</t:template>
 														</t:Column>
-														<t:Column width="10rem">
+														<t:Column width="8rem">
 															<Label text="Finance Scheme"/>
 															<t:template>
 																<ComboBox width="100%" items="{path:'oMdlFinSchemes>/FinSchemes' , templateShareable:true}" selectionChange="onSelectionChangeFinanceScheme">
@@ -200,7 +200,7 @@
 																</ComboBox>
 															</t:template>
 														</t:Column>
-														<t:Column width="10rem">
+														<t:Column width="8rem">
 															<Label text="Start Date"/>
 															<t:template>
 																<DatePicker id="dtpickStart" value="{oMdlTerms>StartDate}" valueFormat="MM/dd/yyyy" displayFormat="MM/dd/yyyy" change="handleChange"/>
