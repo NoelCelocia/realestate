@@ -14,5 +14,9 @@ AppVariantPreviewPayload.zip
 mergedManifestDescriptor.json
 APIExternalProducer.js
 .*/APIExternalProducer.js
+<<<<<<< HEAD
 /mta_archives/
 /dist/
+=======
+/mta_archives/
+>>>>>>> d2a472e8275a0635fe71f1af5dfe6053f0927c57
