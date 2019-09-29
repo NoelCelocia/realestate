@@ -1,0 +1,31 @@
+{
+	"DPTerms": [
+		{
+			"U_App_DocNum":0,
+			"U_App_Code": [{
+					"ItemCode": "SR000010",
+					"ItemName": "Downpayment"
+				},{
+					"ItemCode": "SR000011",
+					"ItemName": "Downpayment 1"
+				},{
+					"ItemCode": "SR000012",
+					"ItemName": "Downpayment 2"
+				},{
+					"ItemCode": "SR000013",
+					"ItemName": "Downpayment 3"
+				}],
+			"U_App_CodeSelected" : "",
+			"U_App_Amount":0,
+			"U_App_Percent":0.0,
+			"U_App_Interest":0,
+			"U_App_Terms":1,
+			"U_App_StartDate":"1990-01-01",
+			"U_App_CreatedDate" : "1990-01-01",
+			"U_App_CreatedBy": "manager"
+		
+		}
+		
+	]
+	
+}

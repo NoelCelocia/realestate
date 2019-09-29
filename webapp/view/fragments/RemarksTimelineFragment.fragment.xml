@@ -1,0 +1,24 @@
+<core:FragmentDefinition 	xmlns="sap.suite.ui.commons" xmlns:core="sap.ui.core">
+	<Timeline id="idTimeline" enableDoubleSided="true" textHeight="8"
+		sortOldestFirst="true" showIcons="false">
+		<content>
+			<TimelineItem userName="manager" title="First Edit" maxCharacters="50"
+			
+				text="Plans, organizes and manages the operations and activities of an accounts payables.&#xA;Supervises employees and monitors activities.&#xA;Final check of accounts payable payments and sign off.&#xA;Reporting to the head of finance.&#xA;&#xA; I am a diligent person. I put great attention to detail."
+				dateTime="08/20/2019"></TimelineItem>
+			<TimelineItem userName="Sabine Mayer" title="Latest Edit" maxCharacters="50"
+				
+				text="Implementing new Public Cloud ERP Financials system into his company and keeping it aligned with business.&#xA;During the initial set-up of an ERP system: Customizing Financial Accounting settings such as organizational structures, chart of accounts, and tax configuration (as part of implementation projects).&#xA;During the ongoing maintenance of the configuration: Adapting the configuration to organizational and process changes in business. I’m a versatile person. I keep the big picture in mind."
+				dateTime="09/05/2019"></TimelineItem>
+			<TimelineItem userName="Alain Chevalier" title="Regular Revision"  maxCharacters="50"
+			
+				text="Responsible for a high number of accounts (ca. 4000 customers).&#xA;Monitor the credit risk of his customers.&#xA;Focus on changes in his customer’s credit situation.&#xA;Recurring checks on a regular basis.&#xA;Decide on credit blocked sales orders.&#xA;Decide on credit limits for his customers (according the company’s credit policy).&#xA;&#xA;I almost always find a pragmatic solution, that’s acceptable for my customers and my company."
+				dateTime="09/01/2019"></TimelineItem>
+				
+			<TimelineItem userName="Cashier" title="Payment Details"  maxCharacters="50"
+			
+				text="Responsible for a high number of accounts (ca. 4000 customers).&#xA;Monitor the credit risk of his customers.&#xA;Focus on changes in his customer’s credit situation.&#xA;Recurring checks on a regular basis.&#xA;Decide on credit blocked sales orders.&#xA;Decide on credit limits for his customers (according the company’s credit policy).&#xA;&#xA;I almost always find a pragmatic solution, that’s acceptable for my customers and my company."
+				dateTime="09/09/2019"></TimelineItem>
+		</content>
+	</Timeline>
+</core:FragmentDefinition>

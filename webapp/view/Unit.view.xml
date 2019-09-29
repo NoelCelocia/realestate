@@ -1,0 +1,208 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:uxap="sap.uxap" xmlns:f="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout" xmlns:tnt="sap.tnt" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
+	controllerName="com.apptech.realestate.controller.Unit">
+	<App>
+		<pages>
+			<Page title="Inventory Units">
+				<content>
+					<IconTabBar id="idIconTabBarInlineMode" headerMode="Inline" upperCase="true" expandable="false" class="sapUiResponsiveContentPadding">
+						<items>
+							<IconTabFilter id="tab1" text="Records" count="0" key="tab1">
+								<t:Table id="tblUnit" selectionMode="Single" visibleRowCount="10" ariaLabelledBy="title" enableCellFilter="true">
+									<t:extension>
+										<Toolbar>
+											<content>
+												<Button text="Add" tooltip="Add" press="onAdd" icon="sap-icon://add"/>
+												<Button text="Edit" tooltip="Edit" press="onEdit" icon="sap-icon://edit"/>
+												<ToolbarSpacer/>
+												<SearchField placeholder="Filter" value="" search="filterGlobally" width="15rem"/>
+											</content>
+										</Toolbar>
+									</t:extension>
+								</t:Table>
+							</IconTabFilter>
+							<IconTabFilter id="tab2" text="Add / Edit" key="tab2">
+								<Button text="Save Changes" tooltip="Save" press="onSave" icon="sap-icon://save"/>
+								<VBox class="sapUiTinyMargin">
+									<f:SimpleForm id="basicForm" editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+										adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+										singleContainerFullSize="false">
+										<f:content>
+											<Label text="Unit Code" width="100%">
+												<layoutData>
+													<l:GridData span="L1 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Input width="100%" value="{oMdlEditRecord>/EditRecord/UnitCode}" required="true" editable="false" enabled="false">
+												<layoutData>
+													<l:GridData span="L5 M4 S12"/>
+												</layoutData>
+											</Input>
+											<Label text="Unit Status" width="100%">
+												<layoutData>
+													<l:GridData span="L1 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Select id="selectRefUnitStatus" items="{oMdlUnitStat>/allunitstat}" selectedKey="{oMdlEditRecord>/EditRecord/UnitStatus}" enabled="true">
+												<core:ListItem key="{oMdlUnitStat>Code}" text="{oMdlUnitStat>Code} - {oMdlUnitStat>Desc} "/>
+												<layoutData>
+													<l:GridData span="L5 M4 S12"/>
+												</layoutData>
+											</Select>
+											<Label text="Unit Description" width="100%">
+												<layoutData>
+													<l:GridData span="L1 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Input width="100%" value="{oMdlEditRecord>/EditRecord/UnitDesc}"/>
+										</f:content>
+									</f:SimpleForm>
+									<IconTabBar id="idIconTabBarStretchContent" enableTabReordering="false" stretchContentHeight="false" backgroundDesign="Transparent"
+										applyContentPadding="false" expanded="true" class="sapUiResponsiveContentPadding" expandable="false" tabDensityMode="Compact">
+										<items>
+											<IconTabFilter text="Property Information">
+												<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+													singleContainerFullSize="false">
+													<f:content>
+														<Label text="Lot No" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														<Input width="100%" value="{oMdlEditRecord>/EditRecord/LotNo}"/>
+														<Label text="Phase No" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														<Input width="100%" value="{oMdlEditRecord>/EditRecord/PhaseNo}"/>
+														<Label text="Block No" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														<Input width="100%" value="{oMdlEditRecord>/EditRecord/BlockNo}"/>
+														<Label text="Floor Area" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														<Input width="100%" value="{oMdlEditRecord>/EditRecord/FloorArea}"/>
+														<Label text="Lot Area" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														<Input width="100%" value="{oMdlEditRecord>/EditRecord/LotArea}"/>
+														
+														<Label text="Unit Type" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														
+														<Select id="selectRefUnitType" items="{oMdlPropType>/allproptype}" selectedKey="{oMdlEditRecord>/EditRecord/UnitType}" width="100%" enabled="true">
+															<core:ListItem key="{oMdlPropType>Code}" text="{oMdlPropType>Code} - {oMdlPropType>Desc} "/>
+														</Select>
+														
+														<Label text="Project Code" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														<Select id="selectRefProjectCode" items="{oMdlProject>/allproject}" selectedKey="{oMdlEditRecord>/EditRecord/ProjectCode}" width="100%" enabled="true">
+															<core:ListItem key="{oMdlProject>ProjectCode}" text="{oMdlProject>ProjectCode} - {oMdlProject>ProjectDesc} "/>
+														</Select>
+														
+														
+														<Label text="House Model" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														<Select id="selectRefHouseModel" items="{oMdlHouseModel>/allhousemodel}" selectedKey="{oMdlEditRecord>/EditRecord/HouseModel}" width="100%" enabled="true">
+															<core:ListItem key="{oMdlHouseModel>Code}" text="{oMdlHouseModel>Code} - {oMdlHouseModel>Desc} "/>
+														</Select>
+													</f:content>
+												</f:SimpleForm>
+											</IconTabFilter><IconTabSeparator icon="sap-icon://vertical-grip"/>
+											<IconTabFilter text="Costings">
+												<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+													singleContainerFullSize="false">
+													<f:content>
+														<Label text="Standard Code" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														<Input width="100%" value="{oMdlEditRecord>/EditRecord/StandardCost}"/>
+														<Label text="Accumulated Cost" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														<Input width="100%" value="{oMdlEditRecord>/EditRecord/AccumulatedCost}"/>
+													</f:content>
+												</f:SimpleForm>
+											</IconTabFilter><IconTabSeparator icon="sap-icon://vertical-grip"/>
+											<IconTabFilter text="Engineering">
+												<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+													singleContainerFullSize="false">
+													<f:content>
+														<Label text="Percent Complete" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														<Input width="100%" value="{oMdlEditRecord>/EditRecord/PercentComplete}"/>
+														<Label text="Percentage as of Date" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														<Input width="100%" value="{oMdlEditRecord>/EditRecord/PercentUpdateDate}"/>
+													</f:content>
+												</f:SimpleForm>
+											</IconTabFilter><IconTabSeparator icon="sap-icon://vertical-grip"/>
+											<IconTabFilter text="Turnover Documents">
+												<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+													adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+													singleContainerFullSize="false">
+													<f:content>
+														<Label text="Turnover Status" width="100%">
+															<layoutData>
+																<l:GridData span="L1 M2 S12"/>
+															</layoutData>
+														</Label>
+														<Input width="100%" value="{oMdlEditRecord>/EditRecord/TurnoverStat}"/>
+													</f:content>
+												</f:SimpleForm>
+												<Text text="Turnover Checklists" class="mTextLarge sapUiSmallMarginTop"/>
+												<t:Table id="tblChecklist" selectionMode="Single" visibleRowCount="5" ariaLabelledBy="title" enableCellFilter="true">
+													<t:extension>
+														<Toolbar></Toolbar>
+													</t:extension>
+												</t:Table>
+											</IconTabFilter><IconTabSeparator icon="sap-icon://vertical-grip"/>
+											<IconTabFilter text="Attachments">
+												<Text text="Uploaded Attachments" class="mTextLarge sapUiSmallMarginTop"/>
+												<t:Table id="tblAttachments" selectionMode="Single" visibleRowCount="5" ariaLabelledBy="title" enableCellFilter="true">
+													<t:extension>
+														<Toolbar></Toolbar>
+													</t:extension>
+												</t:Table>
+											</IconTabFilter><IconTabSeparator icon="sap-icon://vertical-grip"/>
+										</items>
+									</IconTabBar>
+								</VBox>
+							</IconTabFilter>
+						</items>
+					</IconTabBar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

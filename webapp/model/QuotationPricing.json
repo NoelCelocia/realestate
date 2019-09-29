@@ -1,0 +1,26 @@
+{
+	"EditRecord":{
+		"QuoteNum": "",
+		"PriceTotal": "",
+		"PenaltyPercent": "",
+		"DiscPercentBVat": "",
+		"DiscAmountBVat": 0.0,
+		"NetPrice": 0,
+		"TaxMatrixCode": "1",
+		"TaxAmount": 0,
+		"DiscPercentAVat": 0,
+		"DiscAmountAVat": 0,
+		"GrossPrice": 0,
+		"EWTRate": 0,
+		"DPPercent": 0,
+		"DPAmount": 0,
+		"DPNetAmount": 0,
+		"RsvFee": 0,
+		"RBPercent": 0,
+		"RBAmount": 0,
+		"MFPercent": 0,
+		"MFAmount": 0,
+		"_TaxRate": 0
+		
+	}
+}

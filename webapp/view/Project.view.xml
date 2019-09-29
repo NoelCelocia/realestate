@@ -1,0 +1,56 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:uxap="sap.uxap" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table" controllerName="com.apptech.realestate.controller.Project">
+	<App>
+		<pages>
+			<Page title="Project">
+				<content>
+					<IconTabBar id="idIconTabBarInlineMode" headerMode="Inline" upperCase="true" expandable="false" class="sapUiResponsiveContentPadding">
+						<items>
+							<IconTabFilter id="tab1" text="Records" count="0" key="tab1">
+								<t:Table id="tblProj" selectionMode="Single" visibleRowCount="10" ariaLabelledBy="title" enableCellFilter="true">
+									<t:extension>
+										<Toolbar>
+											<content>
+												<Button text="Add" tooltip="Add" press="onAdd" icon="sap-icon://add"/>
+												<Button text="Edit" tooltip="Edit" press="onEdit" icon="sap-icon://edit"/>
+												<ToolbarSpacer/>
+												<SearchField placeholder="Filter" value="" search="filterGlobally" width="15rem"/>
+											</content>
+										</Toolbar>
+									</t:extension>
+								</t:Table>
+							</IconTabFilter>
+							<IconTabFilter id="tab2" text="Add / Edit" key="tab2">
+								<Button text="Save Changes" tooltip="Save" press="onSave" icon="sap-icon://save"/>
+								<VBox class="sapUiTinyMargin">
+									<f:SimpleForm id="basicForm" editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+										<f:content>
+											<Label text="Project Code"/>
+											<Input value="{oMdlEditRecord>/EditRecord/ProjectCode}" enabled="false"/>
+											<Label text="Project Description"/>
+											<Input value="{oMdlEditRecord>/EditRecord/ProjectDesc}"/>
+											<Label text="Project Area"/>
+											<Input value="{oMdlEditRecord>/EditRecord/ProjArea}"/>
+											<Label text="Project Location"/>
+											<Input value="{oMdlEditRecord>/EditRecord/ProjLocation}"/>
+											<Label text="Build Type"/>
+											<Select id="selectRefBuildTypes" items="{oMdlBuildTypes>/allbuildtypes}" selectedKey="{oMdlEditRecord>/EditRecord/BuildTypeCode}">
+												<core:ListItem key="{oMdlBuildTypes>Code}" text="{oMdlBuildTypes>Code} - {oMdlBuildTypes>Desc} "/>
+											</Select>
+											<Label text="Is Active?"/>
+											<Input value="{oMdlEditRecord>/EditRecord/IsActive}"/>
+											<Label text="Project Status"/>
+											<Select id="selectRefProjectStatus" items="{oMdlProjectStatus>/ProjectStatus}" selectedKey="" change="onChangeProjStatus">
+												<core:ListItem key="{oMdlProjectStatus>key}" text="{oMdlProjectStatus>key}"/>
+											</Select>
+											<!--<Input value="{oMdlEditRecord>/EditRecord/ProjStatus}"/>-->
+										</f:content>
+									</f:SimpleForm>
+								</VBox>
+							</IconTabFilter>
+						</items>
+					</IconTabBar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

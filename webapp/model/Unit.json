@@ -1,0 +1,23 @@
+{
+	"EditRecord": {
+		"Code": "",
+		"UnitCode": "123",
+		"UnitDesc": "123",
+		"LotNo": "123",
+		"PhaseNo": "123",
+		"BlockNo": "123",
+		"FloorArea": "123",
+		"LotArea": "123",
+		"UnitType": "123",
+		"HouseModel": "123",
+		"StandardCost":  11,
+		"AccumulatedCost": "123",
+		"PercentComplete": 123,
+		"PercentUpdateDate": "123",
+		"PrprtyTypeCode": "123",
+		"ProjectCode": "123",
+		"UnitStatus": "123",
+		"TurnoverStat": "123",
+		"Notes": "123"
+	}
+}

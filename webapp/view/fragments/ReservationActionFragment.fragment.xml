@@ -1,0 +1,13 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<ActionSheet
+		title="Choose Your Action"
+		showCancelButton="true"
+		placement="Bottom">
+			<Button text="Restructure" icon="sap-icon://edit-outside" press="actionSelected" />
+			<Button text="Terminate Contract" icon="sap-icon://sys-cancel-2" press="actionSelected" />
+			<Button text="View Ledger" icon="sap-icon://collections-management" press="actionSelected" />
+			<Button text="View Amortization" icon="sap-icon://manager-insight" press="actionSelected" />
+	</ActionSheet>
+</core:FragmentDefinition>

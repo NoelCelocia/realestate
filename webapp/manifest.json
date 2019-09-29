@@ -1,0 +1,247 @@
+{
+	"_version": "1.12.0",
+	"sap.app": {
+		"id": "com.apptech.realestate",
+		"type": "application",
+		"i18n": "i18n/i18n.properties",
+		"applicationVersion": {
+			"version": "1.0.0"
+		},
+		"title": "{{appTitle}}",
+		"description": "{{appDescription}}",
+		"sourceTemplate": {
+			"id": "ui5template.basicSAPUI5ApplicationProject",
+			"version": "1.40.12"
+		}
+	},
+	"sap.ui": {
+		"technology": "UI5",
+		"icons": {
+			"icon": "",
+			"favIcon": "",
+			"phone": "",
+			"phone@2": "",
+			"tablet": "",
+			"tablet@2": ""
+		},
+		"deviceTypes": {
+			"desktop": true,
+			"tablet": true,
+			"phone": true
+		}
+	},
+	"sap.ui5": {
+		"flexEnabled": false,
+		"rootView": {
+			"viewName": "com.apptech.realestate.view.Login",
+			"type": "XML",
+			"async": true,
+			"id": "Login"
+		},
+		"dependencies": {
+			"minUI5Version": "1.65.6",
+			"libs": {
+				"sap.chart": {
+					"minVersion": ""
+				},
+				"sap.m": {},
+				"sap.suite.ui.commons": {
+					"minVersion": ""
+				},
+				"sap.tnt": {
+					"minVersion": ""
+				},
+				"sap.ui.core": {},
+				"sap.ui.layout": {},
+				"sap.ui.table": {
+					"minVersion": ""
+				}
+			}
+		},
+		"contentDensities": {
+			"compact": true,
+			"cozy": false
+		},
+		"models": {
+			"i18n": {
+				"type": "sap.ui.model.resource.ResourceModel",
+				"settings": {
+					"bundleName": "com.apptech.realestate.i18n.i18n"
+				}
+			}
+		},
+		"resources": {
+			"css": [
+				{
+					"uri": "css/style.css"
+				}
+			]
+		},
+		"routing": {
+			"config": {
+				"routerClass": "sap.m.routing.Router",
+				"viewType": "XML",
+				"async": true,
+				"viewPath": "com.apptech.realestate.view",
+				"controlAggregation": "pages",
+				"controlId": "app"
+			},
+			"routes": [
+				{
+					"name": "Main",
+					"view": "Main",
+					"pattern": "Main",
+					"targetAggregation": "pages",
+					"controlId": "app"
+				},
+				{
+					"name": "Dashboard",
+					"pattern": "Dashboard",
+					"target": [
+						"Dashboard"
+					]
+				},
+				{
+					"name": "Pricelist",
+					"pattern": "Pricelist",
+					"target": [
+						"Pricelist"
+					]
+				},
+				{
+					"name": "BusinessPartner",
+					"pattern": "BusinessPartner",
+					"target": [
+						"BusinessPartner"
+					]
+				},
+				{
+					"name": "Project",
+					"pattern": "Project",
+					"target": [
+						"Project"
+					]
+				},
+				{
+					"name": "Unit",
+					"pattern": "Unit",
+					"target": [
+						"Unit"
+					]
+				},
+				{
+					"name": "Reservation",
+					"pattern": "Reservation",
+					"target": [
+						"Reservation"
+					]
+				},
+				{
+					"name": "Quotation",
+					"pattern": "Quotation",
+					"target": [
+						"Quotation"
+					]
+				},
+				{
+					"name": "TaxMatrix",
+					"pattern": "TaxMatrix",
+					"target": [
+						"TaxMatrix"
+					]
+				}
+			],
+			"targets": {
+				"Main": {
+					"viewType": "XML",
+					"viewName": "Main",
+					"viewLevel": 1
+				},
+				"Dashboard": {
+					"viewPath": "com.apptech.realestate.view",
+					"viewType": "XML",
+					"viewName": "Dashboard",
+					"parent": "Main",
+					"controlId": "pageContainer",
+					"controlAggregation": "pages",
+					"transition": "flip",
+					"viewLevel": 3
+				},
+				"Pricelist": {
+					"viewPath": "com.apptech.realestate.view",
+					"viewType": "XML",
+					"viewName": "Pricelist",
+					"parent": "Main",
+					"controlId": "pageContainer",
+					"controlAggregation": "pages",
+					"transition": "flip",
+					"viewLevel": 3
+				},
+				"BusinessPartner": {
+					"viewPath": "com.apptech.realestate.view",
+					"viewType": "XML",
+					"viewName": "BusinessPartner",
+					"parent": "Main",
+					"controlId": "pageContainer",
+					"controlAggregation": "pages",
+					"transition": "flip",
+					"viewLevel": 3
+				},
+				"Project": {
+					"viewPath": "com.apptech.realestate.view",
+					"viewType": "XML",
+					"viewName": "Project",
+					"parent": "Main",
+					"controlId": "pageContainer",
+					"controlAggregation": "pages",
+					"transition": "flip",
+					"viewLevel": 3
+				},
+				"Unit": {
+					"viewPath": "com.apptech.realestate.view",
+					"viewType": "XML",
+					"viewName": "Unit",
+					"parent": "Main",
+					"controlId": "pageContainer",
+					"controlAggregation": "pages",
+					"transition": "flip",
+					"viewLevel": 3
+				},
+				"Reservation": {
+					"viewPath": "com.apptech.realestate.view",
+					"viewType": "XML",
+					"viewName": "Reservation",
+					"parent": "Main",
+					"controlId": "pageContainer",
+					"controlAggregation": "pages",
+					"transition": "flip",
+					"viewLevel": 3
+				},
+				"Quotation": {
+					"viewPath": "com.apptech.realestate.view",
+					"viewType": "XML",
+					"viewName": "Quotation",
+					"parent": "Main",
+					"controlId": "pageContainer",
+					"controlAggregation": "pages",
+					"transition": "flip",
+					"viewLevel": 3
+				},
+				"TaxMatrix": {
+					"viewPath": "com.apptech.realestate.view",
+					"viewType": "XML",
+					"viewName": "TaxMatrix",
+					"parent": "Main",
+					"controlId": "pageContainer",
+					"controlAggregation": "pages",
+					"transition": "flip",
+					"viewLevel": 3
+				}
+			}
+		}
+	},
+	"sap.platform.hcp": {
+		"uri": "webapp",
+		"_version": "1.1.0"
+	}
+}

@@ -1,0 +1,193 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:chart="sap.suite.ui.microchart" xmlns:f="sap.f"
+	xmlns:l="sap.ui.layout" controllerName="com.apptech.realestate.controller.Dashboard" xmlns:html="http://www.w3.org/1999/xhtml">
+	<Page title="Dashboard" id="dashboard">
+		<ScrollContainer id="initialPage" horizontal="false" vertical="true" height="100%">
+			<l:VerticalLayout class="sapUiResponsiveMargin">
+				<!--Sales Agent / Broker  -->
+				<l:HorizontalLayout allowWrapping="true">
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="Reservations" frameType="TwoByOne"
+						subheader="Manage Reservations" press="tileREQuotations">
+						<TileContent unit="Count">
+							<NumericContent scale="" value="69" valueColor="Good" withMargin="false"/>
+						</TileContent>
+						<TileContent>
+							<content>
+								<chart:ColumnMicroChart size="Responsive">
+									<chart:leftTopLabel>
+										<chart:ColumnMicroChartLabel label="Reservations per Month"/>
+									</chart:leftTopLabel>
+									<chart:leftBottomLabel>
+										<chart:ColumnMicroChartLabel label="Jan 2019"/>
+									</chart:leftBottomLabel>
+									<chart:rightBottomLabel>
+										<chart:ColumnMicroChartLabel label="Dec 2019"/>
+									</chart:rightBottomLabel>
+									<chart:columns>
+										<chart:ColumnMicroChartData value="3" color="Good"/>
+										<chart:ColumnMicroChartData value="7" color="Good"/>
+										<chart:ColumnMicroChartData value="10" color="Good"/>
+										<chart:ColumnMicroChartData value="5" color="Good"/>
+										<chart:ColumnMicroChartData value="9" color="Good"/>
+										<chart:ColumnMicroChartData value="2" color="Good"/>
+										<chart:ColumnMicroChartData value="8" color="Good"/>
+										<chart:ColumnMicroChartData value="10" color="Good"/>
+										<chart:ColumnMicroChartData value="15" color="Good"/>
+										<chart:ColumnMicroChartData value="0" color="Neutral"/>
+										<chart:ColumnMicroChartData value="0" color="Neutral"/>
+										<chart:ColumnMicroChartData value="0" color="Neutral"/>
+									</chart:columns>
+								</chart:ColumnMicroChart>
+								<!--<NumericContent value="10" class="sapUiMediumMarginButtom" withMargin="true" icon="sap-icon://insurance-house"/>-->
+							</content>
+						</TileContent>
+					</GenericTile>
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="Contracts" frameType="TwoByOne"
+						subheader="Manage Reservations" press="tileREReservations">
+						<TileContent>
+							<content>
+								<chart:ComparisonMicroChart scale="" view="Wide" size="Responsive">
+									<chart:data>
+										<chart:ComparisonMicroChartData title="Contract" value="14" color="Neutral"/>
+										<chart:ComparisonMicroChartData title="Cancelled" value="1" color="Error"/>
+										<chart:ComparisonMicroChartData title="Fully Paid" value="5" color="Good"/>
+									</chart:data>
+								</chart:ComparisonMicroChart>
+							</content>
+						</TileContent>
+					</GenericTile>
+				
+				</l:HorizontalLayout>
+				<!-- Cashier / Treasury -->
+				<l:HorizontalLayout allowWrapping="true">
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Payments" subheader="Manage Payments here">
+						<tileContent>
+							<TileContent>
+								<content>
+									<NumericContent value="0" indicator="None" valueColor="Neutral" icon="sap-icon://money-bills"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Check Clearing" subheader="Determine Check Status">
+						<tileContent>
+							<TileContent footer="Distinct Checks">
+								<content>
+									<NumericContent value="0" indicator="None" valueColor="Neutral" icon="sap-icon://payment-approval"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+						<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Recognize Revenue">
+						<tileContent>
+							<TileContent footer="Items to be recognized">
+								<content>
+									<NumericContent value="0" indicator="None" valueColor="Neutral" icon="sap-icon://batch-payments"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+				</l:HorizontalLayout>
+				<!-- Sales Manager -->
+				<!--<l:HorizontalLayout>-->
+				
+				<!--</l:HorizontalLayout>-->
+				<!-- Master Data -->
+				<l:HorizontalLayout allowWrapping="true">
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Customer Master Data" press="tileCustomer">
+						<tileContent>
+							<TileContent>
+								<content>
+									<NumericContent value="{headers>/Customers}" indicator="None" valueColor="Neutral" icon="sap-icon://customer"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Unit Master Data" press="tileUnit">
+						<tileContent>
+							<TileContent footer="Units">
+								<content>
+									<NumericContent value="{headers>/Units}" indicator="None" valueColor="Neutral" icon="sap-icon://add-product"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Manage Project" press="tileProject">
+						<tileContent>
+							<TileContent>
+								<content>
+									<NumericContent value="{headers>/Projects}" indicator="None" valueColor="Neutral" icon="sap-icon://addresses"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Manage Pricelist" press="tilePricelist">
+						<tileContent>
+							<TileContent footer="Recent Logs">
+								<content>
+									<NumericContent value="{headers>/Pricelist}" indicator="None" valueColor="Neutral" icon="sap-icon://capital-projects"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Manage Tax Matrix" press="tileTaxMatrix">
+						<tileContent>
+							<TileContent footer="">
+								<content>
+									<NumericContent value="{headers>/Tax}" indicator="None" valueColor="Neutral" icon="sap-icon://commission-check"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+				</l:HorizontalLayout>
+				<!-- Administrator -->
+				<l:HorizontalLayout allowWrapping="true">
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Global Settings">
+						<tileContent>
+							<TileContent>
+								<content>
+									<NumericContent value="0" indicator="None" valueColor="Neutral" icon="sap-icon://customize"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="UDT - UDF Maintenance" press="tileUDTUDF">
+						<tileContent>
+							<TileContent footer="Distinct Checks">
+								<content>
+									<NumericContent value="" indicator="None" valueColor="Neutral" icon="sap-icon://provision"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Beginning Balance Uploader">
+						<tileContent>
+							<TileContent>
+								<content>
+									<NumericContent value="" indicator="None" valueColor="Neutral" icon="sap-icon://sap-box"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Error Logs Monitoring">
+						<tileContent>
+							<TileContent footer="Recent Logs">
+								<content>
+									<NumericContent value="" indicator="None" valueColor="Neutral" icon="sap-icon://travel-request"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop" header="Create User" press="tileCreateUser">
+						<tileContent>
+							<TileContent footer="Users">
+								<content>
+									<NumericContent value="{headers>/User}" indicator="None" valueColor="Neutral" icon="sap-icon://travel-request"/>
+								</content>
+							</TileContent>
+						</tileContent>
+					</GenericTile>
+				</l:HorizontalLayout>
+			</l:VerticalLayout>
+		</ScrollContainer>
+	</Page>
+</mvc:View>

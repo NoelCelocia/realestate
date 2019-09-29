@@ -1,0 +1,64 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<TableSelectDialog
+		noDataText="No Unit Found"
+		title="Select Unit"
+		search="handleSearch"
+		confirm="handleClose"
+		cancel="handleClose"
+		items="{oMdlAllUnits>/allunitchoose}">
+		<ColumnListItem>
+			<cells>
+				
+				<Text text="{oMdlAllUnits>UnitCode}" />
+				<Text text="{oMdlAllUnits>UnitDesc}" />
+				<Text text="{oMdlAllUnits>Desc}" />
+				<Text text="{oMdlAllUnits>LotArea}" />
+			
+				<ObjectNumber
+						number="{
+							parts:[{path:'oMdlAllUnits>SellingPrice'}],
+							type: 'sap.ui.model.type.Currency',
+							formatOptions: {showMeasure: false}
+						}"
+						unit="PHP" />
+			</cells>
+		</ColumnListItem>
+		<columns>
+			<Column width="12em">
+				<header>
+					<Text text="UnitCode" />
+				</header>
+			</Column>
+			<Column
+				minScreenWidth="Tablet"
+				demandPopin="true" >
+				<header>
+					<Text text="UnitDesc" />
+				</header>
+			</Column>
+			<Column
+				minScreenWidth="Desktop"
+				demandPopin="true"
+				hAlign="End">
+				<header>
+					<Text text="UnitStatus" />
+				</header>
+			</Column>
+			<Column
+				minScreenWidth="Desktop"
+				demandPopin="true"
+				hAlign="Center">
+				<header>
+					<Text text="LotArea" />
+				</header>
+			</Column>
+			<Column hAlign="End">
+				<header>
+					<Text text="SellingPrice" />
+				</header>
+			</Column>
+		</columns>
+	</TableSelectDialog>
+</core:FragmentDefinition>

@@ -1,0 +1,12 @@
+{
+	"ProjectStatus": [{
+		"text": "Planning",
+		"key": "Planning"
+	}, {
+		"text": "Constructing",
+		"key": "Constructing"
+	}, {
+		"text": "Available",
+		"key": "Available"
+	}]
+}

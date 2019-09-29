@@ -1,0 +1,18 @@
+<core:FragmentDefinition
+	xmlns="sap.m"
+	xmlns:core="sap.ui.core">
+	<SelectDialog
+		noDataText="No Buyers Found"
+		title="Select Buyer"
+		search="handleSearchBP"
+		confirm="handleValueHelpCloseBP"
+		cancel="handleValueHelpCloseBP"
+		showClearButton="true"
+		items="{oMdlAllBP>/allbp}">
+		<StandardListItem
+			iconDensityAware="false"
+			iconInset="false"
+			title="{oMdlAllBP>FirstName} {oMdlAllBP>MiddleName} {oMdlAllBP>LastName}"
+			description="{oMdlAllBP>CustomerCode}" />
+	</SelectDialog>
+</core:FragmentDefinition>

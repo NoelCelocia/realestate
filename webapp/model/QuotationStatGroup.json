@@ -1,0 +1,27 @@
+{
+	"allstatgroup": [
+	{
+		"Code": "1",
+		"Desc": "Quotations created Today"
+	},
+	{
+		"Code": "2",
+		"Desc": "Quotations with Reservation but no Contract"
+	},
+	{
+		"Code": "3",
+		"Desc": "Quotations with Reservation and with Contract"
+	},
+	{
+		"Code": "4",
+		"Desc": "Quotations with similar Units"
+	},
+	{
+		"Code": "5",
+		"Desc": "Quotations created this Month"
+	}
+	
+	
+	]
+
+}

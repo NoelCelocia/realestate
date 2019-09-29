@@ -1,0 +1,107 @@
+{
+	"navigation": [{
+			"title": "General Settings",
+			"icon": "sap-icon://settings",
+			"expanded": true,
+			"key": "generalsettings",
+			"items": [{
+				"title": "Document Numbering",
+				"key": "documentnumbering"
+			}, {
+				"title": "Integration Setup",
+				"key": "integrationsetup"
+			}, {
+				"title": "Account Determination",
+				"key": "accountdetermination"
+			}]
+		}, {
+			"title": "Master Data",
+			"icon": "sap-icon://org-chart",
+			"expanded": true,
+			"key": "masterdata",
+			"items": [{
+				"title": "Business Partners",
+				"key": "businesspartners"
+			}, {
+				"title": "Units",
+				"key": "units"
+			}, {
+				"title": "Projects",
+				"key": "projects"
+			}, {
+				"title": "Price Lists",
+				"key": "pricelist"
+			}, {
+				"title": "Tax",
+				"key": "tax"
+			}]
+		}, {
+			"title": "Real Estate Sales",
+			"icon": "sap-icon://home",
+			"expanded": true,
+			"key": "resales",
+			"items": [{
+				"title": "Quotations",
+				"key": "quotation"
+			}, {
+				"title": "Reservations & Contracts",
+				"key": "reservation"
+			}]
+		}, {
+			"title": "Real Estate Payments",
+			"icon": "sap-icon://money-bills",
+			"expanded": true,
+			"key": "repayments",
+			"items": [{
+				"title": "Payment Entry",
+				"key": "payentry"
+			}, {
+				"title": "Check Entry",
+				"key": "checkentry"
+			}, {
+				"title": "Post Payment",
+				"key": "postpayment"
+			}, {
+				"title": "Payment Application",
+				"key": "paymentappl"
+			}]
+		}, {
+			"title": "Real Estate Commissions",
+			"icon": "sap-icon://monitor-payments",
+			"expanded": false,
+			"key": "recommissions",
+			"items": [{
+				"title": "Commission Process",
+				"key": "commprocess"
+			}, {
+				"title": "Commission Inquiry",
+				"key": "comminquiry"
+			}]
+		}, {
+			"title": "User Management",
+			"icon": "sap-icon://key-user-settings",
+			"expanded": true,
+			"key": "usernamanagement",
+			"items": [{
+				"title": "Business Roles",
+				"key": "businessroles"
+			}, {
+				"title": "Business Users",
+				"key": "businessusers"
+			}, {
+				"title": "Approval Process",
+				"key": "approvalprocess"
+			}]
+		}
+
+	],
+	"fixedNavigation": [{
+		"title": "Reports and Analytics",
+		"icon": "sap-icon://manager-insight",
+		"key": "reportanalytics"
+	}, {
+		"title": "Bug Report",
+		"icon": "sap-icon://message-error",
+		"key": "bugreport"
+	}]
+}

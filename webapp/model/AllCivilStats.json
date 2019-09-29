@@ -1,0 +1,20 @@
+{
+    "CivilStat": [
+				{
+				"text":"Single",
+				"key":"Single"
+				},
+				{
+				"text":"Married",
+				"key":"Married"
+				},
+				{
+				"text":"Widowed",
+				"key":"Widowed"
+				},
+				{
+				"text":"Separated",
+				"key":"Separated"
+				}
+            ]
+}

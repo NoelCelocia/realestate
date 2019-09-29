@@ -1,0 +1,29 @@
+{
+	"EditRecord": [
+		{
+		"Code" : "",
+		"QuoteNum" : "",
+		"ReserveNum" : "",
+		"DocNum" : "",
+		"LineNum" : 0,
+		"TranType":  [{"Code": "1", "Desc": "Reservation"},
+						{"Code": "2", "Desc": "Downpayment"}, 
+						{"Code": "3", "Desc": "Remaining Balance"},
+						{"Code": "4", "Desc": "Misc Fee"}],
+		"SelectedTranType": "",
+		"Amount" : 0,
+		"Percent" : 0,
+		"Interest" : 0,
+		"Terms": 0,
+		"StartDate" : "",
+		"FinanceScheme" : "",
+		"SelectedFinScheme": "",
+		"OldDocNum": "",
+		"Remarks": ""
+		}
+	],
+	"NetDP": 0,
+	"NetRB": 0,
+	"NetMF": 0
+
+}

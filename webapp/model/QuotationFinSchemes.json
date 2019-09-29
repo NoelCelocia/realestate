@@ -1,0 +1,23 @@
+{
+    "FinSchemes": [
+				{
+				"Desc":"Bank",
+				"Code":"1"
+				},
+				{
+				"Desc":"On-Loan",
+				"Code":"2"
+				},
+				{
+				"Desc":"In-House",
+				"Code":"3"
+				},
+				{
+				"Desc":"Pagibig",
+				"Code":"4"
+				},
+				{"Desc":"Cash",
+				"Code":"5"
+				}
+            ]
+}

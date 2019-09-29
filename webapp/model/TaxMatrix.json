@@ -1,0 +1,14 @@
+{
+	"EditRecord": {
+		"Code": "",
+		"TaxCode": "",
+		"BuildTypeCode": "",
+		"AmountLimitFrom": 0,
+		"AmountLimitTo": 0,
+		"TaxDesc": "",
+		"Rate": 0,
+		"Remarks": "",
+		"ValidDateFrom":"",
+		"ValidDateTo":""
+	}
+}

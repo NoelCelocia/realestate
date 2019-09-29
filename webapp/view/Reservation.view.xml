@@ -1,0 +1,139 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:uxap="sap.uxap" xmlns:f="sap.ui.layout.form"
+	xmlns:l="sap.ui.layout" xmlns:tnt="sap.tnt" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
+	controllerName="com.apptech.realestate.controller.Reservation">
+	<App>
+		<pages>
+			<Page title="Real Estate Sales">
+				<content>
+					<IconTabBar id="idIconTabBarInlineMode" headerMode="Inline" upperCase="true" expandable="false" class="sapUiResponsiveContentPadding">
+						<items>
+							<IconTabFilter id="tab1" text="Records" count="0" key="tab1">
+								<t:Table id="tblReservation" selectionMode="Single" visibleRowCount="8" ariaLabelledBy="title" enableCellFilter="true"
+									rowSelectionChange="onSelectionChange">
+									<t:extension>
+										<Toolbar>
+											<content>
+												<Button text="Add" tooltip="Add" press="onAdd" icon="sap-icon://add"/>
+												<Button text="Edit" tooltip="Edit" press="onEdit" icon="sap-icon://edit"/>
+												<ToolbarSpacer/>
+												<SearchField placeholder="Filter" value="" search="filterGlobally" width="15rem"/>
+											</content>
+										</Toolbar>
+									</t:extension>
+								</t:Table>
+								<Text text="Real Estate Unit Details" class="mTextLarge sapUiSmallMarginTop"/>
+								<t:Table id="tblReservationUnits" selectionMode="Single" visibleRowCount="5" ariaLabelledBy="title" enableCellFilter="true">
+									<t:extension>
+										<Toolbar></Toolbar>
+									</t:extension>
+								</t:Table>
+							</IconTabFilter>
+							<IconTabFilter id="tab2" text="Add / Edit" key="tab2">
+								<Button text="Add Draft" tooltip="Save" press="onDraft" icon="sap-icon://multi-select"/>
+								<Button text="Save as Contract" tooltip="Save" press="onSave" icon="sap-icon://save"/>
+								<Button text="Actions.." press="handleOpen" class="sapUiSmallMarginBottom"/>
+								<VBox class="sapUiTinyMargin">
+									<!--<Panel class="sapUiResponsiveContentPadding" width="auto" expandable="false" expanded="true" id="panel0">-->
+									<!--	<content>-->
+									<f:SimpleForm editable="true" layout="ResponsiveGridLayout" id="form0" width="100%">
+										<f:content>
+											<!--Buyer-->
+											<Label text="Buyer" width="100%" id="label00">
+												<layoutData>
+													<l:GridData span="L1 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Input width="100%" id="inputBpCode" required="true" editable="false" enabled="false">
+												<layoutData>
+													<l:GridData span="L2 M4 S3"/>
+												</layoutData>
+											</Input>
+											<Input id="bpInput" type="Text" textFormatMode="ValueKey" placeholder="Enter Buyer" showSuggestion="true"
+												showTableSuggestionValueHelp="false" suggestionRows="{pickbp>/AllBP}" showValueHelp="true" suggestionItemSelected="suggestionItemSelected">
+												<suggestionColumns>
+													<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
+														<Label text="Name"/>
+													</Column>
+													<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
+														<Label text="BP Code"/>
+													</Column>
+													<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
+														<Label text="Related REs"/>
+													</Column>
+												</suggestionColumns>
+												<suggestionRows>
+													<ColumnListItem>
+														<cells>
+															<Label text="{pickbp>CardName}"/>
+															<Label text="{pickbp>CardCode}"/>
+															<Label text="{pickbp>RelatedREs}"/>
+														</cells>
+													</ColumnListItem>
+												</suggestionRows>
+												<layoutData>
+													<l:GridData span="L9 M6 S9"/>
+												</layoutData>
+											</Input>
+											<Label text="Reservation Date" width="100%" id="lblRsrvDate">
+												<layoutData>
+													<l:GridData span="L2 M2 S12"/>
+												</layoutData>
+											</Label>
+											<DatePicker id="inputReservationDate" valueFormat="MM/dd/yyyy" displayFormat="MM/dd/yyyy" change="handleChange">
+												<layoutData>
+													<l:GridData span="L4 M4 S12"/>
+												</layoutData>
+											</DatePicker>
+											<Label text="Pricelist" width="100%" id="lblPricelist">
+												<layoutData>
+													<l:GridData span="L2 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Select id="selectPricelist" showSecondaryValues="true" items="{pricelistmodel>/allpricelist}">
+												<core:ListItem key="{pricelistmodel>ListNum}" text="{pricelistmodel>ListNum} - {pricelistmodel>ListName}"/>
+												<layoutData>
+													<l:GridData span="L4 M4 S12"/>
+												</layoutData>
+											</Select>
+										</f:content>
+									</f:SimpleForm>
+									<!--	</content>-->
+									<!--</Panel>-->
+									<IconTabBar id="idIconTabBarStretchContent" enableTabReordering="false" stretchContentHeight="false" backgroundDesign="Transparent"
+										applyContentPadding="false" expanded="true" class="sapUiResponsiveContentPadding" expandable="false" tabDensityMode="Compact">
+										<items>
+											<IconTabFilter text="Item Units">
+												<t:Table id="tblUnitReserve" selectionMode="Single" visibleRowCount="5" ariaLabelledBy="title" enableCellFilter="true"
+													rowSelectionChange="onSelectionChange">
+													<t:extension>
+														<Toolbar>
+															<content>
+																<ToolbarSpacer/>
+																<Button text="" tooltip="Add" press="onAddUnit" icon="sap-icon://add"/>
+																<Button text="" tooltip="Remove" press="onRemoveUnit" icon="sap-icon://sys-minus"/>
+															</content>
+														</Toolbar>
+													</t:extension>
+												</t:Table>
+											</IconTabFilter><IconTabSeparator icon="sap-icon://open-command-field"/>
+											<IconTabFilter text="Pricing Information">
+												<Text text="11111"/>
+											</IconTabFilter><IconTabSeparator icon="sap-icon://open-command-field"/>
+											<IconTabFilter text="Terms and Schedules">
+												<Text text="22222"/>
+											</IconTabFilter><IconTabSeparator icon="sap-icon://open-command-field"/>
+											
+											<IconTabFilter text="Commission Info"></IconTabFilter><IconTabSeparator icon="sap-icon://open-command-field"/>
+											<IconTabFilter text="Remarks"></IconTabFilter>
+										</items>
+									</IconTabBar>
+									
+								</VBox>
+							</IconTabFilter>
+						</items>
+					</IconTabBar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>

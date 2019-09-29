@@ -1,0 +1,260 @@
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:uxap="sap.uxap" xmlns:f="sap.ui.layout.form"
+	xmlns:tnt="sap.tnt" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table" xmlns:l="sap.ui.layout" xmlns:u="sap.ui.unified"
+	controllerName="com.apptech.realestate.controller.BusinessPartner">
+	<App>
+		<pages>
+			<Page title="Business Partner">
+				<content>
+					<IconTabBar id="idIconTabBarInlineMode" headerMode="Inline" upperCase="true" expandable="false" class="sapUiResponsiveContentPadding">
+						<items>
+							<IconTabFilter id="tab1" text="Records" count="0" key="tab1">
+								<t:Table id="tblBP" selectionMode="Single" visibleRowCount="10" ariaLabelledBy="title" enableCellFilter="true">
+									<t:extension>
+										<Toolbar>
+											<content>
+												<Button text="Add" tooltip="Add" press="onAdd" icon="sap-icon://add"/>
+												<Button text="Edit" tooltip="Edit" press="onEdit" icon="sap-icon://edit"/>
+												<ToolbarSpacer/>
+												<SearchField placeholder="Filter" value="" search="filterGlobally" width="15rem"/>
+											</content>
+										</Toolbar>
+									</t:extension>
+								</t:Table>
+							</IconTabFilter>
+							<IconTabFilter id="tab2" text="Add / Edit" key="tab2">
+								<Button text="Save Changes" tooltip="Save" press="onSave" icon="sap-icon://save"/>
+								<VBox class="sapUiTinyMargin">
+									<f:SimpleForm id="basicForm" editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+										adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+										singleContainerFullSize="false">
+										<f:content>
+											<Label text="Customer Code" width="100%">
+												<layoutData>
+													<l:GridData span="L1 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Input width="100%" value="{oMdlEditRecord>/EditRecord/CustomerCode}" required="true" editable="false" enabled="false">
+												<layoutData>
+													<l:GridData span="L5 M4 S12"/>
+												</layoutData>
+											</Input>
+											<Label text="Status" width="100%">
+												<layoutData>
+													<l:GridData span="L1 M2 S12"/>
+												</layoutData>
+											</Label>
+											
+											<Select id="selectRefBPStatus" items="{oMdlBPStatus>/allbpstatus}" selectedKey="{oMdlEditRecord>/EditRecord/StatusCode}" enabled="true">
+												<core:ListItem key="{oMdlBPStatus>Code}" text="{oMdlBPStatus>Code} - {oMdlBPStatus>Desc} "/>
+												<layoutData>
+													<l:GridData span="L5 M4 S3"/>
+												</layoutData>
+											</Select>
+											 
+											<!--<Input width="100%" value="{oMdlEditRecord>/EditRecord/FirstName}" required="true" editable="false" enabled="false">-->
+												
+											<!--</Input>-->
+											
+											
+											<Label text="First Name" width="100%"/>
+											<Input width="100%" value="{oMdlEditRecord>/EditRecord/FirstName}"/>
+											<Label text="Middle Name"/>
+											<Input value="{oMdlEditRecord>/EditRecord/MiddleName}"/>
+											<Label text="Last Name"/>
+											<Input value="{oMdlEditRecord>/EditRecord/LastName}"/>
+										</f:content>
+									</f:SimpleForm>
+								</VBox>
+								<IconTabBar id="idIconTabBarStretchContent" enableTabReordering="false" stretchContentHeight="false" backgroundDesign="Transparent"
+									applyContentPadding="false" expanded="true" class="sapUiResponsiveContentPadding" expandable="false" tabDensityMode="Compact">
+									<items>
+										<IconTabFilter text="Personal Information">
+											<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+												adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+												singleContainerFullSize="false">
+												<f:content>
+													<Label text="Title" width="100%">
+														<layoutData>
+															<l:GridData span="L1 M2 S12"/>
+														</layoutData>
+													</Label>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/Title}">
+														<layoutData>
+															<l:GridData span="L5 M4 S12"/>
+														</layoutData>
+													</Input>
+													<Label text="Academic Title" width="100%">
+														<layoutData>
+															<l:GridData span="L1 M2 S12"/>
+														</layoutData>
+													</Label>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/AcadTitle}">
+														<layoutData>
+															<l:GridData span="L5 M4 S3"/>
+														</layoutData>
+													</Input>
+													<Label text="Date of Birth" width="100%"/>
+													<DatePicker displayFormat="MMM dd, yyyy" value="{oMdlEditRecord>/EditRecord/BirthDate}"/>
+													<Label text="Birth Place" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/BirthPlace}"/>
+													<Label text="Gender"/>
+													<HBox class="sapUiSmallMargin">
+														<RadioButton groupName="gender" text="Male" selected="{= ${oMdlEditRecord>/EditRecord/Gender} === 'MALE'}" select="onSelectGender"/>
+														<RadioButton groupName="gender" text="Female" selected="{= ${oMdlEditRecord>/EditRecord/Gender} === 'FEMALE'}" select="onSelectGender"/>
+													</HBox>
+												
+													<Label text="Marital Status"/>
+													
+													
+													<Select id="selectRefCivilStat" items="{oMdlCivilStats>/CivilStat}" selectedKey="{oMdlEditRecord>/EditRecord/CivilStat}">
+														<core:ListItem key="{oMdlCivilStats>key}" text="{oMdlCivilStats>key}"/>
+													</Select>
+													
+													<Label text="Spouse Name"/>
+													<Input value="{oMdlEditRecord>/EditRecord/SpouseName}"/>
+													<Label text="TIN"/>
+													<Input value="{oMdlEditRecord>/EditRecord/TIN}"/>
+													<Label text="Nationality"/>
+													<Input value="{oMdlEditRecord>/EditRecord/Nationality}"/>
+													
+												</f:content>
+											</f:SimpleForm>
+										</IconTabFilter><IconTabSeparator icon="sap-icon://vertical-grip"/>
+										<IconTabFilter text="Contact Information">
+											<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+												adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+												singleContainerFullSize="false">
+												<f:content>
+													<Label text="Email" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/Email}"/>
+													<Label text="Landline" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/Landline}"/>
+													<Label text="Mobile Number" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/MobileNo}"/>
+													<Label text="Contact Person" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/ContactPerson}"/>
+													<Label text="Contact Relationship"/>
+													<Input value="{oMdlEditRecord>/EditRecord/CntctRelation}"/>
+													<Label text="Address Line"/>
+													<Input value="{oMdlEditRecord>/EditRecord/AddressLine1}"/>
+													<Label text="Address Line 2"/>
+													<Input value="{oMdlEditRecord>/EditRecord/AddressLine2}"/>
+													<Label text="City"/>
+													<Input value="{oMdlEditRecord>/EditRecord/City}"/>
+													<Label text="Province"/>
+													<Input value="{oMdlEditRecord>/EditRecord/Province}"/>
+													<Label text="Country"/>
+													<Input value="{oMdlEditRecord>/EditRecord/Country}"/>
+													<Label text="Postal Code"/>
+													<Input value="{oMdlEditRecord>/EditRecord/PostalCode}"/>
+												</f:content>
+											</f:SimpleForm>
+										</IconTabFilter><IconTabSeparator icon="sap-icon://vertical-grip"/>
+										<IconTabFilter text="Employment Details">
+											<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+												adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+												singleContainerFullSize="false">
+												<f:content>
+													<Label text="Company / Business Name" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/CompanyWork}"/>
+													<Label text="Position / Department"/>
+													<Input value="{oMdlEditRecord>/EditRecord/PostionWork}"/>
+													<Label text="Work Address 1" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/AddressLine1Work}"/>
+													<Label text="Work Address 2" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/AddressLine2Work}"/>
+													<Label text="City" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/CityWork}"/>
+													<Label text="Province"/>
+													<Input value="{oMdlEditRecord>/EditRecord/ProvinceWork}"/>
+													<Label text="Country"/>
+													<Input value="{oMdlEditRecord>/EditRecord/CountryWork}"/>
+													<Label text="Postal Code"/>
+													<Input value="{oMdlEditRecord>/EditRecord/PostalCodeWork}"/>
+													<Label text="No of Years Working"/>
+													<Input value="{oMdlEditRecord>/EditRecord/WorkingYears}"/>
+												</f:content>
+											</f:SimpleForm>
+										</IconTabFilter><IconTabSeparator icon="sap-icon://vertical-grip"/>
+										<IconTabFilter text="Marketing">
+											<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+												adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+												singleContainerFullSize="false">
+												<f:content>
+													<Label text="Group" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/MktGroup}"/>
+													<Label text="Classification"/>
+													<Input value="{oMdlEditRecord>/EditRecord/MktClassification}"/>
+													<Label text="Source" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/MktCustomerSource}"/>
+													<Label text="User Defined 1" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/MktUserDefined1}"/>
+													<Label text="UserDefined 2" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/MktUserDefined2}"/>
+													<Label text="UserDefined 3" width="100%"/>
+													<Input value="{oMdlEditRecord>/EditRecord/MktUserDefined3}"/>
+													<Label text="UserDefined 4" width="100%"/>
+													<Input value="{oMdlEditRecord>/EditRecord/MktUserDefined4}"/>
+													<Label text="UserDefined 5" width="100%"/>
+													<Input value="{oMdlEditRecord>/EditRecord/MktUserDefined5}"/>
+												</f:content>
+											</f:SimpleForm>
+										</IconTabFilter><IconTabSeparator icon="sap-icon://vertical-grip"/>
+										<IconTabFilter text="Financial">
+											<f:SimpleForm editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12"
+												adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1"
+												singleContainerFullSize="false">
+												<f:content>
+													<Label text="A/R Account Code" width="100%"/>
+													<Input width="100%" value="{oMdlEditRecord>/EditRecord/ARAccount}"/>
+												</f:content>
+											</f:SimpleForm>
+										</IconTabFilter><IconTabSeparator icon="sap-icon://vertical-grip"/>
+										<IconTabFilter text="Documents">
+											<VBox class="sapUiTinyMargin">
+												<u:FileUploader id="fileUploader" name="myFileUpload" uploadUrl="upload/" tooltip="Upload Submitted Docs"
+													uploadComplete="handleUploadComplete" change="handleValueChange" typeMissmatch="handleTypeMissmatch" style="Emphasized"
+													fileType="jpg,png,pdf,doc,docx" placeholder="Upload Submitted Docs">
+													<u:parameters>
+														<u:FileUploaderParameter name="param1" value="Foo"/>
+														<u:FileUploaderParameter name="param2" value="bar"/>
+													</u:parameters>
+													<u:headerParameters>
+														<u:FileUploaderParameter name="headerParam1" value="Foo"/>
+														<u:FileUploaderParameter name="headerParam2" value="bar"/>
+													</u:headerParameters>
+												</u:FileUploader>
+												<Button text="Upload File" press="handleUploadPress"/>
+												<Table id="idDocSubmitted" inset="false" items="">
+													<columns>
+														<Column width="12em">
+															<Text text="Code"/>
+														</Column>
+														<Column minScreenWidth="Tablet" demandPopin="true">
+															<Text text="File Name"/>
+														</Column>
+														<Column minScreenWidth="Desktop" demandPopin="true" hAlign="End">
+															<Text text="Document Name"/>
+														</Column>
+														<Column minScreenWidth="Desktop" demandPopin="true" hAlign="Center">
+															<Text text="Document Type"/>
+														</Column>
+													</columns>
+													<items>
+														<ColumnListItem>
+															<cells></cells>
+														</ColumnListItem>
+													</items>
+												</Table>
+											</VBox>
+										</IconTabFilter>
+									</items>
+								</IconTabBar>
+							</IconTabFilter>
+						</items>
+					</IconTabBar>
+				</content>
+			</Page>
+		</pages>
+	</App>
+</mvc:View>
