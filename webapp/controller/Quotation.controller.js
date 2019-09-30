@@ -510,8 +510,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 		},
 		onChangeTermPercent: function (oEvent) {
 			// 2 / 3 / 4 for DP RB MF getSelectedKey()
-			switch (oEvent.getSource().getParent().getCells()[0].getSelectedKey()) {
-			case "1":
+			if (oEvent.getSource().getParent().getCells()[0].getSelectedKey() === "1") {
 				var dialog = new Dialog({
 					title: "Error",
 					type: "Message",
@@ -530,18 +529,25 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 						dialog.destroy();
 					}
 				});
-				
-
-				dialog.open();
-				// this.oMdlTerms.getData().
-				break;
-			case "2":
-				break;
-			case "3":
-				break;
-			case "4":
-				break;
+			}else{
+				var oRow = oEvent.getSource().getParent();
+				var iIndex = oRow.getIndex();
+				switch(oEvent.getSource().getParent().getCells()[0].getSelectedKey()){
+					case "2":
+						this.oMdlTerms.getData().EditRecord[iIndex].Amount = 
+								this.oMdlTerms.getData().NetDP * (this.oMdlTerms.getData().EditRecord[iIndex].Percent / 100.00);
+						break;
+					case "3": 
+						this.oMdlTerms.getData().EditRecord[iIndex].Amount = 
+								this.oMdlTerms.getData().NetRB * (this.oMdlTerms.getData().EditRecord[iIndex].Percent / 100.00);
+						break;
+					case "4": 
+						this.oMdlTerms.getData().EditRecord[iIndex].Amount = 
+								this.oMdlTerms.getData().NetMF * (this.oMdlTerms.getData().EditRecord[iIndex].Percent / 100.00);
+						break;
+				}
 			}
+			
 		},
 		//TERMS AND SCHEDULE TAB----------------------
 
