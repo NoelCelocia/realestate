@@ -81,8 +81,9 @@
 									</f:SimpleForm>
 									<!--	</content>-->
 									<!--</Panel>-->
-									<IconTabBar id="idIconTabBarStretchContent" enableTabReordering="false" stretchContentHeight="false" backgroundDesign="Transparent"
-										applyContentPadding="false" expanded="true" class="sapUiResponsiveContentPadding" expandable="false" tabDensityMode="Compact">
+									<IconTabBar id="idIconTabBarAddEdit" enableTabReordering="false" stretchContentHeight="false" backgroundDesign="Transparent"
+										applyContentPadding="false" expanded="true" class="sapUiResponsiveContentPadding" expandable="false" tabDensityMode="Compact"
+										select="onSelectIconTabBarAddEdit">
 										<items>
 											<IconTabFilter text="Item Units">
 												<t:Table id="tblUnits" rows="{oMdlUnitTable>/unitrows}" selectionMode="Single" visibleRowCount="5" ariaLabelledBy="title"
@@ -133,7 +134,7 @@
 														<Toolbar>
 															<content>
 																<Label text="Net DP"/>
-																<Input 
+																<Input
 																	value="{ path:'oMdlTerms>/NetDP' , type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'}}"
 																	textAlign="End" fieldWidth="80%" width="10rem" editable="false" enabled="true"/>
 																<ToolbarSpacer width="3rem"/>
@@ -141,7 +142,7 @@
 																<Input
 																	value="{ path:'oMdlTerms>/NetRB' , type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'}}"
 																	textAlign="End" fieldWidth="80%" width="10rem" editable="false" enabled="true"/>
-																<ToolbarSpacer  width="3rem"/>
+																<ToolbarSpacer width="3rem"/>
 																<Label text="Net MF"/>
 																<Input
 																	value="{ path:'oMdlTerms>/NetMF' , type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'}}"
@@ -156,7 +157,8 @@
 														<t:Column width="11rem">
 															<Label text="Transaction Type"/>
 															<t:template>
-																<ComboBox width="100%" items="{path:'oMdlTerms>TranType' , templateShareable:true}" selectionChange="onSelectionChangeTranType">
+																<ComboBox width="100%" items="{path:'oMdlTerms>TranType' , templateShareable:true}" selectedKey="{oMdlTerms>SelectedTranType}"
+																	selectionChange="onSelectionChangeTranType">
 																	<core:Item key="{oMdlTerms>Code}" text="{oMdlTerms>Code} - {oMdlTerms>Desc}"/>
 																</ComboBox>
 																<!--<Text text="{oMdlTerms>TranType}"/>-->
@@ -195,7 +197,8 @@
 														<t:Column width="8rem">
 															<Label text="Finance Scheme"/>
 															<t:template>
-																<ComboBox width="100%" items="{path:'oMdlFinSchemes>/FinSchemes' , templateShareable:true}" selectionChange="onSelectionChangeFinanceScheme">
+																<ComboBox width="100%" items="{path:'oMdlFinSchemes>/FinSchemes' , templateShareable:true}" selectedKey="{oMdlTerms>FinanceScheme}"
+																	selectionChange="onSelectionChangeFinanceScheme">
 																	<core:Item key="{oMdlFinSchemes>Code}" text="{oMdlFinSchemes>Code} - {oMdlFinSchemes>Desc}"/>
 																</ComboBox>
 															</t:template>
@@ -210,7 +213,13 @@
 												</t:Table>
 											</IconTabFilter><IconTabSeparator icon="sap-icon://open-command-field"/>
 											<IconTabFilter text="Remarks">
-												<core:Fragment fragmentName="com.apptech.realestate.view.fragments.RemarksTimelineFragment" type="XML"/>
+												<VBox >
+													<HBox alignItems="Center" alignContent="Center" justifyContent="Center">
+														<Label text="Remarks :  "></Label>
+														<Input value="{path: 'oMdlTerms>Remarks' } " textAlign="Begin" width="30rem"/>
+													</HBox>
+													<core:Fragment fragmentName="com.apptech.realestate.view.fragments.RemarksTimelineFragment" type="XML"/>
+												</VBox>
 											</IconTabFilter>
 										</items>
 									</IconTabBar>

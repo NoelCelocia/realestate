@@ -356,7 +356,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				oReserveRow.Terms = 1;
 			
 				oReserveRow.StartDate = (this.currentDate.getMonth() + 1)  + "-" + this.currentDate.getDate() + "-" + this.currentDate.getFullYear();
-				oReserveRow.FinanceScheme = "4";
+				oReserveRow.FinanceScheme = "5";
 
 				this.oMdlTerms.getData().EditRecord.push(oReserveRow);
 				this.oMdlTerms.refresh();
@@ -433,6 +433,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 				this.oMdlUnitTable.getData().unitrows.length = 0;
 				this.oMdlTerms.getData().EditRecord.length = 0;
+				this.oMdlTerms.getData().NetDP = 0;
+				this.oMdlTerms.getData().NetRB = 0;
+				this.oMdlTerms.getData().NetMF = 0;
 				this.oMdlUnitTable.refresh();
 				this.oMdlTerms.refresh();
 				this.oMdlPricing.refresh();
@@ -450,7 +453,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 		//PRICING EVENTS-------------------------
 
 		//TERMS AND SCHEDULE TAB----------------------
-		updateLineNum: function(){
+		onSelectIconTabBarAddEdit: function(oEvent){
+			
+			this.oMdlTerms.getData().NetDP = this.oMdlPricing.getData().EditRecord.DPNetAmount;
+			this.oMdlTerms.getData().NetRB = this.oMdlPricing.getData().EditRecord.RBAmount;
+			this.oMdlTerms.getData().NetMF = this.oMdlPricing.getData().EditRecord.MFAmount;
+			
+			this.oMdlTerms.refresh();
 			
 		},
 		onAddSched: function(oEvent){
@@ -461,7 +470,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 						{"Code": "2", "Desc": "Downpayment"}, 
 						{"Code": "3", "Desc": "Remaining Balance"},
 						{"Code": "4", "Desc": "Misc Fee"}];
-			oReserveRow.SelectedTranType = "";
+			oReserveRow.SelectedTranType = "1";
 			oReserveRow.Percent = 0;
 			oReserveRow.Interest = 0;
 			oReserveRow.Terms = 1;
@@ -472,13 +481,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.oMdlTerms.refresh();
 		},
 		onRemoveSched: function(oEvent){
-			var oRow = this.oTableSchedule.getBinding().getModel().getData().EditRecord[
-				this.oTableSchedule.getBinding().aIndices[this.oTableSchedule.getSelectedIndex()]
-			];
-			alert(this.oTableSchedule.getBinding().aIndices[this.oTableSchedule.getSelectedIndex()]-1);
-			this.oMdlTerms.getData().EditRecord.splice(this.oTableSchedule.getSelectedIndex(), 1);
-			
-			this.oMdlTerms.refresh();
+			// var oRow = this.oTableSchedule.getBinding().getModel().getData().EditRecord[
+			// 	this.oTableSchedule.getBinding().aIndices[this.oTableSchedule.getSelectedIndex()]
+			// ];
+			// alert(this.oTableSchedule.getBinding().aIndices[this.oTableSchedule.getSelectedIndex()]-1);
+			 this.oMdlTerms.getData().EditRecord.splice(this.oTableSchedule.getSelectedIndex(), 1);
+			 this.oMdlTerms.refresh();
 			// var filteredRows = this.oMdlTerms.getData().EditRecord.filter(function (value, index, arr) {
 			// 	return value.LineNum !== oRow.LineNum;
 			// });
