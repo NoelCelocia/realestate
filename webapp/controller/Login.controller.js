@@ -6,14 +6,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller"], function (Controller) {
 		 *@memberOf com.apptech.realestate.controller.Login
 		 */
 		 
-		 
-		 newFunction : function(){
-		 	
-		 },
-		 
-		 
-		 
-		action: function (oEvent) {
+		 action: function (oEvent) {
 			var that = this;
 			var actionParameters = JSON.parse(oEvent.getSource().data("wiring").replace(/'/g, "\""));
 			var eventType = oEvent.getId();
