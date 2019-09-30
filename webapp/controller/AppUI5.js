@@ -263,7 +263,8 @@ sap.ui.define([
 		},
 
 		getAllByColumn: function (tableName, columnName, columnValue) {
-			var getAllByColumnURL = "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GETALLDATA_BYCOL&tableName="+ tableName +"&colName=" + columnName + "&colValue=" + columnValue;
+			var getAllByColumnURL = "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GETALLDATA_BYCOL&tableName=" +
+				tableName + "&colName=" + columnName + "&colValue=" + columnValue;
 			$.ajax({
 				url: getAllByColumnURL,
 				type: "GET",
@@ -288,6 +289,43 @@ sap.ui.define([
 			var month = new Date(sDate).getMonth() + 1;
 			var date = new Date(sDate).getDate();
 			return month + "/" + date + "/" + year;
+		},
+
+		generateNumber: function (sDocType) {
+			var generateNumberURL = "";
+			switch (sDocType) {
+			case "Quote":
+				generateNumberURL = "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GENERATENUMBER&DocType=Quote";
+				break;
+			case "Reservation":
+				generateNumberURL = "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GENERATENUMBER&DocType=Reservation";
+				break;
+			case "Contract":
+				generateNumberURL = "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GENERATENUMBER&DocType=Contract";
+				break;
+			}
+			var returnCode = [];
+			$.ajax({
+					url: generateNumberURL,
+					type: "GET",
+					async: false,
+					xhrFields: {
+						withCredentials: true
+					},
+					error: function (xhr, status, error) {
+						jQuery.sap.log.error("error on AppUi5.generateNumber() " + xhr.responseText);
+					},
+					success: function (json) {},
+					context: this
+				}).done(function (results) {
+					if (results.length > 0) {
+						returnCode = results;
+					}else{
+						returnCode = [];
+					}
+				});
+				
+				return returnCode;
 		}
 
 	});
