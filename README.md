@@ -1,6 +1,6 @@
 Real Estate Management System
 
-Contexts:
+Context:
 	Real Estate Management System that is running under SCP
 	Adapting the Fiori principles and loosely-coupled system to provide enhanced User Experience
 	Out-of-the-box application to cater Real Estate companies in the Philippines
