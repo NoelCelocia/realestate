@@ -5,11 +5,15 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 	"sap/ui/model/FilterOperator",
 	"com/apptech/realestate/controller/AppUI5",
 	"sap/ui/core/Fragment",
-], function (Controller, JSONModel, MessageToast, Filter, FilterOperator, AppUI5, Fragment) {
+	"sap/m/Dialog",
+	"sap/m/ButtonType",
+	"sap/m/Button",
+	"sap/m/Text"
+], function (Controller, JSONModel, MessageToast, Filter, FilterOperator, AppUI5, Fragment, Dialog, ButtonType, Button, Text) {
 	"use strict";
 
 	return Controller.extend("com.apptech.realestate.controller.Quotation", {
-		
+
 		onRoutePatternMatched: function (event) {
 			document.title = "Real Estate - Quotation";
 		},
@@ -17,8 +21,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 		onInit: function () {
 			var route = this.getOwnerComponent().getRouter().getRoute("Quotation");
 			route.attachPatternMatched(this.onRoutePatternMatched, this);
-			
-			
+
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 
 			this.bIsAdd = "0";
@@ -91,7 +94,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 			this.oMdlTerms = new JSONModel("model/QuotationTermsTable.json");
 			this.getView().setModel(this.oMdlTerms, "oMdlTerms");
-			
+
 			this.oMdlFinSchemes = new JSONModel("model/QuotationFinSchemes.json");
 			this.getView().setModel(this.oMdlFinSchemes, "oMdlFinSchemes");
 
@@ -114,11 +117,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 					this.getView().setModel(this.oMdlTaxes, "oMdlTaxes");
 				}
 			});
-			
-			
 
 		},
-		
+
 		//ACTION BUTTON---------------------------
 		handleOpen: function (oEvent) {
 			var oButton = oEvent.getSource();
@@ -346,16 +347,25 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				var oReserveRow = {};
 				oReserveRow.LineNum = 1;
 				oReserveRow.Amount = rsrvFeeValue;
-				oReserveRow.TranType = [{"Code": "1", "Desc": "Reservation"},
-						{"Code": "2", "Desc": "Downpayment"}, 
-						{"Code": "3", "Desc": "Remaining Balance"},
-						{"Code": "4", "Desc": "Misc Fee"}];
+				oReserveRow.TranType = [{
+					"Code": "1",
+					"Desc": "Reservation"
+				}, {
+					"Code": "2",
+					"Desc": "Downpayment"
+				}, {
+					"Code": "3",
+					"Desc": "Remaining Balance"
+				}, {
+					"Code": "4",
+					"Desc": "Misc Fee"
+				}];
 				oReserveRow.SelectedTranType = "1";
 				oReserveRow.Percent = 100;
 				oReserveRow.Interest = 0;
 				oReserveRow.Terms = 1;
-			
-				oReserveRow.StartDate = (this.currentDate.getMonth() + 1)  + "-" + this.currentDate.getDate() + "-" + this.currentDate.getFullYear();
+
+				oReserveRow.StartDate = (this.currentDate.getMonth() + 1) + "-" + this.currentDate.getDate() + "-" + this.currentDate.getFullYear();
 				oReserveRow.FinanceScheme = "5";
 
 				this.oMdlTerms.getData().EditRecord.push(oReserveRow);
@@ -453,52 +463,85 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 		//PRICING EVENTS-------------------------
 
 		//TERMS AND SCHEDULE TAB----------------------
-		onSelectIconTabBarAddEdit: function(oEvent){
-			
+		onSelectIconTabBarAddEdit: function (oEvent) {
+
 			this.oMdlTerms.getData().NetDP = this.oMdlPricing.getData().EditRecord.DPNetAmount;
 			this.oMdlTerms.getData().NetRB = this.oMdlPricing.getData().EditRecord.RBAmount;
 			this.oMdlTerms.getData().NetMF = this.oMdlPricing.getData().EditRecord.MFAmount;
-			
+
 			this.oMdlTerms.refresh();
-			
+
 		},
-		onAddSched: function(oEvent){
+		onAddSched: function (oEvent) {
 			var oReserveRow = {};
 			oReserveRow.LineNum = 1;
 			oReserveRow.Amount = 0;
-			oReserveRow.TranType = [{"Code": "1", "Desc": "Reservation"},
-						{"Code": "2", "Desc": "Downpayment"}, 
-						{"Code": "3", "Desc": "Remaining Balance"},
-						{"Code": "4", "Desc": "Misc Fee"}];
+			oReserveRow.TranType = [{
+				"Code": "1",
+				"Desc": "Reservation"
+			}, {
+				"Code": "2",
+				"Desc": "Downpayment"
+			}, {
+				"Code": "3",
+				"Desc": "Remaining Balance"
+			}, {
+				"Code": "4",
+				"Desc": "Misc Fee"
+			}];
 			oReserveRow.SelectedTranType = "1";
 			oReserveRow.Percent = 0;
 			oReserveRow.Interest = 0;
 			oReserveRow.Terms = 1;
-			oReserveRow.StartDate = (this.currentDate.getMonth() + 1)  + "-" + this.currentDate.getDate() + "-" + this.currentDate.getFullYear();
+			oReserveRow.StartDate = (this.currentDate.getMonth() + 1) + "-" + this.currentDate.getDate() + "-" + this.currentDate.getFullYear();
 			oReserveRow.FinanceScheme = "1";
-			
+
 			this.oMdlTerms.getData().EditRecord.push(oReserveRow);
 			this.oMdlTerms.refresh();
 		},
-		onRemoveSched: function(oEvent){
-			// var oRow = this.oTableSchedule.getBinding().getModel().getData().EditRecord[
-			// 	this.oTableSchedule.getBinding().aIndices[this.oTableSchedule.getSelectedIndex()]
-			// ];
-			// alert(this.oTableSchedule.getBinding().aIndices[this.oTableSchedule.getSelectedIndex()]-1);
-			 this.oMdlTerms.getData().EditRecord.splice(this.oTableSchedule.getSelectedIndex(), 1);
-			 this.oMdlTerms.refresh();
-			// var filteredRows = this.oMdlTerms.getData().EditRecord.filter(function (value, index, arr) {
-			// 	return value.LineNum !== oRow.LineNum;
-			// });
+		onRemoveSched: function (oEvent) {
+			this.oMdlTerms.getData().EditRecord.splice(this.oTableSchedule.getSelectedIndex(), 1);
+			this.oMdlTerms.refresh();
 
-			// this.oMdlTerms.getData().EditRecord = filteredRows;
-
-			// this.oMdlTerms.refresh();
-			
 		},
-		
-		onSelectionChangeTranType: function(oEvent){
+
+		onSelectionChangeTranType: function (oEvent) {
 			console.log("onSelectionChangeTranType");
+		},
+		onChangeTermPercent: function (oEvent) {
+			// 2 / 3 / 4 for DP RB MF getSelectedKey()
+			switch (oEvent.getSource().getParent().getCells()[0].getSelectedKey()) {
+			case "1":
+				var dialog = new Dialog({
+					title: "Error",
+					type: "Message",
+					state: "Error",
+					content: new Text({
+						text: "You cannot breakdown further the Reservation Term."
+					}),
+					beginButton: new Button({
+						type: ButtonType.Emphasized,
+						text: "OK",
+						press: function () {
+							dialog.close();
+						}
+					}),
+					afterClose: function () {
+						dialog.destroy();
+					}
+				});
+				
+
+				dialog.open();
+				// this.oMdlTerms.getData().
+				break;
+			case "2":
+				break;
+			case "3":
+				break;
+			case "4":
+				break;
+			}
 		},
 		//TERMS AND SCHEDULE TAB----------------------
 
@@ -545,11 +588,18 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.oMdlEditRecord.refresh();
 		},
 		//BP FRAGMENT -------------------
-		
+
 		//MAIN FUNCTION-------------------------
 		onAdd: function (oEvent) {
 			this.onClearAdd();
+		},
+		onSave: function (oEvent) {
+
+		},
+		validateBeforeOnSave: function (oRecordSave) {
+
 		}
+
 		//MAIN FUNCTION-------------------------
 	});
 
