@@ -21,12 +21,17 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 		onInit: function () {
 			var route = this.getOwnerComponent().getRouter().getRoute("Quotation");
 			route.attachPatternMatched(this.onRoutePatternMatched, this);
-
-			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
-
 			this.bIsAdd = "0";
+			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
+			//CREATING COLUMNS
+			this.aCols = [];
+			this.columnData = [];
+			this.oEditRecord = {};
+			this.iRecordCount = 0;
+
 			this.oIconTab = this.getView().byId("tab1");
 			this.oIconTab2 = this.getView().byId("tab2");
+			this.recordCode = "";
 			this.currentDate = new Date();
 
 			this.oTableUnits = this.getView().byId("tblUnits");
@@ -70,7 +75,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.oMdlPricing = new JSONModel("model/QuotationPricing.json");
 			this.getView().setModel(this.oMdlPricing, "oMdlPricing");
 
-			this.oMdlAllUnits = new JSONModel();
+			this.oMdlAllRecord = new JSONModel();
 
 			//REFERENCE FOR DOCUMENT STATUS
 			this.oMdlDocStatus = new JSONModel();
@@ -117,8 +122,71 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 					this.getView().setModel(this.oMdlTaxes, "oMdlTaxes");
 				}
 			});
+			this.prepareTable(true);
 
 		},
+
+		//TABLE VIEW--------------------------------
+		prepareTable: function (bIsInit) {
+			$.ajax({
+				url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_VIEWTABLE&tableName=T_RE_QUOTE_H&parameterCode=0",
+				type: "GET",
+				xhrFields: {
+					withCredentials: true
+				},
+				error: function (xhr, status, error) {
+					MessageToast.show(error);
+				},
+				success: function (json) {},
+				context: this
+			}).done(function (results) {
+				if (results) {
+					this.aCols = Object.keys(results[0]);
+					var i;
+					this.iRecordCount = results.length;
+					this.oIconTab.setCount(this.iRecordCount);
+					if (bIsInit) {
+						for (i = 0; i < this.aCols.length; i++) {
+							this.columnData.push({
+								"columnName": this.aCols[i]
+							});
+						}
+					}
+					this.oMdlAllRecord.setData({
+						rows: results,
+						columns: this.columnData
+					});
+					if (bIsInit) {
+						this.oTable = this.getView().byId("tblQuotation");
+						this.oTable.setModel(this.oMdlAllRecord);
+						this.oTable.bindColumns("/columns", function (sId, oContext) {
+							var columnName = oContext.getObject().columnName;
+							return new sap.ui.table.Column({
+								label: columnName,
+								template: new sap.m.Text({
+									text: "{" + columnName + "}"
+								})
+							});
+						});
+						this.oTable.bindRows("/rows");
+						this.oTable.setSelectionMode("Single");
+						this.oTable.setSelectionBehavior("Row");
+						this.renameColumns();
+					}
+				}
+			});
+		},
+		renameColumns: function () {
+			this.oTable.getColumns()[0].setVisible(false);
+			this.oTable.getColumns()[1].setLabel("Quote Number");
+			this.oTable.getColumns()[1].setFilterProperty("QuoteNum");
+			this.oTable.getColumns()[2].setLabel("Customer Code");
+			this.oTable.getColumns()[3].setFilterProperty("Name");
+			this.oTable.getColumns()[4].setLabel("Quote Price");
+			this.oTable.getColumns()[4].setFilterProperty("NetPrice");
+			this.oTable.getColumns()[5].setLabel("Created Date");
+		},
+		//TABLE VIEW--------------------------------
 
 		//ACTION BUTTON---------------------------
 		handleOpen: function (oEvent) {
@@ -387,20 +455,21 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			if (isClear) {
 				this.oMdlPricing.getData().EditRecord.GrossPrice = 0;
 				this.oMdlPricing.getData().EditRecord.PriceTotal = 0;
-				this.oMdlPricing.getData().EditRecord.DiscPercentBVat = "";
+				this.oMdlPricing.getData().EditRecord.DiscPercentBVat = 0;
 				this.oMdlPricing.getData().EditRecord.DiscAmountBVat = 0;
 				this.oMdlPricing.getData().EditRecord.TaxMatrixCode = "1";
 				this.oMdlPricing.getData().EditRecord.TaxAmount = 0;
+				this.oMdlPricing.getData().EditRecord.PenaltyPercent = 0;
 				this.oMdlPricing.getData().EditRecord.NetPrice = 0;
-				this.oMdlPricing.getData().EditRecord.DiscPercentAVat = "";
+				this.oMdlPricing.getData().EditRecord.DiscPercentAVat = 0;
 				this.oMdlPricing.getData().EditRecord.DiscAmountAVat = 0;
 				this.oMdlPricing.getData().EditRecord.GrossPrice = 0;
-				this.oMdlPricing.getData().EditRecord.EWTRate = "";
-				this.oMdlPricing.getData().EditRecord.DPPercent = "";
+				this.oMdlPricing.getData().EditRecord.EWTRate = 0;
+				this.oMdlPricing.getData().EditRecord.DPPercent = 0;
 				this.oMdlPricing.getData().EditRecord.DPAmount = 0;
-				this.oMdlPricing.getData().EditRecord.RBPercent = "";
+				this.oMdlPricing.getData().EditRecord.RBPercent = 0;
 				this.oMdlPricing.getData().EditRecord.RBAmount = 0;
-				this.oMdlPricing.getData().EditRecord.MFPercent = "";
+				this.oMdlPricing.getData().EditRecord.MFPercent = 0;
 				this.oMdlPricing.getData().EditRecord.MFAmount = 0;
 				this.oMdlPricing.refresh();
 			} else {
@@ -456,7 +525,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 				this.bIsAdd = "A";
 			} catch (err) {
-				console.log(err.message);
+				//console.log(err.message);
 			}
 
 		},
@@ -506,7 +575,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 		},
 
 		onSelectionChangeTranType: function (oEvent) {
-			console.log("onSelectionChangeTranType");
+			//console.log("onSelectionChangeTranType");
 		},
 		onChangeTermPercent: function (oEvent) {
 			// 2 / 3 / 4 for DP RB MF getSelectedKey()
@@ -529,25 +598,25 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 						dialog.destroy();
 					}
 				});
-			}else{
+			} else {
 				var oRow = oEvent.getSource().getParent();
 				var iIndex = oRow.getIndex();
-				switch(oEvent.getSource().getParent().getCells()[0].getSelectedKey()){
-					case "2":
-						this.oMdlTerms.getData().EditRecord[iIndex].Amount = 
-								this.oMdlTerms.getData().NetDP * (this.oMdlTerms.getData().EditRecord[iIndex].Percent / 100.00);
-						break;
-					case "3": 
-						this.oMdlTerms.getData().EditRecord[iIndex].Amount = 
-								this.oMdlTerms.getData().NetRB * (this.oMdlTerms.getData().EditRecord[iIndex].Percent / 100.00);
-						break;
-					case "4": 
-						this.oMdlTerms.getData().EditRecord[iIndex].Amount = 
-								this.oMdlTerms.getData().NetMF * (this.oMdlTerms.getData().EditRecord[iIndex].Percent / 100.00);
-						break;
+				switch (oEvent.getSource().getParent().getCells()[0].getSelectedKey()) {
+				case "2":
+					this.oMdlTerms.getData().EditRecord[iIndex].Amount =
+						this.oMdlTerms.getData().NetDP * (this.oMdlTerms.getData().EditRecord[iIndex].Percent / 100.00);
+					break;
+				case "3":
+					this.oMdlTerms.getData().EditRecord[iIndex].Amount =
+						this.oMdlTerms.getData().NetRB * (this.oMdlTerms.getData().EditRecord[iIndex].Percent / 100.00);
+					break;
+				case "4":
+					this.oMdlTerms.getData().EditRecord[iIndex].Amount =
+						this.oMdlTerms.getData().NetMF * (this.oMdlTerms.getData().EditRecord[iIndex].Percent / 100.00);
+					break;
 				}
 			}
-			
+
 		},
 		//TERMS AND SCHEDULE TAB----------------------
 
@@ -600,19 +669,191 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.onClearAdd();
 		},
 		onSave: function (oEvent) {
-			
-			var oRecord = {};
-			var T_RE_QUOTE_H = [];
-			var T_RE_QUOTE_D = [];
-			var T_RE_QUOTE_PRICE_D = [];
-			var T_TERMS_QUOTE_DP = [];
-			var T_TERMS_QUOTE_RB = [];
-			var T_TERMS_QUOTE_MF = [];
-			
-			var QuoteNumber = AppUI5.generateNumber("Quote")[0].Code;
-			
-			
 
+			var oRecord = {};
+			oRecord.T_RE_QUOTE_H = [];
+			oRecord.T_RE_QUOTE_D = [];
+			oRecord.T_RE_QUOTE_PRICE_D = [];
+			oRecord.T_TERMS_QUOTE_DP = [];
+			oRecord.T_TERMS_QUOTE_RB = [];
+			oRecord.T_TERMS_QUOTE_MF = [];
+
+			var QuoteNum = AppUI5.generateNumber("Quote")[0].Code;
+
+			//Record data for T_RE_QUOTE_H
+			var oT_RE_QUOTE_H = {};
+			oT_RE_QUOTE_H.O = "I";
+			oT_RE_QUOTE_H.Code = AppUI5.generateUDTCode();
+			oT_RE_QUOTE_H.QuoteNum = QuoteNum;
+			oT_RE_QUOTE_H.DocStatus = "1";
+			oT_RE_QUOTE_H.CustomerCode = this.oMdlEditRecord.getData().EditRecord.CustomerCode;
+			oRecord.T_RE_QUOTE_H.push(oT_RE_QUOTE_H);
+
+			//Record data for T_RE_QUOTE_D
+			var i;
+			for (i = 0; i < this.oMdlUnitTable.getData().unitrows.length; i++) {
+				var iLineNum = i + 1;
+				var oT_RE_QUOTE_D = {};
+				oT_RE_QUOTE_D.O = "I";
+				oT_RE_QUOTE_D.Code = AppUI5.generateUDTCode();
+				oT_RE_QUOTE_D.LineNum = iLineNum;
+				oT_RE_QUOTE_D.QuoteNum = QuoteNum;
+				oT_RE_QUOTE_D.UnitCode = this.oMdlUnitTable.getData().unitrows[i].UnitCode;
+				oT_RE_QUOTE_D.Price = this.oMdlUnitTable.getData().unitrows[i].SellingPrice;
+				oRecord.T_RE_QUOTE_D.push(oT_RE_QUOTE_D);
+			}
+
+			//Record data for T_RE_QUOTE_PRICE_D
+			var oT_RE_QUOTE_PRICE_D = {};
+
+			oT_RE_QUOTE_PRICE_D.O = "I";
+			oT_RE_QUOTE_PRICE_D.Code = AppUI5.generateUDTCode();
+			oT_RE_QUOTE_PRICE_D.QuoteNum = QuoteNum;
+			oT_RE_QUOTE_PRICE_D.PriceTotal = this.oMdlPricing.getData().EditRecord.PriceTotal;
+			oT_RE_QUOTE_PRICE_D.PenaltyPercent = this.oMdlPricing.getData().EditRecord.PenaltyPercent;
+			oT_RE_QUOTE_PRICE_D.DiscPercentBVat = this.oMdlPricing.getData().EditRecord.DiscPercentBVat;
+			oT_RE_QUOTE_PRICE_D.DiscAmountBVat = this.oMdlPricing.getData().EditRecord.DiscAmountBVat;
+			oT_RE_QUOTE_PRICE_D.NetPrice = this.oMdlPricing.getData().EditRecord.NetPrice;
+			oT_RE_QUOTE_PRICE_D.TaxMatrixCode = this.oMdlPricing.getData().EditRecord.TaxMatrixCode;
+			oT_RE_QUOTE_PRICE_D.TaxAmount = this.oMdlPricing.getData().EditRecord.TaxAmount;
+			oT_RE_QUOTE_PRICE_D.GrossPrice = this.oMdlPricing.getData().EditRecord.GrossPrice;
+			oT_RE_QUOTE_PRICE_D.DiscPercentAVat = this.oMdlPricing.getData().EditRecord.DiscPercentAVat;
+			oT_RE_QUOTE_PRICE_D.DiscAmountAVat = this.oMdlPricing.getData().EditRecord.DiscAmountAVat;
+			oT_RE_QUOTE_PRICE_D.EWTRate = this.oMdlPricing.getData().EditRecord.EWTRate;
+			oT_RE_QUOTE_PRICE_D.RsvFee = this.oMdlPricing.getData().EditRecord.RsvFee;
+			oT_RE_QUOTE_PRICE_D.DPPercent = this.oMdlPricing.getData().EditRecord.DPPercent;
+			oT_RE_QUOTE_PRICE_D.DPAmount = this.oMdlPricing.getData().EditRecord.DPAmount;
+			oT_RE_QUOTE_PRICE_D.DPNetAmount = this.oMdlPricing.getData().EditRecord.DPNetAmount;
+			oT_RE_QUOTE_PRICE_D.RBpercent = this.oMdlPricing.getData().EditRecord.RBpercent;
+			oT_RE_QUOTE_PRICE_D.RBAmount = this.oMdlPricing.getData().EditRecord.RBAmount;
+			oT_RE_QUOTE_PRICE_D.MFPercent = this.oMdlPricing.getData().EditRecord.MFPercent;
+			oT_RE_QUOTE_PRICE_D.MFAmount = this.oMdlPricing.getData().EditRecord.MFAmount;
+
+			oRecord.T_RE_QUOTE_PRICE_D.push(oT_RE_QUOTE_PRICE_D);
+
+			// Record data for T_TERMS_QUOTE_DP
+			var filteredDPRows = this.oMdlTerms.getData().EditRecord.filter(function (value, index, arr) {
+				return value.SelectedTranType === "2";
+			});
+
+			var d;
+			for (d = 0; d < filteredDPRows.length; d++) {
+				var iLineNumDP = d + 1;
+				var oT_TERMS_QUOTE_DP = {};
+				oT_TERMS_QUOTE_DP.O = "I";
+				oT_TERMS_QUOTE_DP.Code = AppUI5.generateUDTCode();
+				oT_TERMS_QUOTE_DP.QuoteNum = QuoteNum;
+				oT_TERMS_QUOTE_DP.LineNum = iLineNumDP;
+				oT_TERMS_QUOTE_DP.Amount = filteredDPRows[d].Amount;
+				oT_TERMS_QUOTE_DP.Percent = filteredDPRows[d].Percent;
+				oT_TERMS_QUOTE_DP.Interest = filteredDPRows[d].Interest;
+				oT_TERMS_QUOTE_DP.Terms = filteredDPRows[d].Terms;
+				oT_TERMS_QUOTE_DP.StartDate = filteredDPRows[d].StartDate;
+				oT_TERMS_QUOTE_DP.FinanceScheme = filteredDPRows[d].FinanceScheme;
+
+				oRecord.T_TERMS_QUOTE_DP.push(oT_TERMS_QUOTE_DP);
+			}
+
+			//Record data for T_TERMS_QUOTE_RB
+			var filteredRBRows = this.oMdlTerms.getData().EditRecord.filter(function (value, index, arr) {
+				return value.SelectedTranType === "3";
+			});
+
+			var r;
+			for (r = 0; r < filteredRBRows.length; r++) {
+				var iLineNumRB = r + 1;
+				var oT_TERMS_QUOTE_RB = {};
+				oT_TERMS_QUOTE_RB.O = "I";
+				oT_TERMS_QUOTE_RB.Code = AppUI5.generateUDTCode();
+				oT_TERMS_QUOTE_RB.QuoteNum = QuoteNum;
+				oT_TERMS_QUOTE_RB.LineNum = iLineNumRB;
+				oT_TERMS_QUOTE_RB.Amount = filteredRBRows[r].Amount;
+				oT_TERMS_QUOTE_RB.Percent = filteredRBRows[r].Percent;
+				oT_TERMS_QUOTE_RB.Interest = filteredRBRows[r].Interest;
+				oT_TERMS_QUOTE_RB.Terms = filteredRBRows[r].Terms;
+				oT_TERMS_QUOTE_RB.StartDate = filteredRBRows[r].StartDate;
+				oT_TERMS_QUOTE_RB.FinanceScheme = filteredRBRows[r].FinanceScheme;
+
+				oRecord.T_TERMS_QUOTE_RB.push(oT_TERMS_QUOTE_RB);
+			}
+
+			//Record data for T_TERMS_QUOTE_MF
+			var filteredMFRows = this.oMdlTerms.getData().EditRecord.filter(function (value, index, arr) {
+				return value.SelectedTranType === "4";
+			});
+
+			var m;
+			for (m = 0; m < filteredMFRows.length; m++) {
+				var iLineNumMF = m + 1;
+				var oT_TERMS_QUOTE_MF = {};
+				oT_TERMS_QUOTE_MF.O = "I";
+				oT_TERMS_QUOTE_MF.Code = AppUI5.generateUDTCode();
+				oT_TERMS_QUOTE_MF.QuoteNum = QuoteNum;
+				oT_TERMS_QUOTE_MF.LineNum = iLineNumMF;
+				oT_TERMS_QUOTE_MF.Amount = filteredRBRows[m].Amount;
+				oT_TERMS_QUOTE_MF.Percent = filteredRBRows[m].Percent;
+				oT_TERMS_QUOTE_MF.Interest = filteredRBRows[m].Interest;
+				oT_TERMS_QUOTE_MF.Terms = filteredRBRows[m].Terms;
+				oT_TERMS_QUOTE_MF.StartDate = filteredRBRows[m].StartDate;
+				oT_TERMS_QUOTE_MF.FinanceScheme = filteredRBRows[m].FinanceScheme;
+
+				oRecord.T_TERMS_QUOTE_MF.push(oT_TERMS_QUOTE_MF);
+			}
+
+			//SAVING
+			var resultAjaxCall = AppUI5.postData(oRecord);
+			if (resultAjaxCall === 0) {
+				MessageToast.show("Saved Successfully " + QuoteNum);
+			} else {
+				MessageToast.show("Error");
+			}
+
+		},
+		onEdit: function (oEvent) {
+			var iIndex = this.oTable.getSelectedIndex();
+			var sQueryTable = "M_RE_QUOTE_H";
+			var sCode = "";
+			if (iIndex != -1) {
+				var oRowSelected = this.oTable.getBinding().getModel().getData().rows[this.oTable.getBinding().aIndices[iIndex]];
+				sCode = oRowSelected.Code;
+				//AJAX selected Key
+				
+				var oResult = AppUI5.getAllDataByKeyAJAX(sQueryTable, sCode).replace("[", "").replace("]", "");
+				oResult = JSON.stringify(oResult).replace("[", "").replace("]", "");
+				this.oMdlEditRecord.setJSON("{\"EditRecord\" : " + oResult + "}");
+				this.getView().setModel(this.oMdlEditRecord, "oMdlEditRecord");
+				this.getView().byId("idIconTabBarInlineMode").getItems()[1].setText("Record Code : " + this.oMdlEditRecord.getData().EditRecord.QuoteNum + " [EDIT]");
+				
+				var oResult = AppUI5.getAllDataByColAJAX("T_RE_QUOTE_D","QuoteNum", this.oMdlEditRecord.getData().EditRecord.QuoteNum);
+				this.oMdlUnitTable
+
+				// $.ajax({
+				// 	url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GETALLDATA_BYKEY&tableName=" + sQueryTable +
+				// 		"&keyCode=" + sCode,
+				// 	type: "GET",
+				// 	xhrFields: {
+				// 		withCredentials: true
+				// 	},
+				// 	error: function (xhr, status, error) {
+				// 		MessageToast.show(error);
+				// 	},
+				// 	success: function (json) {},
+				// 	context: this
+				// }).done(function (results) {
+				// 	if (results.length <= 0) {
+				// 		return;
+				// 	}
+				// 	var oResult = JSON.stringify(results).replace("[", "").replace("]", "");
+				// 	this.oMdlEditRecord.setJSON("{\"EditRecord\" : " + oResult + "}");
+				// 	this.getView().setModel(this.oMdlEditRecord, "oMdlEditRecord");
+				// 	this.getView().byId("idIconTabBarInlineMode").getItems()[1].setText("Record Code : " + this.oMdlEditRecord.getData().EditRecord
+				// 		.ProjectCode + " [EDIT]");
+				// });
+			}
+			this.recordCode = sCode;
+			var tab = this.getView().byId("idIconTabBarInlineMode");
+			tab.setSelectedKey("tab2");
+			this.bIsAdd = "E";
 		},
 		validateBeforeOnSave: function (oRecordSave) {
 

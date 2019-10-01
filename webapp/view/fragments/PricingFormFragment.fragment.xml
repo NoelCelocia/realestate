@@ -6,20 +6,20 @@
 		<f:content>
 			<core:Title xmlns:core="sap.ui.core" text=""/>
 			<Label xmlns="sap.m" text="Price"/>
-			<Input width="100%" id="inputPrice"  value="{ path : 'oMdlPricing>/EditRecord/PriceTotal', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'}  }" textAlign="End" required="true" editable="false" enabled="true" change="onChangePrice"/>
+			<Input width="100%" id="inputPrice"  value="{ path : 'oMdlPricing>/EditRecord/PriceTotal', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2}  }" textAlign="End" required="true" editable="false" enabled="true" change="onChangePrice"/>
 			
 			<Label xmlns="sap.m" text="Penalty Percentage"/>
-			<Input width="100%" id="inputPenalty" placeholder="%"  fieldWidth="88%" value="{ path: 'oMdlPricing>/EditRecord/PenaltyPercent', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" textAlign="End"  required="false" editable="true" enabled="true" change="onChangeRebate"/>
+			<Input width="100%" id="inputPenalty" placeholder="%"  fieldWidth="88%" value="{ path: 'oMdlPricing>/EditRecord/PenaltyPercent', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" textAlign="End"  required="false" editable="true" enabled="true" change="onChangeRebate"/>
 			
 			<Label xmlns="sap.m" text="TCP Discount"/>
-			<Input width="100%" fieldWidth="80%" id="inputTCPDiscPC" description="%" placeholder="%" value="{path: 'oMdlPricing>/EditRecord/DiscPercentBVat', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" textAlign="End" required="false" editable="true" enabled="true" change="onChangeDiscPercentBVat"/>
-			<Input width="100%"  fieldWidth="85%" id="inputTCPDisc" placeholder="Amount" description="₱" value="{path: 'oMdlPricing>/EditRecord/DiscAmountBVat', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" textAlign="End" required="false" editable="true"  enabled="true" change="onChangeDiscAmountBVat"/>
+			<Input width="100%" fieldWidth="80%" id="inputTCPDiscPC" description="%" placeholder="%" value="{path: 'oMdlPricing>/EditRecord/DiscPercentBVat', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2 } }" textAlign="End" required="false" editable="true" enabled="true" change="onChangeDiscPercentBVat"/>
+			<Input width="100%"  fieldWidth="85%" id="inputTCPDisc" placeholder="Amount" description="₱" value="{path: 'oMdlPricing>/EditRecord/DiscAmountBVat', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" textAlign="End" required="false" editable="true"  enabled="true" change="onChangeDiscAmountBVat"/>
 			
 			<Label xmlns="sap.m" text="Net Price"/>
-			<Input width="100%" id="inputNetPrice" value="{path: 'oMdlPricing>/EditRecord/NetPrice', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" textAlign="End" required="false" editable="false" enabled="true" change="onChangeNetPrice"/>
+			<Input width="100%" id="inputNetPrice" value="{path: 'oMdlPricing>/EditRecord/NetPrice', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" textAlign="End" required="false" editable="false" enabled="true" change="onChangeNetPrice"/>
 			
 			<Label xmlns="sap.m" text="Tax Code"/>
-			<Input width="100%" fieldWidth="80%" id="inputTaxCodeRate" description="%" value="{path: 'oMdlPricing>/EditRecord/_TaxRate', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" textAlign="End" required="false" editable="false" enabled="false"/>
+			<Input width="100%" fieldWidth="80%" id="inputTaxCodeRate" description="%" value="{path: 'oMdlPricing>/EditRecord/_TaxRate', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" textAlign="End" required="false" editable="false" enabled="false"/>
 			<ComboBox  items="{
 					path: 'oMdlTaxes>/alltaxes',
 					sorter: { path: 'key' }  }" selectionChange="onChangeTaxCode" selectedKey="1">
@@ -27,36 +27,36 @@
 			</ComboBox> 
 			 
 			<Label xmlns="sap.m" text="Tax Amount"/>
-			<Input width="100%" id="inputTaxAmt" value="{path: 'oMdlPricing>/EditRecord/TaxAmount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" textAlign="End" required="false" editable="false" enabled="true" change="onChangeTaxAmt"/>
+			<Input width="100%" id="inputTaxAmt" value="{path: 'oMdlPricing>/EditRecord/TaxAmount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" textAlign="End" required="false" editable="false" enabled="true" change="onChangeTaxAmt"/>
 			 
 			<Label xmlns="sap.m" text="Gross Selling Price"/>
-			<Input class="boldValue" width="100%"  value="{path: 'oMdlPricing>/EditRecord/GrossPrice', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" textAlign="End" required="false" editable="false" enabled="true" change="onChangeGrossPrice"/>
+			<Input class="boldValue" width="100%"  value="{path: 'oMdlPricing>/EditRecord/GrossPrice', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" textAlign="End" required="false" editable="false" enabled="true" change="onChangeGrossPrice"/>
 
 			<core:Title xmlns:core="sap.ui.core" text=""/>
 			<Label xmlns="sap.m" text="TCP Discount After VAT"/>
-			<Input width="100%" fieldWidth="80%" description="%" id="inputTCPDiscPCAVat"  placeholder="%" value="{path: 'oMdlPricing>/EditRecord/DiscPercentAVat', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" textAlign="End" required="false" editable="true" enabled="true" change="onChangeDiscPercentAVat"/>
-			<Input width="100%" fieldWidth="85%" description="₱" id="inputTCPDiscAVat" placeholder="Amount" value="{path: 'oMdlPricing>/EditRecord/DiscAmountAVat', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" textAlign="End" required="false" editable="true"  enabled="true" change="onChangeDiscAmountAVat"/>
+			<Input width="100%" fieldWidth="80%" description="%" id="inputTCPDiscPCAVat"  placeholder="%" value="{path: 'oMdlPricing>/EditRecord/DiscPercentAVat', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" textAlign="End" required="false" editable="true" enabled="true" change="onChangeDiscPercentAVat"/>
+			<Input width="100%" fieldWidth="85%" description="₱" id="inputTCPDiscAVat" placeholder="Amount" value="{path: 'oMdlPricing>/EditRecord/DiscAmountAVat', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" textAlign="End" required="false" editable="true"  enabled="true" change="onChangeDiscAmountAVat"/>
 			
 			
 			<Label xmlns="sap.m" text="EWT Rate"/>
-			<Input width="100%" id="inputEWTRate" value="{path: 'oMdlPricing>/EditRecord/EWTRate', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" textAlign="End" required="false" editable="true" enabled="true" change="onChangeEWTRate"/>
+			<Input width="100%" id="inputEWTRate" value="{path: 'oMdlPricing>/EditRecord/EWTRate', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" textAlign="End" required="false" editable="true" enabled="true" change="onChangeEWTRate"/>
 			
 			<Label xmlns="sap.m" text="DP Amount"/>
-			<Input width="100%" fieldWidth="80%" id="inputDPAmtPC" description="%" placeholder="%" value="{path: 'oMdlPricing>/EditRecord/DPPercent', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" textAlign="End" required="false" editable="true" enabled="true" change="onChangeDPPercent"/>
-			<Input width="100%" fieldWidth="85%" id="inputDPAmt" description="₱" placeholder="Amount" textAlign="End" value="{path: 'oMdlPricing>/EditRecord/DPAmount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" required="false" editable="true" enabled="true" change="onChangeDPAmount"/>
+			<Input width="100%" fieldWidth="80%" id="inputDPAmtPC" description="%" placeholder="%" value="{path: 'oMdlPricing>/EditRecord/DPPercent', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" textAlign="End" required="false" editable="true" enabled="true" change="onChangeDPPercent"/>
+			<Input width="100%" fieldWidth="85%" id="inputDPAmt" description="₱" placeholder="Amount" textAlign="End" value="{path: 'oMdlPricing>/EditRecord/DPAmount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" required="false" editable="true" enabled="true" change="onChangeDPAmount"/>
 			
 			<Label xmlns="sap.m" text="Reservation Fee"/>
-			<Input width="100%" id="inputRsvFee" textAlign="End" value="{path: 'oMdlPricing>/EditRecord/RsvFee', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" required="false" editable="true" enabled="true" change="onChangeRsvFee"/>
+			<Input width="100%" id="inputRsvFee" textAlign="End" value="{path: 'oMdlPricing>/EditRecord/RsvFee', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" required="false" editable="true" enabled="true" change="onChangeRsvFee"/>
 			 
 			<Label xmlns="sap.m" text="Net DP Amount"/>
-			<Input width="100%" id="inputNetDPAmt" textAlign="End" value="{path: 'oMdlPricing>/EditRecord/DPNetAmount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" required="false" editable="false" enabled="true" change="onChangeNetDPAmt"/>
+			<Input width="100%" id="inputNetDPAmt" textAlign="End" value="{path: 'oMdlPricing>/EditRecord/DPNetAmount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" required="false" editable="false" enabled="true" change="onChangeNetDPAmt"/>
 			 
 			<Label xmlns="sap.m" text="Miscellaneous Fee"/>
-			<Input width="100%" fieldWidth="80%" description="%" id="inputMFFeePC" placeholder="%" value="{path: 'oMdlPricing>/EditRecord/MFPercent', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" textAlign="End" required="false" editable="true" enabled="true" change="onChangeMFPercent"/>
-			<Input width="100%"  fieldWidth="85%" id="inputMFFee" description="₱" placeholder="Amount" textAlign="End" value="{path: 'oMdlPricing>/EditRecord/MFAmount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" required="false" editable="true" enabled="true" change="onChangeMFAmount"/>
+			<Input width="100%" fieldWidth="80%" description="%" id="inputMFFeePC" placeholder="%" value="{path: 'oMdlPricing>/EditRecord/MFPercent', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" textAlign="End" required="false" editable="true" enabled="true" change="onChangeMFPercent"/>
+			<Input width="100%"  fieldWidth="85%" id="inputMFFee" description="₱" placeholder="Amount" textAlign="End" value="{path: 'oMdlPricing>/EditRecord/MFAmount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" required="false" editable="true" enabled="true" change="onChangeMFAmount"/>
 			 
 			<Label xmlns="sap.m" text="Remaining Balance"/>
-			<Input class="boldValue" width="100%" id="inputRBBalance" textAlign="End" value="{path: 'oMdlPricing>/EditRecord/RBAmount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'} }" required="false" editable="false" enabled="true" change="onChangeRemBal"/>
+			<Input class="boldValue" width="100%" id="inputRBBalance" textAlign="End" value="{path: 'oMdlPricing>/EditRecord/RBAmount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }" required="false" editable="false" enabled="true" change="onChangeRemBal"/>
 			
 		</f:content>
 	</f:SimpleForm>

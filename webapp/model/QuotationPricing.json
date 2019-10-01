@@ -2,7 +2,7 @@
 	"EditRecord":{
 		"QuoteNum": "",
 		"PriceTotal": "",
-		"PenaltyPercent": "",
+		"PenaltyPercent": 0,
 		"DiscPercentBVat": "",
 		"DiscAmountBVat": 0.0,
 		"NetPrice": 0,

@@ -21,6 +21,7 @@ sap.ui.define([
 			this.columnData = [];
 			this.oEditRecord = {};
 			this.iRecordCount = 0;
+			
 			this.oIconTab = this.getView().byId("tab1");
 			this.oIconTab2 = this.getView().byId("tab2");
 			this.recordCode = "";

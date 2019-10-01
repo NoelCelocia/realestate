@@ -326,6 +326,52 @@ sap.ui.define([
 				});
 				
 				return returnCode;
+		},
+		
+		//Returning and array of all columns and rows for specific table in specified Key Column
+		//If error, this will return empty array
+		getAllDataByKeyAJAX: function(sTableName, sKeyCode){
+			$.ajax({
+					url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GETALLDATA_BYKEY&tableName=" + sTableName +
+						"&keyCode=" + sKeyCode,
+					type: "GET",
+					xhrFields: {
+						withCredentials: true
+					},
+					error: function (xhr, status, error) {
+						return [];
+					},
+					success: function (json) {},
+					context: this
+				}).done(function (results) {
+					if (results.length <= 0) {
+						return [];
+					}else{
+						return results;
+					}
+				});
+		},
+		
+		getAllDataByColAJAX: function(sTableName, sColName, sColValue){
+			$.ajax({
+					url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GETALLDATA_BYCOL&tableName=" + sTableName +
+						"&colName=" + sColName + "&colValue=" + sColValue,
+					type: "GET",
+					xhrFields: {
+						withCredentials: true
+					},
+					error: function (xhr, status, error) {
+						return [];
+					},
+					success: function (json) {},
+					context: this
+				}).done(function (results) {
+					if (results.length <= 0) {
+						return [];
+					}else{
+						return results;
+					}
+				});
 		}
 
 	});
