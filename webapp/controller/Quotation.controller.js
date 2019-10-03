@@ -25,9 +25,21 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 			//CREATING COLUMNS
 			this.aCols = [];
+			this.aColsDetails = [];
 			this.columnData = [];
+			this.columnDataDetail = [];
 			this.oEditRecord = {};
 			this.iRecordCount = 0;
+			
+			//CREATING TEMPLATE FOR EDITING AND ADDING
+			this.tableId = "tblQuotation";
+			this.tableIdDetail = "tblQuotationUnits";                         
+			this.oMdlEditRecord = new JSONModel("model/Quotation.json");
+			this.getView().setModel(this.oMdlEditRecord, "oMdlEditRecord");
+			
+			this.oMdlAllRecord = new JSONModel();
+			this.oMdlAllRecordDetail = new JSONModel();
+			this.oTableDetail = this.getView().byId(this.tableIdDetail);
 
 			this.oIconTab = this.getView().byId("tab1");
 			this.oIconTab2 = this.getView().byId("tab2");
@@ -67,15 +79,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				}
 			});
 
-			//CREATING TEMPLATE FOR EDITING AND ADDING
-			this.oMdlEditRecord = new JSONModel("model/Quotation.json");
-			this.getView().setModel(this.oMdlEditRecord, "oMdlEditRecord");
-
-			//CREATING MODEL FOR 
+			//CREATING MODEL FOR PRICING TAB
 			this.oMdlPricing = new JSONModel("model/QuotationPricing.json");
 			this.getView().setModel(this.oMdlPricing, "oMdlPricing");
-
-			this.oMdlAllRecord = new JSONModel();
 
 			//REFERENCE FOR DOCUMENT STATUS
 			this.oMdlDocStatus = new JSONModel();
@@ -157,7 +163,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 						columns: this.columnData
 					});
 					if (bIsInit) {
-						this.oTable = this.getView().byId("tblQuotation");
+						this.oTable = this.getView().byId(this.tableId);
 						this.oTable.setModel(this.oMdlAllRecord);
 						this.oTable.bindColumns("/columns", function (sId, oContext) {
 							var columnName = oContext.getObject().columnName;
@@ -244,7 +250,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			var oRow = this.oTableUnits.getBinding().getModel().getData().unitrows[
 				this.oTableUnits.getBinding().aIndices[this.oTableUnits.getSelectedIndex()]
 			];
-			this.iTotalSellingPrice = this.iTotalSellingPrice - oRow.SellingPrice;
+			this.iTotalSellingPrice = this.iTotalSellingPrice - oRow.Price;
 
 			this.oMdlPricing.getData().EditRecord.PriceTotal = this.iTotalSellingPrice;
 			this.oMdlPricing.getData().EditRecord.GrossPrice = this.iTotalSellingPrice;
@@ -268,13 +274,13 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				var iIndex = parseInt(aContexts[0].sPath.match(/\d+/), 10);
 				var selectedObject = aContexts[0].oModel.getData().allunitchoose[iIndex];
 				this.oMdlUnitTable.getData().unitrows.push(selectedObject);
-				this.iTotalSellingPrice += selectedObject.SellingPrice;
+				this.iTotalSellingPrice += selectedObject.Price;
 
 				this.oMdlPricing.getData().EditRecord.PriceTotal = this.iTotalSellingPrice;
 				this.oMdlPricing.getData().EditRecord.GrossPrice = this.iTotalSellingPrice;
 
 				var aWithoutDummyData = this.oMdlUnitTable.getData().unitrows.filter(function (unitrow) {
-					return unitrow.SellingPrice > 0;
+					return unitrow.Price > 0;
 				});
 				this.oMdlUnitTable.getData().unitrows = aWithoutDummyData;
 				this.oMdlUnitTable.refresh();
@@ -699,7 +705,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				oT_RE_QUOTE_D.LineNum = iLineNum;
 				oT_RE_QUOTE_D.QuoteNum = QuoteNum;
 				oT_RE_QUOTE_D.UnitCode = this.oMdlUnitTable.getData().unitrows[i].UnitCode;
-				oT_RE_QUOTE_D.Price = this.oMdlUnitTable.getData().unitrows[i].SellingPrice;
+				oT_RE_QUOTE_D.Price = this.oMdlUnitTable.getData().unitrows[i].Price;
 				oRecord.T_RE_QUOTE_D.push(oT_RE_QUOTE_D);
 			}
 
@@ -811,44 +817,30 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 		},
 		onEdit: function (oEvent) {
 			var iIndex = this.oTable.getSelectedIndex();
-			var sQueryTable = "M_RE_QUOTE_H";
+			var sQueryTable = "T_RE_QUOTE_H";
 			var sCode = "";
 			if (iIndex != -1) {
 				var oRowSelected = this.oTable.getBinding().getModel().getData().rows[this.oTable.getBinding().aIndices[iIndex]];
 				sCode = oRowSelected.Code;
 				//AJAX selected Key
 				
-				var oResult = AppUI5.getAllDataByKeyAJAX(sQueryTable, sCode).replace("[", "").replace("]", "");
+				var oResult = AppUI5.getAllDataByKeyAJAX(sQueryTable, sCode, "QuoteGetHeader");
 				oResult = JSON.stringify(oResult).replace("[", "").replace("]", "");
 				this.oMdlEditRecord.setJSON("{\"EditRecord\" : " + oResult + "}");
 				this.getView().setModel(this.oMdlEditRecord, "oMdlEditRecord");
 				this.getView().byId("idIconTabBarInlineMode").getItems()[1].setText("Record Code : " + this.oMdlEditRecord.getData().EditRecord.QuoteNum + " [EDIT]");
 				
-				var oResult = AppUI5.getAllDataByColAJAX("T_RE_QUOTE_D","QuoteNum", this.oMdlEditRecord.getData().EditRecord.QuoteNum);
-				this.oMdlUnitTable
-
-				// $.ajax({
-				// 	url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GETALLDATA_BYKEY&tableName=" + sQueryTable +
-				// 		"&keyCode=" + sCode,
-				// 	type: "GET",
-				// 	xhrFields: {
-				// 		withCredentials: true
-				// 	},
-				// 	error: function (xhr, status, error) {
-				// 		MessageToast.show(error);
-				// 	},
-				// 	success: function (json) {},
-				// 	context: this
-				// }).done(function (results) {
-				// 	if (results.length <= 0) {
-				// 		return;
-				// 	}
-				// 	var oResult = JSON.stringify(results).replace("[", "").replace("]", "");
-				// 	this.oMdlEditRecord.setJSON("{\"EditRecord\" : " + oResult + "}");
-				// 	this.getView().setModel(this.oMdlEditRecord, "oMdlEditRecord");
-				// 	this.getView().byId("idIconTabBarInlineMode").getItems()[1].setText("Record Code : " + this.oMdlEditRecord.getData().EditRecord
-				// 		.ProjectCode + " [EDIT]");
-				// });
+				var oResult2 = AppUI5.getAllDataByColAJAX("","", this.oMdlEditRecord.getData().EditRecord.QuoteNum , "QuoteGetUnit");
+				this.oMdlUnitTable.setJSON("{\"unitrows\" : " + JSON.stringify(oResult2) + "}");
+				this.oMdlUnitTable.refresh();
+				
+				var oResult3 = AppUI5.getAllDataByColAJAX("","", this.oMdlEditRecord.getData().EditRecord.QuoteNum , "QuoteGetPrice");
+				var testResult3 = "{\"EditRecord\" : " + JSON.stringify(oResult3).replace("[","").replace("]","") + "}";
+				this.oMdlPricing.setJSON(testResult3);
+				this.oMdlPricing.refresh();
+				
+				var oResult4 = AppUI5.getAllDataByColAJAX("","", this.oMdlEditRecord.getData().EditRecord.QuoteNum , "QuoteGetPrice");
+				
 			}
 			this.recordCode = sCode;
 			var tab = this.getView().byId("idIconTabBarInlineMode");
@@ -857,6 +849,74 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 		},
 		validateBeforeOnSave: function (oRecordSave) {
 
+		},
+		onSelectionChange: function (oEvent) {
+			var iIndex = oEvent.getSource().getSelectedIndex();
+			if (iIndex !== -1) {
+				var oRowSelected = this.oTable.getBinding().getModel().getData().rows[this.oTable.getBinding().aIndices[iIndex]];
+				this.prepareTableDetail(oRowSelected.QuoteNum);
+			}
+
+		},
+		prepareTableDetail: function (paramCode) {
+			$.ajax({
+				url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_VIEWTABLE&tableName=T_RE_QUOTE_D&parameterCode=" +
+					paramCode,
+				type: "GET",
+				xhrFields: {
+					withCredentials: true
+				},
+				error: function (xhr, status, error) {
+					MessageToast.show(error);
+				},
+				success: function (json) {},
+				context: this
+			}).done(function (results) {
+				if (results.length !== 0) {
+
+					this.aColsDetails = Object.keys(results[0]);
+					var i;
+
+					if (this.columnDataDetail.length <= 0) {
+						for (i = 0; i < this.aColsDetails.length; i++) {
+							this.columnDataDetail.push({
+								"columnName": this.aColsDetails[i]
+							});
+						}
+					}
+
+					this.oMdlAllRecordDetail.setData({
+						rows: results,
+						columns: this.columnDataDetail
+					});
+					var y = true;
+
+					if (y) {
+						this.oTableDetail = this.getView().byId(this.tableIdDetail);
+						this.oTableDetail.setModel(this.oMdlAllRecordDetail);
+
+						this.oTableDetail.bindColumns("/columns", function (sId, oContext) {
+							var columnName = oContext.getObject().columnName;
+
+							return new sap.ui.table.Column({
+								label: columnName,
+								template: new sap.m.Text({
+									text: "{" + columnName + "}"
+								})
+							});
+						});
+
+						this.oTableDetail.bindRows("/rows");
+						this.oTableDetail.setSelectionMode("Single");
+						this.oTableDetail.setSelectionBehavior("Row");
+						this.renameColumnsDetail();
+					}
+
+				}
+			});
+		},
+		renameColumnsDetail: function () {
+			this.oTableDetail.getColumns()[0].setVisible(false);
 		},
 
 		//MAIN FUNCTION-------------------------

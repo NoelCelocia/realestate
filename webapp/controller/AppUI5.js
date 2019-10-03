@@ -63,23 +63,6 @@ sap.ui.define([
 			oFieldInfo.TableName = sTableName;
 			oFieldInfo.Type = sType;
 
-			/*
-			"Name": "App_DocNum5",
-		    "Type": "db_Alpha",
-		    "Size": 50,
-		    "Description": "Real Estate Number",
-		    "SubType": null,
-		    "LinkedTable": null,
-		    "DefaultValue": null,
-		    "TableName": "@APP_OAMS",
-		    "FieldID": 3,
-		    "EditSize": 50,
-		    "Mandatory": "tNO",
-		    "LinkedUDO": null,
-		    "LinkedSystemObject": null,
-		    "ValidValuesMD": []
-			*/
-
 			if (iSize === undefined || sType === "db_Numeric") {
 				iSize = 11;
 			}
@@ -306,72 +289,79 @@ sap.ui.define([
 			}
 			var returnCode = [];
 			$.ajax({
-					url: generateNumberURL,
-					type: "GET",
-					async: false,
-					xhrFields: {
-						withCredentials: true
-					},
-					error: function (xhr, status, error) {
-						jQuery.sap.log.error("error on AppUi5.generateNumber() " + xhr.responseText);
-					},
-					success: function (json) {},
-					context: this
-				}).done(function (results) {
-					if (results.length > 0) {
-						returnCode = results;
-					}else{
-						returnCode = [];
-					}
-				});
-				
-				return returnCode;
+				url: generateNumberURL,
+				type: "GET",
+				async: false,
+				xhrFields: {
+					withCredentials: true
+				},
+				error: function (xhr, status, error) {
+					jQuery.sap.log.error("error on AppUi5.generateNumber() " + xhr.responseText);
+				},
+				success: function (json) {},
+				context: this
+			}).done(function (results) {
+				if (results.length > 0) {
+					returnCode = results;
+				} else {
+					returnCode = [];
+				}
+			});
+
+			return returnCode;
 		},
-		
+
 		//Returning and array of all columns and rows for specific table in specified Key Column
 		//If error, this will return empty array
-		getAllDataByKeyAJAX: function(sTableName, sKeyCode){
+		getAllDataByKeyAJAX: function (sTableName, sKeyCode, sQueryType) {
+			var aReturnResult = [];
 			$.ajax({
-					url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GETALLDATA_BYKEY&tableName=" + sTableName +
-						"&keyCode=" + sKeyCode,
-					type: "GET",
-					xhrFields: {
-						withCredentials: true
-					},
-					error: function (xhr, status, error) {
-						return [];
-					},
-					success: function (json) {},
-					context: this
-				}).done(function (results) {
-					if (results.length <= 0) {
-						return [];
-					}else{
-						return results;
-					}
-				});
+				url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GETALLDATA_BYKEY&tableName=" + sTableName +
+					"&keyCode=" + sKeyCode + "&queryType=" + sQueryType,
+				type: "GET",
+				xhrFields: {
+					withCredentials: true
+				},
+				async: false,
+				error: function (xhr, status, error) {
+					return [];
+				},
+				success: function (json) {},
+				context: this
+			}).done(function (results) {
+				if (results.length <= 0) {
+					aReturnResult = [];
+				} else {
+					aReturnResult = results;
+				}
+			});
+
+			return aReturnResult;
 		},
-		
-		getAllDataByColAJAX: function(sTableName, sColName, sColValue){
+
+		getAllDataByColAJAX: function (sTableName, sColName, sColValue, sQueryType) {
+			var aReturnResult = [];
 			$.ajax({
-					url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GETALLDATA_BYCOL&tableName=" + sTableName +
-						"&colName=" + sColName + "&colValue=" + sColValue,
-					type: "GET",
-					xhrFields: {
-						withCredentials: true
-					},
-					error: function (xhr, status, error) {
-						return [];
-					},
-					success: function (json) {},
-					context: this
-				}).done(function (results) {
-					if (results.length <= 0) {
-						return [];
-					}else{
-						return results;
-					}
-				});
+				url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GETALLDATA_BYCOL&tableName=" + sTableName +
+					"&colName=" + sColName + "&colValue=" + sColValue + "&queryType=" + sQueryType,
+				type: "GET",
+				async: false,
+				xhrFields: {
+					withCredentials: true
+				},
+				error: function (xhr, status, error) {
+					aReturnResult = [];
+				},
+				success: function (json) {},
+				context: this
+			}).done(function (results) {
+				if (results.length <= 0) {
+					aReturnResult = [];
+				} else {
+					aReturnResult = results;
+				}
+			});
+			return aReturnResult;
 		}
 
 	});
