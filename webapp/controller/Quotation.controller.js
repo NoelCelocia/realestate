@@ -30,15 +30,16 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.columnDataDetail = [];
 			this.oEditRecord = {};
 			this.iRecordCount = 0;
-			
+
 			//CREATING TEMPLATE FOR EDITING AND ADDING
 			this.tableId = "tblQuotation";
-			this.tableIdDetail = "tblQuotationUnits";                         
+			this.tableIdDetail = "tblQuotationUnits";
 			this.oMdlEditRecord = new JSONModel("model/Quotation.json");
 			this.getView().setModel(this.oMdlEditRecord, "oMdlEditRecord");
-			
+
 			this.oMdlAllRecord = new JSONModel();
 			this.oMdlAllRecordDetail = new JSONModel();
+			this.oMdlAllUnits = new JSONModel();
 			this.oTableDetail = this.getView().byId(this.tableIdDetail);
 
 			this.oIconTab = this.getView().byId("tab1");
@@ -677,42 +678,112 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 		onSave: function (oEvent) {
 
 			var oRecord = {};
+			var QuoteNum = "";
 			oRecord.T_RE_QUOTE_H = [];
 			oRecord.T_RE_QUOTE_D = [];
 			oRecord.T_RE_QUOTE_PRICE_D = [];
 			oRecord.T_TERMS_QUOTE_DP = [];
 			oRecord.T_TERMS_QUOTE_RB = [];
 			oRecord.T_TERMS_QUOTE_MF = [];
+			
+			var oExistingRecordsUnit = [];
+			var oExistingRecordsTermDP = [];
+			var oExistingRecordsTermRB = [];
+			var oExistingRecordsTermMF = [];
 
-			var QuoteNum = AppUI5.generateNumber("Quote")[0].Code;
-
-			//Record data for T_RE_QUOTE_H
+			//ON EDIT / ON SAVE RECORD OBJECT
 			var oT_RE_QUOTE_H = {};
-			oT_RE_QUOTE_H.O = "I";
-			oT_RE_QUOTE_H.Code = AppUI5.generateUDTCode();
-			oT_RE_QUOTE_H.QuoteNum = QuoteNum;
-			oT_RE_QUOTE_H.DocStatus = "1";
-			oT_RE_QUOTE_H.CustomerCode = this.oMdlEditRecord.getData().EditRecord.CustomerCode;
-			oRecord.T_RE_QUOTE_H.push(oT_RE_QUOTE_H);
+			var oT_RE_QUOTE_D = {};
+			var oT_RE_QUOTE_PRICE_D = {};
+			var oT_TERMS_QUOTE_DP = {};
+			var oT_TERMS_QUOTE_RB = {};
+			var oT_TERMS_QUOTE_MF = {};
+			var i = 0;
 
-			//Record data for T_RE_QUOTE_D
-			var i;
-			for (i = 0; i < this.oMdlUnitTable.getData().unitrows.length; i++) {
-				var iLineNum = i + 1;
-				var oT_RE_QUOTE_D = {};
-				oT_RE_QUOTE_D.O = "I";
-				oT_RE_QUOTE_D.Code = AppUI5.generateUDTCode();
-				oT_RE_QUOTE_D.LineNum = iLineNum;
-				oT_RE_QUOTE_D.QuoteNum = QuoteNum;
-				oT_RE_QUOTE_D.UnitCode = this.oMdlUnitTable.getData().unitrows[i].UnitCode;
-				oT_RE_QUOTE_D.Price = this.oMdlUnitTable.getData().unitrows[i].Price;
-				oRecord.T_RE_QUOTE_D.push(oT_RE_QUOTE_D);
+			if (this.isAdd === "E") {
+				QuoteNum = this.oMdlEditRecord.getData().EditRecord.QuoteNum;
+
+				//Record data for T_RE_QUOTE_H
+				oT_RE_QUOTE_H.O = "U";
+				oT_RE_QUOTE_H.Code = this.oMdlEditRecord.getData().EditRecord.Code;
+				oT_RE_QUOTE_H.QuoteNum = this.oMdlEditRecord.getData().EditRecord.QuoteNum;
+				oT_RE_QUOTE_H.DocStatus = "1";
+				oT_RE_QUOTE_H.CustomerCode = this.oMdlEditRecord.getData().EditRecord.CustomerCode;
+
+				//Record data for T_RE_QUOTE_D
+				
+				oExistingRecordsUnit = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetExistingUnits");
+				for (i = 0; i < oExistingRecordsUnit.length; i++){
+					oExistingRecordsUnit[i].O = "U";
+					oExistingRecordsUnit[i].IsActive = "N";
+				}
+				
+				oExistingRecordsTermDP = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetExistingTermsDP");
+				for (i = 0; i < oExistingRecordsTermDP.length; i++){
+					oExistingRecordsTermDP[i].O = "U";
+					oExistingRecordsTermDP[i].IsActive = "N";
+				}
+				
+				oExistingRecordsTermRB = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetExistingTermsRB");
+				for (i = 0; i < oExistingRecordsTermRB.length; i++){
+					oExistingRecordsTermRB[i].O = "U";
+					oExistingRecordsTermRB[i].IsActive = "N";
+				}
+				
+				oExistingRecordsTermMF = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetExistingTermsMF");
+				for (i = 0; i < oExistingRecordsTermMF.length; i++){
+					oExistingRecordsTermMF[i].O = "U";
+					oExistingRecordsTermMF[i].IsActive = "N";
+				}
+				
+				//Record Data for T_RE_QUOTE_PRICE_D
+				oT_RE_QUOTE_PRICE_D.O = "I";
+
+			} else if (this.isAdd === "A") {
+				QuoteNum = AppUI5.generateNumber("Quote")[0].Code;
+
+				//Record data for T_RE_QUOTE_H
+				oT_RE_QUOTE_H.O = "I";
+				oT_RE_QUOTE_H.Code = AppUI5.generateUDTCode();
+				oT_RE_QUOTE_H.QuoteNum = QuoteNum;
+				oT_RE_QUOTE_H.DocStatus = "1";
+				oT_RE_QUOTE_H.CustomerCode = this.oMdlEditRecord.getData().EditRecord.CustomerCode;
+
+				//Record data for T_RE_QUOTE_D
+				for (i = 0; i < this.oMdlUnitTable.getData().unitrows.length; i++) {
+					var iLineNum = i + 1;
+					oT_RE_QUOTE_D.O = "I";
+					oT_RE_QUOTE_D.Code = AppUI5.generateUDTCode();
+					oT_RE_QUOTE_D.LineNum = iLineNum;
+					oT_RE_QUOTE_D.QuoteNum = QuoteNum;
+					oT_RE_QUOTE_D.UnitCode = this.oMdlUnitTable.getData().unitrows[i].UnitCode;
+					oT_RE_QUOTE_D.Price = this.oMdlUnitTable.getData().unitrows[i].Price;
+					oRecord.T_RE_QUOTE_D.push(oT_RE_QUOTE_D);
+				}
+
+				//Record Data for T_RE_QUOTE_PRICE_D
+				oT_RE_QUOTE_PRICE_D.O = "I";
+
+			} else {
+				console.log("Please specify actions to perform");
+				return;
 			}
 
-			//Record data for T_RE_QUOTE_PRICE_D
-			var oT_RE_QUOTE_PRICE_D = {};
+			//OPERATIONS AFTER EDIT / ADD
+			
+			for (i = 0; i < this.oMdlUnitTable.getData().unitrows.length; i++) {
+					oT_RE_QUOTE_D.O = "I";
+					oT_RE_QUOTE_D.Code = AppUI5.generateUDTCode();
+					oT_RE_QUOTE_D.LineNum = i + 1;
+					oT_RE_QUOTE_D.QuoteNum = QuoteNum;
+					oT_RE_QUOTE_D.UnitCode = this.oMdlUnitTable.getData().unitrows[i].UnitCode;
+					oT_RE_QUOTE_D.Price = this.oMdlUnitTable.getData().unitrows[i].Price;
+					oRecord.T_RE_QUOTE_D.push(oT_RE_QUOTE_D);
+				}
+			Array.prototype.push.apply(oRecord.T_RE_QUOTE_D, oExistingRecordsUnit);
 
-			oT_RE_QUOTE_PRICE_D.O = "I";
+			oRecord.T_RE_QUOTE_H.push(oT_RE_QUOTE_H);
+			//Record data for T_RE_QUOTE_PRICE_D
 			oT_RE_QUOTE_PRICE_D.Code = AppUI5.generateUDTCode();
 			oT_RE_QUOTE_PRICE_D.QuoteNum = QuoteNum;
 			oT_RE_QUOTE_PRICE_D.PriceTotal = this.oMdlPricing.getData().EditRecord.PriceTotal;
@@ -739,15 +810,15 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 			// Record data for T_TERMS_QUOTE_DP
 			var filteredDPRows = this.oMdlTerms.getData().EditRecord.filter(function (value, index, arr) {
-				return value.SelectedTranType === "2";
+				return value.SelectedTranType === "2" || value.SelectedTranType === "1";
 			});
 
 			var d;
 			for (d = 0; d < filteredDPRows.length; d++) {
 				var iLineNumDP = d + 1;
-				var oT_TERMS_QUOTE_DP = {};
-				oT_TERMS_QUOTE_DP.O = "I";
-				oT_TERMS_QUOTE_DP.Code = AppUI5.generateUDTCode();
+
+				oT_TERMS_QUOTE_DP.O = (this.isAdd === "E") ? "U" : "I";
+				oT_TERMS_QUOTE_DP.Code = (this.isAdd === "E") ? filteredDPRows[d].Code : AppUI5.generateUDTCode();
 				oT_TERMS_QUOTE_DP.QuoteNum = QuoteNum;
 				oT_TERMS_QUOTE_DP.LineNum = iLineNumDP;
 				oT_TERMS_QUOTE_DP.Amount = filteredDPRows[d].Amount;
@@ -759,6 +830,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 				oRecord.T_TERMS_QUOTE_DP.push(oT_TERMS_QUOTE_DP);
 			}
+			Array.prototype.push.apply(oRecord.T_TERMS_QUOTE_DP, oExistingRecordsTermDP);
 
 			//Record data for T_TERMS_QUOTE_RB
 			var filteredRBRows = this.oMdlTerms.getData().EditRecord.filter(function (value, index, arr) {
@@ -768,9 +840,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			var r;
 			for (r = 0; r < filteredRBRows.length; r++) {
 				var iLineNumRB = r + 1;
-				var oT_TERMS_QUOTE_RB = {};
-				oT_TERMS_QUOTE_RB.O = "I";
-				oT_TERMS_QUOTE_RB.Code = AppUI5.generateUDTCode();
+
+				oT_TERMS_QUOTE_RB.O = (this.isAdd === "E") ? "U" : "I";
+				oT_TERMS_QUOTE_RB.Code = (this.isAdd === "E") ? filteredRBRows[d].Code : AppUI5.generateUDTCode();
 				oT_TERMS_QUOTE_RB.QuoteNum = QuoteNum;
 				oT_TERMS_QUOTE_RB.LineNum = iLineNumRB;
 				oT_TERMS_QUOTE_RB.Amount = filteredRBRows[r].Amount;
@@ -782,6 +854,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 				oRecord.T_TERMS_QUOTE_RB.push(oT_TERMS_QUOTE_RB);
 			}
+			
+			Array.prototype.push.apply(oRecord.T_TERMS_QUOTE_RB, oExistingRecordsTermRB);
 
 			//Record data for T_TERMS_QUOTE_MF
 			var filteredMFRows = this.oMdlTerms.getData().EditRecord.filter(function (value, index, arr) {
@@ -791,9 +865,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			var m;
 			for (m = 0; m < filteredMFRows.length; m++) {
 				var iLineNumMF = m + 1;
-				var oT_TERMS_QUOTE_MF = {};
-				oT_TERMS_QUOTE_MF.O = "I";
-				oT_TERMS_QUOTE_MF.Code = AppUI5.generateUDTCode();
+
+				oT_TERMS_QUOTE_RB.O = (this.isAdd === "E") ? "U" : "I";
+				oT_TERMS_QUOTE_RB.Code = (this.isAdd === "E") ? filteredRBRows[m].Code : AppUI5.generateUDTCode();
 				oT_TERMS_QUOTE_MF.QuoteNum = QuoteNum;
 				oT_TERMS_QUOTE_MF.LineNum = iLineNumMF;
 				oT_TERMS_QUOTE_MF.Amount = filteredRBRows[m].Amount;
@@ -805,6 +879,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 				oRecord.T_TERMS_QUOTE_MF.push(oT_TERMS_QUOTE_MF);
 			}
+			
+			Array.prototype.push.apply(oRecord.T_TERMS_QUOTE_MF, oExistingRecordsTermMF);
 
 			//SAVING
 			var resultAjaxCall = AppUI5.postData(oRecord);
@@ -812,6 +888,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				MessageToast.show("Saved Successfully " + QuoteNum);
 			} else {
 				MessageToast.show("Error");
+				console.log("Error on onSave() Quotation controller");
 			}
 
 		},
@@ -823,24 +900,42 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				var oRowSelected = this.oTable.getBinding().getModel().getData().rows[this.oTable.getBinding().aIndices[iIndex]];
 				sCode = oRowSelected.Code;
 				//AJAX selected Key
-				
+
 				var oResult = AppUI5.getAllDataByKeyAJAX(sQueryTable, sCode, "QuoteGetHeader");
 				oResult = JSON.stringify(oResult).replace("[", "").replace("]", "");
 				this.oMdlEditRecord.setJSON("{\"EditRecord\" : " + oResult + "}");
 				this.getView().setModel(this.oMdlEditRecord, "oMdlEditRecord");
-				this.getView().byId("idIconTabBarInlineMode").getItems()[1].setText("Record Code : " + this.oMdlEditRecord.getData().EditRecord.QuoteNum + " [EDIT]");
-				
-				var oResult2 = AppUI5.getAllDataByColAJAX("","", this.oMdlEditRecord.getData().EditRecord.QuoteNum , "QuoteGetUnit");
+				this.getView().byId("idIconTabBarInlineMode").getItems()[1].setText("Record Code : " + this.oMdlEditRecord.getData().EditRecord.QuoteNum +
+					" [EDIT]");
+
+				var oResult2 = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetUnit");
 				this.oMdlUnitTable.setJSON("{\"unitrows\" : " + JSON.stringify(oResult2) + "}");
 				this.oMdlUnitTable.refresh();
-				
-				var oResult3 = AppUI5.getAllDataByColAJAX("","", this.oMdlEditRecord.getData().EditRecord.QuoteNum , "QuoteGetPrice");
-				var testResult3 = "{\"EditRecord\" : " + JSON.stringify(oResult3).replace("[","").replace("]","") + "}";
+
+				var oResult3 = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetPrice");
+				var testResult3 = "{\"EditRecord\" : " + JSON.stringify(oResult3).replace("[", "").replace("]", "") + "}";
 				this.oMdlPricing.setJSON(testResult3);
 				this.oMdlPricing.refresh();
-				
-				var oResult4 = AppUI5.getAllDataByColAJAX("","", this.oMdlEditRecord.getData().EditRecord.QuoteNum , "QuoteGetPrice");
-				
+
+				var oResult4 = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetTerms");
+				for (var i = 0; i < oResult4.length; i++) {
+					oResult4[i].TranType = [{
+						"Code": "1",
+						"Desc": "Reservation"
+					}, {
+						"Code": "2",
+						"Desc": "Downpayment"
+					}, {
+						"Code": "3",
+						"Desc": "Remaining Balance"
+					}, {
+						"Code": "4",
+						"Desc": "Misc Fee"
+					}];
+				}
+				var testResult4 = "{\"EditRecord\" : " + JSON.stringify(oResult4) + "}";
+				this.oMdlTerms.setJSON(testResult4);
+				this.oMdlTerms.refresh();
 			}
 			this.recordCode = sCode;
 			var tab = this.getView().byId("idIconTabBarInlineMode");

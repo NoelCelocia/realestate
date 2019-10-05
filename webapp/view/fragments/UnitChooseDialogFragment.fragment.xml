@@ -18,7 +18,7 @@
 			
 				<ObjectNumber
 						number="{
-							parts:[{path:'oMdlAllUnits>SellingPrice'}],
+							parts:[{path:'oMdlAllUnits>Price'}],
 							type: 'sap.ui.model.type.Currency',
 							formatOptions: {showMeasure: false}
 						}"
