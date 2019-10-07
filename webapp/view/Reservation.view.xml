@@ -29,72 +29,72 @@
 								</t:Table>
 							</IconTabFilter>
 							<IconTabFilter id="tab2" text="Add / Edit" key="tab2">
-								<Button text="Add Draft" tooltip="Save" press="onDraft" icon="sap-icon://multi-select"/>
-								<Button text="Save as Contract" tooltip="Save" press="onSave" icon="sap-icon://save"/>
+								<Button text="Copy From Quote" tooltip="Save" press="onDraft" icon="sap-icon://multi-select"/>
+								<Button text="Save" tooltip="Save" press="onSave" icon="sap-icon://save"/>
 								<Button text="Actions.." press="handleOpen" class="sapUiSmallMarginBottom"/>
 								<VBox class="sapUiTinyMargin">
 									<!--<Panel class="sapUiResponsiveContentPadding" width="auto" expandable="false" expanded="true" id="panel0">-->
 									<!--	<content>-->
 									<f:SimpleForm editable="true" layout="ResponsiveGridLayout" id="form0" width="100%">
 										<f:content>
+											<Label text="Quote Number" width="100%">
+												<layoutData>
+													<l:GridData span="L2 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Input value="{oMdlEditRecord>/EditRecord/QuoteNum}" width="100%" enabled="false">
+												<layoutData>
+													<l:GridData span="L10 M10 S12"/>
+												</layoutData>
+											</Input>
+											<Label text="Reservation Number" width="100%">
+												<layoutData>
+													<l:GridData span="L2 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Input value="{oMdlEditRecord>/EditRecord/ReservationNum}" width="100%" enabled="false">
+												<layoutData>
+													<l:GridData span="L10 M10 S12"/>
+												</layoutData>
+											</Input>
+											<Label text="Contract Number" width="100%">
+												<layoutData>
+													<l:GridData span="L2 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Input value="{oMdlEditRecord>/EditRecord/ContractNum}" width="100%" enabled="false">
+												<layoutData>
+													<l:GridData span="L10 M10 S12"/>
+												</layoutData>
+											</Input>
+											<Label text="Status" width="100%">
+												<layoutData>
+													<l:GridData span="L2 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Select id="selectRefDocStatus" items="{oMdlDocStatus>/alldocstatus}" selectedKey="{oMdlEditRecord>/EditRecord/DocStatus}" enabled="true">
+												<core:ListItem key="{oMdlDocStatus>Code}" text="{oMdlDocStatus>Code} - {oMdlDocStatus>Desc} "/>
+												<layoutData>
+													<l:GridData span="L10 M10 S12"/>
+												</layoutData>
+											</Select>
 											<!--Buyer-->
 											<Label text="Buyer" width="100%" id="label00">
 												<layoutData>
-													<l:GridData span="L1 M2 S12"/>
-												</layoutData>
-											</Label>
-											<Input width="100%" id="inputBpCode" required="true" editable="false" enabled="false">
-												<layoutData>
-													<l:GridData span="L2 M4 S3"/>
-												</layoutData>
-											</Input>
-											<Input id="bpInput" type="Text" textFormatMode="ValueKey" placeholder="Enter Buyer" showSuggestion="true"
-												showTableSuggestionValueHelp="false" suggestionRows="{pickbp>/AllBP}" showValueHelp="true" suggestionItemSelected="suggestionItemSelected">
-												<suggestionColumns>
-													<Column hAlign="Begin" popinDisplay="Inline" demandPopin="true">
-														<Label text="Name"/>
-													</Column>
-													<Column hAlign="Center" popinDisplay="Inline" demandPopin="true" minScreenWidth="Tablet">
-														<Label text="BP Code"/>
-													</Column>
-													<Column hAlign="Center" popinDisplay="Inline" demandPopin="false" minScreenWidth="Tablet">
-														<Label text="Related REs"/>
-													</Column>
-												</suggestionColumns>
-												<suggestionRows>
-													<ColumnListItem>
-														<cells>
-															<Label text="{pickbp>CardName}"/>
-															<Label text="{pickbp>CardCode}"/>
-															<Label text="{pickbp>RelatedREs}"/>
-														</cells>
-													</ColumnListItem>
-												</suggestionRows>
-												<layoutData>
-													<l:GridData span="L9 M6 S9"/>
-												</layoutData>
-											</Input>
-											<Label text="Reservation Date" width="100%" id="lblRsrvDate">
-												<layoutData>
 													<l:GridData span="L2 M2 S12"/>
 												</layoutData>
 											</Label>
-											<DatePicker id="inputReservationDate" valueFormat="MM/dd/yyyy" displayFormat="MM/dd/yyyy" change="handleChange">
+											<Input id="bpInput" type="Text" value="{oMdlEditRecord>/EditRecord/CustomerCode}" placeholder="Enter Buyer ..." showValueHelp="true"
+												valueHelpOnly="true" valueHelpRequest="handleValueHelpBP" class="sapUiSmallMarginBottom" width="100%">
 												<layoutData>
 													<l:GridData span="L4 M4 S12"/>
 												</layoutData>
-											</DatePicker>
-											<Label text="Pricelist" width="100%" id="lblPricelist">
+											</Input>
+											<Input width="100%" id="bpName" value="{oMdlEditRecord>/EditRecord/CustomerName}" required="true" editable="false" enabled="false">
 												<layoutData>
-													<l:GridData span="L2 M2 S12"/>
+													<l:GridData span="L6 M6 S12"/>
 												</layoutData>
-											</Label>
-											<Select id="selectPricelist" showSecondaryValues="true" items="{pricelistmodel>/allpricelist}">
-												<core:ListItem key="{pricelistmodel>ListNum}" text="{pricelistmodel>ListNum} - {pricelistmodel>ListName}"/>
-												<layoutData>
-													<l:GridData span="L4 M4 S12"/>
-												</layoutData>
-											</Select>
+											</Input>
 										</f:content>
 									</f:SimpleForm>
 									<!--	</content>-->
@@ -103,24 +103,130 @@
 										applyContentPadding="false" expanded="true" class="sapUiResponsiveContentPadding" expandable="false" tabDensityMode="Compact">
 										<items>
 											<IconTabFilter text="Item Units">
-												<t:Table id="tblUnitReserve" selectionMode="Single" visibleRowCount="5" ariaLabelledBy="title" enableCellFilter="true"
-													rowSelectionChange="onSelectionChange">
+												<t:Table id="tblUnits" rows="{oMdlUnitTable>/unitrows}" selectionMode="Single" visibleRowCount="5" ariaLabelledBy="title"
+													selectionBehavior="Row">
 													<t:extension>
 														<Toolbar>
 															<content>
 																<ToolbarSpacer/>
-																<Button text="" tooltip="Add" press="onAddUnit" icon="sap-icon://add"/>
-																<Button text="" tooltip="Remove" press="onRemoveUnit" icon="sap-icon://sys-minus"/>
+																<Button tooltip="Add Unit" press="onAddUnit" icon="sap-icon://add"/>
+																<Button tooltip="Remove Unit" press="onRemoveUnit" icon="sap-icon://decline"/>
 															</content>
 														</Toolbar>
 													</t:extension>
+													<t:columns>
+														<t:Column width="10%">
+															<Label text="Unit Code"/>
+															<t:template>
+																<Text text="{oMdlUnitTable>UnitCode}"/>
+															</t:template>
+														</t:Column>
+														<t:Column width="10%">
+															<Label text="Unit Desc"/>
+															<t:template>
+																<Text text="{oMdlUnitTable>UnitDesc}"/>
+															</t:template>
+														</t:Column>
+														<t:Column width="15%">
+															<Label text="Lot Area"/>
+															<t:template>
+																<Text text="{oMdlUnitTable>LotArea}"/>
+															</t:template>
+														</t:Column>
+														<t:Column width="10%">
+															<Label text="Selling Price"/>
+															<t:template>
+																<Text text="{oMdlUnitTable>Price}"/>
+															</t:template>
+														</t:Column>
+													</t:columns>
 												</t:Table>
 											</IconTabFilter><IconTabSeparator icon="sap-icon://open-command-field"/>
 											<IconTabFilter text="Pricing Information">
-												<Text text="11111"/>
+												<core:Fragment fragmentName="com.apptech.realestate.view.fragments.PricingFormFragment" type="XML" id="idXmlFrag1"/>
 											</IconTabFilter><IconTabSeparator icon="sap-icon://open-command-field"/>
 											<IconTabFilter text="Terms and Schedules">
-												<Text text="22222"/>
+												<t:Table id="tblSchedule" rows="{oMdlTerms>/EditRecord}" selectionMode="Single" visibleRowCount="6" ariaLabelledBy="title">
+													<t:extension>
+														<Toolbar>
+															<content>
+																<Label text="Net DP"/>
+																<Input
+																	value="{ path:'oMdlTerms>/NetDP' , type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'}}"
+																	textAlign="End" fieldWidth="80%" width="10rem" editable="false" enabled="true"/>
+																<ToolbarSpacer width="3rem"/>
+																<Label text="Net RB"/>
+																<Input
+																	value="{ path:'oMdlTerms>/NetRB' , type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'}}"
+																	textAlign="End" fieldWidth="80%" width="10rem" editable="false" enabled="true"/>
+																<ToolbarSpacer width="3rem"/>
+																<Label text="Net MF"/>
+																<Input
+																	value="{ path:'oMdlTerms>/NetMF' , type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2, roundingMode: 'away_from_zero'}}"
+																	textAlign="End" fieldWidth="80%" width="10rem" editable="false" enabled="true"/>
+																<ToolbarSpacer/>
+																<Button tooltip="Add Row Sched" press="onAddSched" icon="sap-icon://add"/>
+																<Button tooltip="Remove Row Sched" press="onRemoveSched" icon="sap-icon://decline"/>
+															</content>
+														</Toolbar>
+													</t:extension>
+													<t:columns>
+														<t:Column width="11rem">
+															<Label text="Transaction Type"/>
+															<t:template>
+																<ComboBox width="100%" items="{path:'oMdlTerms>TranType' , templateShareable:true}" selectedKey="{oMdlTerms>SelectedTranType}"
+																	selectionChange="onSelectionChangeTranType">
+																	<core:Item key="{oMdlTerms>Code}" text="{oMdlTerms>Code} - {oMdlTerms>Desc}"/>
+																</ComboBox>
+															</t:template>
+														</t:Column>
+														<t:Column width="8rem">
+															<Label text="Percentage"/>
+															<t:template>
+																<Input
+																	value="{ path:'oMdlTerms>Percent' , type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2}}"
+																	textAlign="End" description="%" fieldWidth="80%" width="100%" change="onChangeTermPercent"/>
+															</t:template>
+														</t:Column>
+														<t:Column width="9rem">
+															<Label text="Amount"/>
+															<t:template>
+																<Input
+																	value="{path: 'oMdlTerms>Amount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }"
+																	textAlign="End"/>
+															</t:template>
+														</t:Column>
+														<t:Column width="8rem">
+															<Label text="Interest"/>
+															<t:template>
+																<Input
+																	value="{path: 'oMdlTerms>Interest', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} } "
+																	textAlign="End" description="%" fieldWidth="80%" width="100%"/>
+															</t:template>
+														</t:Column>
+														<t:Column width="7rem">
+															<Label text="Terms"/>
+															<t:template>
+																<StepInput value="{oMdlTerms>Terms}" min="1" max="1000" width="100%"/>
+															</t:template>
+														</t:Column>
+														<t:Column width="8rem">
+															<Label text="Finance Scheme"/>
+															<t:template>
+																<ComboBox width="100%" items="{path:'oMdlFinSchemes>/FinSchemes' , templateShareable:true}" selectedKey="{oMdlTerms>FinanceScheme}"
+																	selectionChange="onSelectionChangeFinanceScheme">
+																	<core:Item key="{oMdlFinSchemes>Code}" text="{oMdlFinSchemes>Code} - {oMdlFinSchemes>Desc}"/>
+																</ComboBox>
+															</t:template>
+														</t:Column>
+														<t:Column width="8rem">
+															<Label text="Start Date"/>
+															<t:template>
+																<DatePicker id="dtpickStart" value="{oMdlTerms>StartDate}" valueFormat="MM/dd/yyyy" displayFormat="MM/dd/yyyy" change="handleChange"/>
+															</t:template>
+														</t:Column>
+													</t:columns>
+												</t:Table>
 											</IconTabFilter><IconTabSeparator icon="sap-icon://open-command-field"/>
 											
 											<IconTabFilter text="Commission Info"></IconTabFilter><IconTabSeparator icon="sap-icon://open-command-field"/>

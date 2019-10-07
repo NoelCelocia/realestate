@@ -161,7 +161,6 @@
 																	selectionChange="onSelectionChangeTranType">
 																	<core:Item key="{oMdlTerms>Code}" text="{oMdlTerms>Code} - {oMdlTerms>Desc}"/>
 																</ComboBox>
-																<!--<Text text="{oMdlTerms>TranType}"/>-->
 															</t:template>
 														</t:Column>
 														<t:Column width="8rem">

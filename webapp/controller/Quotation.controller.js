@@ -30,6 +30,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.columnDataDetail = [];
 			this.oEditRecord = {};
 			this.iRecordCount = 0;
+			
+			this.hasChangedUnits = false;
+			this.hasChangedTerms = false;
+			this.hasChangePricing = false;
 
 			//CREATING TEMPLATE FOR EDITING AND ADDING
 			this.tableId = "tblQuotation";
@@ -218,6 +222,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 		//FOR UNIT TABLE TO POPULATE ------------------
 		onAddUnit: function () {
+			this.hasChangedUnits = true;
 			$.ajax({
 				url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_FRAGMENTTABLE&fragmentTag=ChooseUnit",
 				type: "GET",
@@ -248,10 +253,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 		},
 		onRemoveUnit: function (oEvent) {
+			this.hasChangedUnits = true;
+			
 			var oRow = this.oTableUnits.getBinding().getModel().getData().unitrows[
 				this.oTableUnits.getBinding().aIndices[this.oTableUnits.getSelectedIndex()]
 			];
-			this.iTotalSellingPrice = this.iTotalSellingPrice - oRow.Price;
+			this.iTotalSellingPrice = Math.abs(this.iTotalSellingPrice - oRow.Price);
 
 			this.oMdlPricing.getData().EditRecord.PriceTotal = this.iTotalSellingPrice;
 			this.oMdlPricing.getData().EditRecord.GrossPrice = this.iTotalSellingPrice;
@@ -259,6 +266,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			var filteredRows = this.oMdlUnitTable.getData().unitrows.filter(function (value, index, arr) {
 				return value.UnitCode !== oRow.UnitCode;
 			});
+
+			if (filteredRows.length === 0) {
+				//reset pricing and terms
+				this.oMdlPricing.getData().EditRecord.PriceTotal = 0.0;
+				this.oMdlPricing.getData().EditRecord.GrossPrice = 0.0;
+			}
 
 			this.oMdlUnitTable.getData().unitrows = filteredRows;
 
@@ -440,7 +453,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				oReserveRow.Interest = 0;
 				oReserveRow.Terms = 1;
 
-				oReserveRow.StartDate = (this.currentDate.getMonth() + 1) + "-" + this.currentDate.getDate() + "-" + this.currentDate.getFullYear();
+				oReserveRow.StartDate = (this.currentDate.getMonth() + 1) + "/" + this.currentDate.getDate() + "/" + this.currentDate.getFullYear();
 				oReserveRow.FinanceScheme = "5";
 
 				this.oMdlTerms.getData().EditRecord.push(oReserveRow);
@@ -549,6 +562,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 		},
 		onAddSched: function (oEvent) {
+			this.hasChangedTerms = true;
 			var oReserveRow = {};
 			oReserveRow.LineNum = 1;
 			oReserveRow.Amount = 0;
@@ -685,7 +699,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			oRecord.T_TERMS_QUOTE_DP = [];
 			oRecord.T_TERMS_QUOTE_RB = [];
 			oRecord.T_TERMS_QUOTE_MF = [];
-			
+
 			var oExistingRecordsUnit = [];
 			var oExistingRecordsTermDP = [];
 			var oExistingRecordsTermRB = [];
@@ -693,14 +707,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 			//ON EDIT / ON SAVE RECORD OBJECT
 			var oT_RE_QUOTE_H = {};
-			var oT_RE_QUOTE_D = {};
+
 			var oT_RE_QUOTE_PRICE_D = {};
-			var oT_TERMS_QUOTE_DP = {};
-			var oT_TERMS_QUOTE_RB = {};
-			var oT_TERMS_QUOTE_MF = {};
+
 			var i = 0;
 
-			if (this.isAdd === "E") {
+			if (this.bIsAdd === "E") {
 				QuoteNum = this.oMdlEditRecord.getData().EditRecord.QuoteNum;
 
 				//Record data for T_RE_QUOTE_H
@@ -711,35 +723,39 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				oT_RE_QUOTE_H.CustomerCode = this.oMdlEditRecord.getData().EditRecord.CustomerCode;
 
 				//Record data for T_RE_QUOTE_D
-				
-				oExistingRecordsUnit = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetExistingUnits");
-				for (i = 0; i < oExistingRecordsUnit.length; i++){
+
+				oExistingRecordsUnit = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum,
+					"QuoteGetExistingUnits");
+				for (i = 0; i < oExistingRecordsUnit.length; i++) {
 					oExistingRecordsUnit[i].O = "U";
 					oExistingRecordsUnit[i].IsActive = "N";
 				}
-				
-				oExistingRecordsTermDP = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetExistingTermsDP");
-				for (i = 0; i < oExistingRecordsTermDP.length; i++){
+
+				oExistingRecordsTermDP = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum,
+					"QuoteGetExistingTermsDP");
+				for (i = 0; i < oExistingRecordsTermDP.length; i++) {
 					oExistingRecordsTermDP[i].O = "U";
 					oExistingRecordsTermDP[i].IsActive = "N";
 				}
-				
-				oExistingRecordsTermRB = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetExistingTermsRB");
-				for (i = 0; i < oExistingRecordsTermRB.length; i++){
+
+				oExistingRecordsTermRB = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum,
+					"QuoteGetExistingTermsRB");
+				for (i = 0; i < oExistingRecordsTermRB.length; i++) {
 					oExistingRecordsTermRB[i].O = "U";
 					oExistingRecordsTermRB[i].IsActive = "N";
 				}
-				
-				oExistingRecordsTermMF = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetExistingTermsMF");
-				for (i = 0; i < oExistingRecordsTermMF.length; i++){
+
+				oExistingRecordsTermMF = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum,
+					"QuoteGetExistingTermsMF");
+				for (i = 0; i < oExistingRecordsTermMF.length; i++) {
 					oExistingRecordsTermMF[i].O = "U";
 					oExistingRecordsTermMF[i].IsActive = "N";
 				}
-				
+
 				//Record Data for T_RE_QUOTE_PRICE_D
 				oT_RE_QUOTE_PRICE_D.O = "I";
 
-			} else if (this.isAdd === "A") {
+			} else if (this.bIsAdd === "A") {
 				QuoteNum = AppUI5.generateNumber("Quote")[0].Code;
 
 				//Record data for T_RE_QUOTE_H
@@ -749,19 +765,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				oT_RE_QUOTE_H.DocStatus = "1";
 				oT_RE_QUOTE_H.CustomerCode = this.oMdlEditRecord.getData().EditRecord.CustomerCode;
 
-				//Record data for T_RE_QUOTE_D
-				for (i = 0; i < this.oMdlUnitTable.getData().unitrows.length; i++) {
-					var iLineNum = i + 1;
-					oT_RE_QUOTE_D.O = "I";
-					oT_RE_QUOTE_D.Code = AppUI5.generateUDTCode();
-					oT_RE_QUOTE_D.LineNum = iLineNum;
-					oT_RE_QUOTE_D.QuoteNum = QuoteNum;
-					oT_RE_QUOTE_D.UnitCode = this.oMdlUnitTable.getData().unitrows[i].UnitCode;
-					oT_RE_QUOTE_D.Price = this.oMdlUnitTable.getData().unitrows[i].Price;
-					oRecord.T_RE_QUOTE_D.push(oT_RE_QUOTE_D);
-				}
-
-				//Record Data for T_RE_QUOTE_PRICE_D
 				oT_RE_QUOTE_PRICE_D.O = "I";
 
 			} else {
@@ -770,16 +773,17 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			}
 
 			//OPERATIONS AFTER EDIT / ADD
-			
+
 			for (i = 0; i < this.oMdlUnitTable.getData().unitrows.length; i++) {
-					oT_RE_QUOTE_D.O = "I";
-					oT_RE_QUOTE_D.Code = AppUI5.generateUDTCode();
-					oT_RE_QUOTE_D.LineNum = i + 1;
-					oT_RE_QUOTE_D.QuoteNum = QuoteNum;
-					oT_RE_QUOTE_D.UnitCode = this.oMdlUnitTable.getData().unitrows[i].UnitCode;
-					oT_RE_QUOTE_D.Price = this.oMdlUnitTable.getData().unitrows[i].Price;
-					oRecord.T_RE_QUOTE_D.push(oT_RE_QUOTE_D);
-				}
+				var oT_RE_QUOTE_D = {};
+				oT_RE_QUOTE_D.O = "I";
+				oT_RE_QUOTE_D.Code = AppUI5.generateUDTCode();
+				oT_RE_QUOTE_D.LineNum = i + 1;
+				oT_RE_QUOTE_D.QuoteNum = QuoteNum;
+				oT_RE_QUOTE_D.UnitCode = this.oMdlUnitTable.getData().unitrows[i].UnitCode;
+				oT_RE_QUOTE_D.Price = this.oMdlUnitTable.getData().unitrows[i].Price;
+				oRecord.T_RE_QUOTE_D.push(oT_RE_QUOTE_D);
+			}
 			Array.prototype.push.apply(oRecord.T_RE_QUOTE_D, oExistingRecordsUnit);
 
 			oRecord.T_RE_QUOTE_H.push(oT_RE_QUOTE_H);
@@ -816,14 +820,15 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			var d;
 			for (d = 0; d < filteredDPRows.length; d++) {
 				var iLineNumDP = d + 1;
-
-				oT_TERMS_QUOTE_DP.O = (this.isAdd === "E") ? "U" : "I";
-				oT_TERMS_QUOTE_DP.Code = (this.isAdd === "E") ? filteredDPRows[d].Code : AppUI5.generateUDTCode();
+				var oT_TERMS_QUOTE_DP = {};
+				oT_TERMS_QUOTE_DP.O = "I";
+				oT_TERMS_QUOTE_DP.Code = AppUI5.generateUDTCode();
 				oT_TERMS_QUOTE_DP.QuoteNum = QuoteNum;
 				oT_TERMS_QUOTE_DP.LineNum = iLineNumDP;
 				oT_TERMS_QUOTE_DP.Amount = filteredDPRows[d].Amount;
 				oT_TERMS_QUOTE_DP.Percent = filteredDPRows[d].Percent;
 				oT_TERMS_QUOTE_DP.Interest = filteredDPRows[d].Interest;
+				oT_TERMS_QUOTE_DP.TranType = filteredDPRows[d].SelectedTranType;
 				oT_TERMS_QUOTE_DP.Terms = filteredDPRows[d].Terms;
 				oT_TERMS_QUOTE_DP.StartDate = filteredDPRows[d].StartDate;
 				oT_TERMS_QUOTE_DP.FinanceScheme = filteredDPRows[d].FinanceScheme;
@@ -840,9 +845,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			var r;
 			for (r = 0; r < filteredRBRows.length; r++) {
 				var iLineNumRB = r + 1;
-
-				oT_TERMS_QUOTE_RB.O = (this.isAdd === "E") ? "U" : "I";
-				oT_TERMS_QUOTE_RB.Code = (this.isAdd === "E") ? filteredRBRows[d].Code : AppUI5.generateUDTCode();
+				var oT_TERMS_QUOTE_RB = {};
+				oT_TERMS_QUOTE_RB.O = "I";
+				oT_TERMS_QUOTE_RB.Code = AppUI5.generateUDTCode();
 				oT_TERMS_QUOTE_RB.QuoteNum = QuoteNum;
 				oT_TERMS_QUOTE_RB.LineNum = iLineNumRB;
 				oT_TERMS_QUOTE_RB.Amount = filteredRBRows[r].Amount;
@@ -854,7 +859,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 				oRecord.T_TERMS_QUOTE_RB.push(oT_TERMS_QUOTE_RB);
 			}
-			
+
 			Array.prototype.push.apply(oRecord.T_TERMS_QUOTE_RB, oExistingRecordsTermRB);
 
 			//Record data for T_TERMS_QUOTE_MF
@@ -865,9 +870,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			var m;
 			for (m = 0; m < filteredMFRows.length; m++) {
 				var iLineNumMF = m + 1;
-
-				oT_TERMS_QUOTE_RB.O = (this.isAdd === "E") ? "U" : "I";
-				oT_TERMS_QUOTE_RB.Code = (this.isAdd === "E") ? filteredRBRows[m].Code : AppUI5.generateUDTCode();
+				var oT_TERMS_QUOTE_MF = {};
+				oT_TERMS_QUOTE_MF.O = "I";
+				oT_TERMS_QUOTE_MF.Code = AppUI5.generateUDTCode();
 				oT_TERMS_QUOTE_MF.QuoteNum = QuoteNum;
 				oT_TERMS_QUOTE_MF.LineNum = iLineNumMF;
 				oT_TERMS_QUOTE_MF.Amount = filteredRBRows[m].Amount;
@@ -879,7 +884,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 				oRecord.T_TERMS_QUOTE_MF.push(oT_TERMS_QUOTE_MF);
 			}
-			
+
 			Array.prototype.push.apply(oRecord.T_TERMS_QUOTE_MF, oExistingRecordsTermMF);
 
 			//SAVING
@@ -909,8 +914,16 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 					" [EDIT]");
 
 				var oResult2 = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetUnit");
-				this.oMdlUnitTable.setJSON("{\"unitrows\" : " + JSON.stringify(oResult2) + "}");
+				var aQuoteUnits = oResult2.filter(function(unit){
+					return unit.IsActive !== "N";
+				});
+				this.oMdlUnitTable.setJSON("{\"unitrows\" : " + JSON.stringify(aQuoteUnits) + "}");
 				this.oMdlUnitTable.refresh();
+
+				var initialValue = 0;
+				this.iTotalSellingPrice = this.oMdlUnitTable.getData().unitrows.reduce(function (total, currentValue) {
+					return total + currentValue.Price;
+				}, initialValue);
 
 				var oResult3 = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetPrice");
 				var testResult3 = "{\"EditRecord\" : " + JSON.stringify(oResult3).replace("[", "").replace("]", "") + "}";
