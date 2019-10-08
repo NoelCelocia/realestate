@@ -30,7 +30,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.columnDataDetail = [];
 			this.oEditRecord = {};
 			this.iRecordCount = 0;
-			
+
 			this.hasChangedUnits = false;
 			this.hasChangedTerms = false;
 			this.hasChangePricing = false;
@@ -254,7 +254,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 		},
 		onRemoveUnit: function (oEvent) {
 			this.hasChangedUnits = true;
-			
+
 			var oRow = this.oTableUnits.getBinding().getModel().getData().unitrows[
 				this.oTableUnits.getBinding().aIndices[this.oTableUnits.getSelectedIndex()]
 			];
@@ -914,7 +914,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 					" [EDIT]");
 
 				var oResult2 = AppUI5.getAllDataByColAJAX("", "", this.oMdlEditRecord.getData().EditRecord.QuoteNum, "QuoteGetUnit");
-				var aQuoteUnits = oResult2.filter(function(unit){
+				var aQuoteUnits = oResult2.filter(function (unit) {
 					return unit.IsActive !== "N";
 				});
 				this.oMdlUnitTable.setJSON("{\"unitrows\" : " + JSON.stringify(aQuoteUnits) + "}");
@@ -967,61 +967,106 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 		},
 		prepareTableDetail: function (paramCode) {
-			$.ajax({
-				url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_VIEWTABLE&tableName=T_RE_QUOTE_D&parameterCode=" +
-					paramCode,
-				type: "GET",
-				xhrFields: {
-					withCredentials: true
-				},
-				error: function (xhr, status, error) {
-					MessageToast.show(error);
-				},
-				success: function (json) {},
-				context: this
-			}).done(function (results) {
-				if (results.length !== 0) {
 
-					this.aColsDetails = Object.keys(results[0]);
-					var i;
+			var aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEWDETAILS", paramCode, "");
 
-					if (this.columnDataDetail.length <= 0) {
-						for (i = 0; i < this.aColsDetails.length; i++) {
-							this.columnDataDetail.push({
-								"columnName": this.aColsDetails[i]
-							});
-						}
-					}
+			if (aResults.length !== 0) {
 
-					this.oMdlAllRecordDetail.setData({
-						rows: results,
-						columns: this.columnDataDetail
-					});
-					var y = true;
+				this.aColsDetails = Object.keys(aResults[0]);
+				var i;
 
-					if (y) {
-						this.oTableDetail = this.getView().byId(this.tableIdDetail);
-						this.oTableDetail.setModel(this.oMdlAllRecordDetail);
-
-						this.oTableDetail.bindColumns("/columns", function (sId, oContext) {
-							var columnName = oContext.getObject().columnName;
-
-							return new sap.ui.table.Column({
-								label: columnName,
-								template: new sap.m.Text({
-									text: "{" + columnName + "}"
-								})
-							});
+				if (this.columnDataDetail.length <= 0) {
+					for (i = 0; i < this.aColsDetails.length; i++) {
+						this.columnDataDetail.push({
+							"columnName": this.aColsDetails[i]
 						});
-
-						this.oTableDetail.bindRows("/rows");
-						this.oTableDetail.setSelectionMode("Single");
-						this.oTableDetail.setSelectionBehavior("Row");
-						this.renameColumnsDetail();
 					}
-
 				}
-			});
+
+				this.oMdlAllRecordDetail.setData({
+					rows: aResults,
+					columns: this.columnDataDetail
+				});
+				var y = true;
+
+				if (y) {
+					this.oTableDetail = this.getView().byId(this.tableIdDetail);
+					this.oTableDetail.setModel(this.oMdlAllRecordDetail);
+
+					this.oTableDetail.bindColumns("/columns", function (sId, oContext) {
+						var columnName = oContext.getObject().columnName;
+
+						return new sap.ui.table.Column({
+							label: columnName,
+							template: new sap.m.Text({
+								text: "{" + columnName + "}"
+							})
+						});
+					});
+
+					this.oTableDetail.bindRows("/rows");
+					this.oTableDetail.setSelectionMode("Single");
+					this.oTableDetail.setSelectionBehavior("Row");
+					this.renameColumnsDetail();
+				}
+
+			}
+
+			// $.ajax({
+			// 	url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_VIEWTABLE&tableName=T_RE_QUOTE_D&parameterCode=" +
+			// 		paramCode,
+			// 	type: "GET",
+			// 	xhrFields: {
+			// 		withCredentials: true
+			// 	},
+			// 	error: function (xhr, status, error) {
+			// 		MessageToast.show(error);
+			// 	},
+			// 	success: function (json) {},
+			// 	context: this
+			// }).done(function (results) {
+			// 	if (results.length !== 0) {
+
+			// 		this.aColsDetails = Object.keys(results[0]);
+			// 		var i;
+
+			// 		if (this.columnDataDetail.length <= 0) {
+			// 			for (i = 0; i < this.aColsDetails.length; i++) {
+			// 				this.columnDataDetail.push({
+			// 					"columnName": this.aColsDetails[i]
+			// 				});
+			// 			}
+			// 		}
+
+			// 		this.oMdlAllRecordDetail.setData({
+			// 			rows: results,
+			// 			columns: this.columnDataDetail
+			// 		});
+			// 		var y = true;
+
+			// 		if (y) {
+			// 			this.oTableDetail = this.getView().byId(this.tableIdDetail);
+			// 			this.oTableDetail.setModel(this.oMdlAllRecordDetail);
+
+			// 			this.oTableDetail.bindColumns("/columns", function (sId, oContext) {
+			// 				var columnName = oContext.getObject().columnName;
+
+			// 				return new sap.ui.table.Column({
+			// 					label: columnName,
+			// 					template: new sap.m.Text({
+			// 						text: "{" + columnName + "}"
+			// 					})
+			// 				});
+			// 			});
+
+			// 			this.oTableDetail.bindRows("/rows");
+			// 			this.oTableDetail.setSelectionMode("Single");
+			// 			this.oTableDetail.setSelectionBehavior("Row");
+			// 			this.renameColumnsDetail();
+			// 		}
+
+			// 	}
+			// });
 		},
 		renameColumnsDetail: function () {
 			this.oTableDetail.getColumns()[0].setVisible(false);
