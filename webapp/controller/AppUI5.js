@@ -339,6 +339,33 @@ sap.ui.define([
 			return aReturnResult;
 		},
 
+		getHANAData: function (sModule, sQueryType, sKey, sKey2) {
+			var aReturnResult = [];
+			var sURL = "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_" + sModule + "&queryType=" + sQueryType +
+				"&colValue=" + sKey + "&colValue=" + sKey2;
+			$.ajax({
+				url: sURL,
+				type: "GET",
+				async: false,
+				xhrFields: {
+					withCredentials: true
+				},
+				error: function (xhr, status, error) {
+					aReturnResult = [];
+				},
+				success: function (json) {},
+				context: this
+			}).done(function (results) {
+				if (results.length <= 0) {
+					aReturnResult = [];
+				} else {
+					aReturnResult = results;
+				}
+			});
+			return aReturnResult;
+
+		},
+
 		getAllDataByColAJAX: function (sTableName, sColName, sColValue, sQueryType) {
 			var aReturnResult = [];
 			$.ajax({
