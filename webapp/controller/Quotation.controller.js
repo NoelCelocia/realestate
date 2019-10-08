@@ -139,53 +139,46 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 		//TABLE VIEW--------------------------------
 		prepareTable: function (bIsInit) {
-			$.ajax({
-				url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_VIEWTABLE&tableName=T_RE_QUOTE_H&parameterCode=0",
-				type: "GET",
-				xhrFields: {
-					withCredentials: true
-				},
-				error: function (xhr, status, error) {
-					MessageToast.show(error);
-				},
-				success: function (json) {},
-				context: this
-			}).done(function (results) {
-				if (results) {
-					this.aCols = Object.keys(results[0]);
-					var i;
-					this.iRecordCount = results.length;
-					this.oIconTab.setCount(this.iRecordCount);
-					if (bIsInit) {
-						for (i = 0; i < this.aCols.length; i++) {
-							this.columnData.push({
-								"columnName": this.aCols[i]
-							});
-						}
-					}
-					this.oMdlAllRecord.setData({
-						rows: results,
-						columns: this.columnData
-					});
-					if (bIsInit) {
-						this.oTable = this.getView().byId(this.tableId);
-						this.oTable.setModel(this.oMdlAllRecord);
-						this.oTable.bindColumns("/columns", function (sId, oContext) {
-							var columnName = oContext.getObject().columnName;
-							return new sap.ui.table.Column({
-								label: columnName,
-								template: new sap.m.Text({
-									text: "{" + columnName + "}"
-								})
-							});
+
+			var aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW", "", "");
+
+			if (aResults.length !== 0) {
+
+				this.aCols = Object.keys(aResults[0]);
+				var i;
+				this.iRecordCount = aResults.length;
+				this.oIconTab.setCount(this.iRecordCount);
+				if (bIsInit) {
+					for (i = 0; i < this.aCols.length; i++) {
+						this.columnData.push({
+							"columnName": this.aCols[i]
 						});
-						this.oTable.bindRows("/rows");
-						this.oTable.setSelectionMode("Single");
-						this.oTable.setSelectionBehavior("Row");
-						this.renameColumns();
 					}
 				}
-			});
+				this.oMdlAllRecord.setData({
+					rows: aResults,
+					columns: this.columnData
+				});
+				if (bIsInit) {
+					this.oTable = this.getView().byId(this.tableId);
+					this.oTable.setModel(this.oMdlAllRecord);
+					this.oTable.bindColumns("/columns", function (sId, oContext) {
+						var columnName = oContext.getObject().columnName;
+						return new sap.ui.table.Column({
+							label: columnName,
+							template: new sap.m.Text({
+								text: "{" + columnName + "}"
+							})
+						});
+					});
+					this.oTable.bindRows("/rows");
+					this.oTable.setSelectionMode("Single");
+					this.oTable.setSelectionBehavior("Row");
+					this.renameColumns();
+				}
+
+			}
+
 		},
 		renameColumns: function () {
 			this.oTable.getColumns()[0].setVisible(false);
