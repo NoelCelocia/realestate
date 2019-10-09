@@ -8,8 +8,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 	"sap/m/Dialog",
 	"sap/m/ButtonType",
 	"sap/m/Button",
-	"sap/m/Text"
-], function (Controller, JSONModel, MessageToast, Filter, FilterOperator, AppUI5, Fragment, Dialog, ButtonType, Button, Text) {
+	"sap/m/Text",
+	"sap/m/MessageBox"
+], function (Controller, JSONModel, MessageToast, Filter, FilterOperator, AppUI5, Fragment, Dialog, ButtonType, Button, Text, MessageBox) {
 	"use strict";
 
 	return Controller.extend("com.apptech.realestate.controller.Quotation", {
@@ -209,6 +210,20 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this._actionSheet.openBy(oButton);
 		},
 		actionSelected: function (oEvent) {
+			switch (oEvent.getSource().getText()) {
+			case "Set as Reserved":
+				if(this.bIsAdd === "A") {
+					MessageToast.show("Save as Quotation first ");
+				}
+				
+				// this.onSaveProcess();
+				MessageToast.show("Set as Reserved");
+				break;
+			case "View Draft Computation":
+				MessageToast.show("ViewDraftComputation");
+				break;
+			}
+
 			MessageToast.show("Selected action is '" + oEvent.getSource().getText() + "'");
 		},
 		//ACTION BUTTON---------------------------
@@ -683,6 +698,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.onClearAdd();
 		},
 		onSave: function (oEvent) {
+			this.onSaveProcess();
+		},
+		onSaveProcess: function () {
 
 			var oRecord = {};
 			var QuoteNum = "";
@@ -761,7 +779,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				oT_RE_QUOTE_PRICE_D.O = "I";
 
 			} else {
-				console.log("Please specify actions to perform");
+				jQuery.sap.log.error("Please specify actions to perform");
 				return;
 			}
 
@@ -881,12 +899,23 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			Array.prototype.push.apply(oRecord.T_TERMS_QUOTE_MF, oExistingRecordsTermMF);
 
 			//SAVING
+			MessageBox.show(
+				"Do you want to save this record?", {
+					styleClass: "sapUiSizeCompact",
+					actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.CONFIRM],
+					onClose: function(oAction){
+						if (oAction === sap.m.MessageBox.Action.YES){
+							
+						}
+					}
+				}
+			);
 			var resultAjaxCall = AppUI5.postData(oRecord);
 			if (resultAjaxCall === 0) {
 				MessageToast.show("Saved Successfully " + QuoteNum);
 			} else {
 				MessageToast.show("Error");
-				console.log("Error on onSave() Quotation controller");
+				jQuery.sap.log.error("Error on onSave() Quotation controller");
 			}
 
 		},

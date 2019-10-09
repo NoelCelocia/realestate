@@ -420,8 +420,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 			if (this.bIsAdd) {
 				var tableCode = AppUI5.generateUDTCode();
-				//Generate UnitCode
-				// Generate UnitCode
 				var recordCode = "";
 				$.ajax({
 					url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GENERATEUNIT&" +

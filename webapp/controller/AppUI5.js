@@ -1,6 +1,6 @@
 sap.ui.define([
-
-], function () {
+	"sap/m/MessageBox"
+], function (MessageBox) {
 	"use strict";
 	return ("com.apptech.realestate.controller.AppUI5", {
 
@@ -95,18 +95,6 @@ sap.ui.define([
 			});
 
 			return -1;
-
-			/**
-			POST https://localhost:50000/b1s/v1/UserFieldsMD
-
-			{
-			    "Description": "UDF01",
-			    "Name": "UDF01",
-			    "SubType": "st_Address",
-			    "TableName": "@UDT01",
-			    "Type": "db_Alpha"
-			}
-			*/
 
 		},
 
@@ -389,6 +377,19 @@ sap.ui.define([
 				}
 			});
 			return aReturnResult;
+		},
+
+		applyMessageBoxConfirm: function (sMsg) {
+			var returnResult; 
+			MessageBox.show(
+				sMsg, {
+					styleClass: "sapUiSizeCompact",
+					actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+					onClose: function(oAction){
+						return returnResult;
+					}
+				}
+			);
 		}
 
 	});
