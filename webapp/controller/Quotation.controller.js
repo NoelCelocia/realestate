@@ -886,12 +886,12 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				oT_TERMS_QUOTE_MF.Code = AppUI5.generateUDTCode();
 				oT_TERMS_QUOTE_MF.QuoteNum = QuoteNum;
 				oT_TERMS_QUOTE_MF.LineNum = iLineNumMF;
-				oT_TERMS_QUOTE_MF.Amount = filteredRBRows[m].Amount;
-				oT_TERMS_QUOTE_MF.Percent = filteredRBRows[m].Percent;
-				oT_TERMS_QUOTE_MF.Interest = filteredRBRows[m].Interest;
-				oT_TERMS_QUOTE_MF.Terms = filteredRBRows[m].Terms;
-				oT_TERMS_QUOTE_MF.StartDate = filteredRBRows[m].StartDate;
-				oT_TERMS_QUOTE_MF.FinanceScheme = filteredRBRows[m].FinanceScheme;
+				oT_TERMS_QUOTE_MF.Amount = filteredMFRows[m].Amount;
+				oT_TERMS_QUOTE_MF.Percent = filteredMFRows[m].Percent;
+				oT_TERMS_QUOTE_MF.Interest = filteredMFRows[m].Interest;
+				oT_TERMS_QUOTE_MF.Terms = filteredMFRows[m].Terms;
+				oT_TERMS_QUOTE_MF.StartDate = filteredMFRows[m].StartDate;
+				oT_TERMS_QUOTE_MF.FinanceScheme = filteredMFRows[m].FinanceScheme;
 
 				oRecord.T_TERMS_QUOTE_MF.push(oT_TERMS_QUOTE_MF);
 			}
