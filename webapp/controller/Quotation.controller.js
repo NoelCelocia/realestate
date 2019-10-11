@@ -36,6 +36,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.hasChangedTerms = false;
 			this.hasChangePricing = false;
 
+			this.oPage = this.getView().byId("pageQuotation");
+
 			//CREATING TEMPLATE FOR EDITING AND ADDING
 			this.tableId = "tblQuotation";
 			this.tableIdDetail = "tblQuotationUnits";
@@ -212,10 +214,10 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 		actionSelected: function (oEvent) {
 			switch (oEvent.getSource().getText()) {
 			case "Set as Reserved":
-				if(this.bIsAdd === "A") {
+				if (this.bIsAdd === "A") {
 					MessageToast.show("Save as Quotation first ");
 				}
-				
+
 				// this.onSaveProcess();
 				MessageToast.show("Set as Reserved");
 				break;
@@ -698,7 +700,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.onClearAdd();
 		},
 		onSave: function (oEvent) {
+			this.oPage.setBusy(true);
 			this.onSaveProcess();
+			this.oPage.setBusy(false);
 		},
 		onSaveProcess: function () {
 
@@ -764,7 +768,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				}
 
 				//Record Data for T_RE_QUOTE_PRICE_D
-				oT_RE_QUOTE_PRICE_D.O = "I";
+				oT_RE_QUOTE_PRICE_D.O = "U";
 
 			} else if (this.bIsAdd === "A") {
 				QuoteNum = AppUI5.generateNumber("Quote")[0].Code;
@@ -798,8 +802,9 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			Array.prototype.push.apply(oRecord.T_RE_QUOTE_D, oExistingRecordsUnit);
 
 			oRecord.T_RE_QUOTE_H.push(oT_RE_QUOTE_H);
+			
 			//Record data for T_RE_QUOTE_PRICE_D
-			oT_RE_QUOTE_PRICE_D.Code = AppUI5.generateUDTCode();
+			oT_RE_QUOTE_PRICE_D.Code = (oT_RE_QUOTE_PRICE_D.O === "I") ? AppUI5.generateUDTCode() : this.oMdlPricing.getData().EditRecord.Code;
 			oT_RE_QUOTE_PRICE_D.QuoteNum = QuoteNum;
 			oT_RE_QUOTE_PRICE_D.PriceTotal = this.oMdlPricing.getData().EditRecord.PriceTotal;
 			oT_RE_QUOTE_PRICE_D.PenaltyPercent = this.oMdlPricing.getData().EditRecord.PenaltyPercent;
@@ -898,25 +903,28 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 			Array.prototype.push.apply(oRecord.T_TERMS_QUOTE_MF, oExistingRecordsTermMF);
 
+			this.oPage.setBusy(false);
+			var that = this;
+
 			//SAVING
 			MessageBox.show(
 				"Do you want to save this record?", {
 					styleClass: "sapUiSizeCompact",
-					actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.CONFIRM],
-					onClose: function(oAction){
-						if (oAction === sap.m.MessageBox.Action.YES){
-							
+					actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
+					onClose: function (oAction) {
+						if (oAction === sap.m.MessageBox.Action.YES) {
+							var resultAjaxCall = AppUI5.postData(oRecord);
+							if (resultAjaxCall === 0) {
+								MessageToast.show("Saved Successfully " + QuoteNum);
+								that.prepareTable(false);
+							} else {
+								MessageToast.show("Error");
+								jQuery.sap.log.error("Error on onSave() Quotation controller");
+							}
 						}
 					}
 				}
 			);
-			var resultAjaxCall = AppUI5.postData(oRecord);
-			if (resultAjaxCall === 0) {
-				MessageToast.show("Saved Successfully " + QuoteNum);
-			} else {
-				MessageToast.show("Error");
-				jQuery.sap.log.error("Error on onSave() Quotation controller");
-			}
 
 		},
 		onEdit: function (oEvent) {
@@ -1034,61 +1042,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 			}
 
-			// $.ajax({
-			// 	url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_VIEWTABLE&tableName=T_RE_QUOTE_D&parameterCode=" +
-			// 		paramCode,
-			// 	type: "GET",
-			// 	xhrFields: {
-			// 		withCredentials: true
-			// 	},
-			// 	error: function (xhr, status, error) {
-			// 		MessageToast.show(error);
-			// 	},
-			// 	success: function (json) {},
-			// 	context: this
-			// }).done(function (results) {
-			// 	if (results.length !== 0) {
-
-			// 		this.aColsDetails = Object.keys(results[0]);
-			// 		var i;
-
-			// 		if (this.columnDataDetail.length <= 0) {
-			// 			for (i = 0; i < this.aColsDetails.length; i++) {
-			// 				this.columnDataDetail.push({
-			// 					"columnName": this.aColsDetails[i]
-			// 				});
-			// 			}
-			// 		}
-
-			// 		this.oMdlAllRecordDetail.setData({
-			// 			rows: results,
-			// 			columns: this.columnDataDetail
-			// 		});
-			// 		var y = true;
-
-			// 		if (y) {
-			// 			this.oTableDetail = this.getView().byId(this.tableIdDetail);
-			// 			this.oTableDetail.setModel(this.oMdlAllRecordDetail);
-
-			// 			this.oTableDetail.bindColumns("/columns", function (sId, oContext) {
-			// 				var columnName = oContext.getObject().columnName;
-
-			// 				return new sap.ui.table.Column({
-			// 					label: columnName,
-			// 					template: new sap.m.Text({
-			// 						text: "{" + columnName + "}"
-			// 					})
-			// 				});
-			// 			});
-
-			// 			this.oTableDetail.bindRows("/rows");
-			// 			this.oTableDetail.setSelectionMode("Single");
-			// 			this.oTableDetail.setSelectionBehavior("Row");
-			// 			this.renameColumnsDetail();
-			// 		}
-
-			// 	}
-			// });
 		},
 		renameColumnsDetail: function () {
 			this.oTableDetail.getColumns()[0].setVisible(false);

@@ -3,7 +3,7 @@
 	controllerName="com.apptech.realestate.controller.Quotation">
 	<App>
 		<pages>
-			<Page title="Real Estate Quotations">
+			<Page title="Real Estate Quotations" id="pageQuotation">
 				<content>
 					<IconTabBar id="idIconTabBarInlineMode" headerMode="Inline" upperCase="true" expandable="false" class="sapUiResponsiveContentPadding">
 						<items>

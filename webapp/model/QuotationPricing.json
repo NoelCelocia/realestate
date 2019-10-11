@@ -1,5 +1,6 @@
 {
 	"EditRecord":{
+		"Code": "", 
 		"QuoteNum": "",
 		"PriceTotal": "",
 		"PenaltyPercent": 0,
