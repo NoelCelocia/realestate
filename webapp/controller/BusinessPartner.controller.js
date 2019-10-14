@@ -10,6 +10,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 		onRoutePatternMatched: function (event) {
 			this.prepareTable(false);
+			var i = 3;
+			
 		},
 
 		onInit: function () {
