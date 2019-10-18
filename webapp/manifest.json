@@ -149,6 +149,13 @@
 					"target": [
 						"TaxMatrix"
 					]
+				},
+				{
+					"name": "PaymentEntry",
+					"pattern": "PaymentEntry",
+					"target": [
+						"PaymentEntry"
+					]
 				}
 			],
 			"targets": {
@@ -238,8 +245,14 @@
 					"viewLevel": 3
 				},
 				"PaymentEntry": {
+					"viewPath": "com.apptech.realestate.view",
 					"viewType": "XML",
-					"viewName": "PaymentEntry"
+					"viewName": "PaymentEntry",
+					"parent": "Main",
+					"controlId": "pageContainer",
+					"controlAggregation": "pages",
+					"transition": "flip",
+					"viewLevel": 3
 				}
 			}
 		}

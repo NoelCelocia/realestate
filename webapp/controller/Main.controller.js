@@ -84,6 +84,9 @@ sap.ui.define([
 			case "tax":
 				this.router.navTo("TaxMatrix");
 				break;
+			case "paymententry":
+				this.router.navTo("PaymentEntry");
+				break;
 			default:
 
 			} 

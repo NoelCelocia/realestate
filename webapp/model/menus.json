@@ -54,7 +54,7 @@
 			"key": "repayments",
 			"items": [{
 				"title": "Payment Entry",
-				"key": "payentry"
+				"key": "paymententry"
 			}, {
 				"title": "Check Entry",
 				"key": "checkentry"

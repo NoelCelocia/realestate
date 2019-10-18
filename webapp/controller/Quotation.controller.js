@@ -593,7 +593,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			oReserveRow.Percent = 0;
 			oReserveRow.Interest = 0;
 			oReserveRow.Terms = 1;
-			oReserveRow.StartDate = (this.currentDate.getMonth() + 1) + "-" + this.currentDate.getDate() + "-" + this.currentDate.getFullYear();
+			oReserveRow.StartDate = (this.currentDate.getMonth() + 1) + "/" + this.currentDate.getDate() + "/" + this.currentDate.getFullYear();
 			oReserveRow.FinanceScheme = "1";
 
 			this.oMdlTerms.getData().EditRecord.push(oReserveRow);
