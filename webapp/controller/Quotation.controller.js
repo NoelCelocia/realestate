@@ -193,6 +193,46 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.oTable.getColumns()[4].setFilterProperty("NetPrice");
 			this.oTable.getColumns()[5].setLabel("Created Date");
 		},
+		onSelectStatGroup: function (oEvent) {
+			var selectedKey = oEvent.getSource().getSelectedItem().getProperty("key");
+			var aResults = [];
+			switch (selectedKey) {
+				case "1":
+	
+					aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW", "", "");
+					this.oMdlAllRecord.setData({
+						rows: aResults,
+						columns: this.columnData
+					});
+					break;
+				case "2":
+	
+					aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_CREATEDTODAY", "", "");
+					this.oMdlAllRecord.setData({
+						rows: aResults,
+						columns: this.columnData
+					});
+					break;
+				case "3":
+					console.log("GET_TABLEVIEW_NOCONTRACT");
+					aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_NOCONTRACT", "", "");
+					break;
+				case "4":
+					console.log("GET_TABLEVIEW_WITHCONTRACT");
+					aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_WITHCONTRACT", "", "");
+					break;
+				case "5":
+					console.log("GET_TABLEVIEW_SIMILARUNITS");
+					aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_SIMILARUNITS", "", "");
+					break;
+				case "6":
+					console.log("GET_TABLEVIEW_CREATEDMONTH");
+					aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_CREATEDMONTH", "", "");
+					break;
+				default:
+					break;
+			}
+		},
 		//TABLE VIEW--------------------------------
 
 		//ACTION BUTTON---------------------------
@@ -802,7 +842,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			Array.prototype.push.apply(oRecord.T_RE_QUOTE_D, oExistingRecordsUnit);
 
 			oRecord.T_RE_QUOTE_H.push(oT_RE_QUOTE_H);
-			
+
 			//Record data for T_RE_QUOTE_PRICE_D
 			oT_RE_QUOTE_PRICE_D.Code = (oT_RE_QUOTE_PRICE_D.O === "I") ? AppUI5.generateUDTCode() : this.oMdlPricing.getData().EditRecord.Code;
 			oT_RE_QUOTE_PRICE_D.QuoteNum = QuoteNum;

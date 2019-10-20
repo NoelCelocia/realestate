@@ -8,7 +8,7 @@
 					<IconTabBar id="idIconTabBarInlineMode" headerMode="Inline" upperCase="true" expandable="false" class="sapUiResponsiveContentPadding">
 						<items>
 							<IconTabFilter id="tab1" text="Records" count="0" key="tab1">
-								<Select id="selectRecordGroup" items="{oMdlStatGroup>/allstatgroup}" width="40%" enabled="true">
+								<Select id="selectRecordGroup" items="{oMdlStatGroup>/allstatgroup}" width="40%" enabled="true" change="onSelectStatGroup">
 									<core:ListItem key="{oMdlStatGroup>Code}" text="{oMdlStatGroup>Code} - {oMdlStatGroup>Desc} "/>
 								</Select>
 								<t:Table id="tblQuotation" selectionMode="Single" visibleRowCount="8" ariaLabelledBy="title" enableCellFilter="true"
