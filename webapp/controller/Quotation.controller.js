@@ -197,40 +197,40 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			var selectedKey = oEvent.getSource().getSelectedItem().getProperty("key");
 			var aResults = [];
 			switch (selectedKey) {
-				case "1":
-	
-					aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW", "", "");
-					this.oMdlAllRecord.setData({
-						rows: aResults,
-						columns: this.columnData
-					});
-					break;
-				case "2":
-	
-					aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_CREATEDTODAY", "", "");
-					this.oMdlAllRecord.setData({
-						rows: aResults,
-						columns: this.columnData
-					});
-					break;
-				case "3":
-					console.log("GET_TABLEVIEW_NOCONTRACT");
-					aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_NOCONTRACT", "", "");
-					break;
-				case "4":
-					console.log("GET_TABLEVIEW_WITHCONTRACT");
-					aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_WITHCONTRACT", "", "");
-					break;
-				case "5":
-					console.log("GET_TABLEVIEW_SIMILARUNITS");
-					aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_SIMILARUNITS", "", "");
-					break;
-				case "6":
-					console.log("GET_TABLEVIEW_CREATEDMONTH");
-					aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_CREATEDMONTH", "", "");
-					break;
-				default:
-					break;
+			case "1":
+
+				aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW", "", "");
+				this.oMdlAllRecord.setData({
+					rows: aResults,
+					columns: this.columnData
+				});
+				break;
+			case "2":
+
+				aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_CREATEDTODAY", "", "");
+				this.oMdlAllRecord.setData({
+					rows: aResults,
+					columns: this.columnData
+				});
+				break;
+			case "3":
+				console.log("GET_TABLEVIEW_NOCONTRACT");
+				aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_NOCONTRACT", "", "");
+				break;
+			case "4":
+				console.log("GET_TABLEVIEW_WITHCONTRACT");
+				aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_WITHCONTRACT", "", "");
+				break;
+			case "5":
+				console.log("GET_TABLEVIEW_SIMILARUNITS");
+				aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_SIMILARUNITS", "", "");
+				break;
+			case "6":
+				console.log("GET_TABLEVIEW_CREATEDMONTH");
+				aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEW_CREATEDMONTH", "", "");
+				break;
+			default:
+				break;
 			}
 		},
 		//TABLE VIEW--------------------------------
@@ -252,6 +252,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this._actionSheet.openBy(oButton);
 		},
 		actionSelected: function (oEvent) {
+			var oButton = oEvent.getSource();
 			switch (oEvent.getSource().getText()) {
 			case "Set as Reserved":
 				if (this.bIsAdd === "A") {
@@ -262,11 +263,38 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				MessageToast.show("Set as Reserved");
 				break;
 			case "View Draft Computation":
-				MessageToast.show("ViewDraftComputation");
+				
+				if (!this.amortDialog) {
+					this.amortDialog = new Dialog({
+						title: "Amortization Schedule",
+						contentWidth: "70rem",
+						contentHeight: "50rem",
+						draggable: true,
+						content: new sap.ui.table.Table({
+							
+						}),
+						endButton: new Button({
+							text: "Close",
+							press: function () {
+								this.amortDialog.close();
+							}.bind(this)
+						})
+					});
+
+					this.getView().addDependent(this.amortDialog);
+				}
+
+				this.amortDialog.open();
+
 				break;
 			}
 
 			MessageToast.show("Selected action is '" + oEvent.getSource().getText() + "'");
+		},
+		onExit: function () {
+			if (this._dialogViewComputation) {
+				this._dialogViewComputation.destroy();
+			}
 		},
 		//ACTION BUTTON---------------------------
 
