@@ -1,8 +1,17 @@
 <core:FragmentDefinition xmlns="sap.m" xmlns:core="sap.ui.core" xmlns:t="sap.ui.table">
-		<!--<Button text="Add" tooltip="Add" press="onAdd" icon="sap-icon://add"/>-->
+	<Dialog title="Dialog from fragment">
+		<content>
+			<t:Table id="tblAmort" selectionMode="Single" ariaLabelledBy="title">
+				
+			</t:Table>
+		</content>
+		<endButton>
+			<Button text="Ok" press="closeDialog"/>
+		</endButton>
+	</Dialog>
+	<!--<Button text="Add" tooltip="Add" press="onAdd" icon="sap-icon://add"/>-->
 	<!--<t:Table id="tblQuotation" selectionMode="Single" visibleRowCount="8" ariaLabelledBy="title" enableCellFilter="true"-->
 	<!--	rowSelectionChange="onSelectionChange">-->
-		
 	<!--	<t:extension>-->
 	<!--		<Toolbar>-->
 	<!--			<content>-->
@@ -14,76 +23,75 @@
 	<!--		</Toolbar>-->
 	<!--	</t:extension>-->
 	<!--</t:Table>-->
-	
-	<TableSelectDialog
-		noDataText="No Products Found"
-		title="Select Product"
-		confirm="handleClose"
-		cancel="handleClose"
-		items="{
-			path : '/ProductCollection',
-			sorter : {
-				path : 'Name',
-				descending : false
-			}
-		}">
-		<ColumnListItem>
-			<cells>
-				<ObjectIdentifier
-					title="{Name}"
-					text="{ProductId}" />
-				<Text text="{SupplierName}" />
-				<Text text="{Width} x {Depth} x {Height} {DimUnit}" />
-				<ObjectNumber
-					number="{WeightMeasure}"
-					unit="{WeightUnit}"
-					state="{
-						path: 'WeightMeasure',
-						formatter: 'sap.m.sample.TableSelectDialog.Formatter.weightState'
-					}" />
-				<ObjectNumber
-						number="{
-							parts:[{path:'Price'},{path:'CurrencyCode'}],
-							type: 'sap.ui.model.type.Currency',
-							formatOptions: {showMeasure: false}
-						}"
-						unit="{CurrencyCode}" />
-			</cells>
-		</ColumnListItem>
-		<columns>
-			<Column width="12em">
-				<header>
-					<Text text="Product" />
-				</header>
-			</Column>
-			<Column
-				minScreenWidth="Tablet"
-				demandPopin="true" >
-				<header>
-					<Text text="Supplier" />
-				</header>
-			</Column>
-			<Column
-				minScreenWidth="Desktop"
-				demandPopin="true"
-				hAlign="End">
-				<header>
-					<Text text="Dimensions" />
-				</header>
-			</Column>
-			<Column
-				minScreenWidth="Desktop"
-				demandPopin="true"
-				hAlign="Center">
-				<header>
-					<Text text="Weight" />
-				</header>
-			</Column>
-			<Column hAlign="End">
-				<header>
-					<Text text="Product" />
-				</header>
-			</Column>
-		</columns>
-	</TableSelectDialog>
+	<!--<TableSelectDialog-->
+	<!--	noDataText="No Products Found"-->
+	<!--	title="Select Product"-->
+	<!--	confirm="handleClose"-->
+	<!--	cancel="handleClose"-->
+	<!--	items="{-->
+	<!--		path : '/ProductCollection',-->
+	<!--		sorter : {-->
+	<!--			path : 'Name',-->
+	<!--			descending : false-->
+	<!--		}-->
+	<!--	}">-->
+	<!--	<ColumnListItem>-->
+	<!--		<cells>-->
+	<!--			<ObjectIdentifier-->
+	<!--				title="{Name}"-->
+	<!--				text="{ProductId}" />-->
+	<!--			<Text text="{SupplierName}" />-->
+	<!--			<Text text="{Width} x {Depth} x {Height} {DimUnit}" />-->
+	<!--			<ObjectNumber-->
+	<!--				number="{WeightMeasure}"-->
+	<!--				unit="{WeightUnit}"-->
+	<!--				state="{-->
+	<!--					path: 'WeightMeasure',-->
+	<!--					formatter: 'sap.m.sample.TableSelectDialog.Formatter.weightState'-->
+	<!--				}" />-->
+	<!--			<ObjectNumber-->
+	<!--					number="{-->
+	<!--						parts:[{path:'Price'},{path:'CurrencyCode'}],-->
+	<!--						type: 'sap.ui.model.type.Currency',-->
+	<!--						formatOptions: {showMeasure: false}-->
+	<!--					}"-->
+	<!--					unit="{CurrencyCode}" />-->
+	<!--		</cells>-->
+	<!--	</ColumnListItem>-->
+	<!--	<columns>-->
+	<!--		<Column width="12em">-->
+	<!--			<header>-->
+	<!--				<Text text="Product" />-->
+	<!--			</header>-->
+	<!--		</Column>-->
+	<!--		<Column-->
+	<!--			minScreenWidth="Tablet"-->
+	<!--			demandPopin="true" >-->
+	<!--			<header>-->
+	<!--				<Text text="Supplier" />-->
+	<!--			</header>-->
+	<!--		</Column>-->
+	<!--		<Column-->
+	<!--			minScreenWidth="Desktop"-->
+	<!--			demandPopin="true"-->
+	<!--			hAlign="End">-->
+	<!--			<header>-->
+	<!--				<Text text="Dimensions" />-->
+	<!--			</header>-->
+	<!--		</Column>-->
+	<!--		<Column-->
+	<!--			minScreenWidth="Desktop"-->
+	<!--			demandPopin="true"-->
+	<!--			hAlign="Center">-->
+	<!--			<header>-->
+	<!--				<Text text="Weight" />-->
+	<!--			</header>-->
+	<!--		</Column>-->
+	<!--		<Column hAlign="End">-->
+	<!--			<header>-->
+	<!--				<Text text="Product" />-->
+	<!--			</header>-->
+	<!--		</Column>-->
+	<!--	</columns>-->
+	<!--</TableSelectDialog>-->
 </core:FragmentDefinition>

@@ -353,6 +353,7 @@ sap.ui.define([
 			return aReturnResult;
 
 		},
+		
 
 		getAllDataByColAJAX: function (sTableName, sColName, sColValue, sQueryType) {
 			var aReturnResult = [];
@@ -377,19 +378,6 @@ sap.ui.define([
 				}
 			});
 			return aReturnResult;
-		},
-
-		applyMessageBoxConfirm: function (sMsg) {
-			var returnResult; 
-			MessageBox.show(
-				sMsg, {
-					styleClass: "sapUiSizeCompact",
-					actions: [sap.m.MessageBox.Action.YES, sap.m.MessageBox.Action.NO],
-					onClose: function(oAction){
-						return returnResult;
-					}
-				}
-			);
 		}
 
 	});

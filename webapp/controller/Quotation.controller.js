@@ -14,7 +14,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 	"use strict";
 
 	return Controller.extend("com.apptech.realestate.controller.Quotation", {
-
 		onRoutePatternMatched: function (event) {
 			document.title = "Real Estate - Quotation";
 		},
@@ -263,16 +262,95 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				MessageToast.show("Set as Reserved");
 				break;
 			case "View Draft Computation":
+				//SPAPP_RE_GENERATEAMORT
+				// var aResults = AppUI5.getHANAData("QUOTATION", "GET_TABLEVIEWDETAILS", paramCode, "");
+				this.oMdlAllAmortSched = new JSONModel();
+				$.ajax({
+					url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_GENERATEAMORT&keyValue=" + this.oMdlEditRecord.getData()
+						.EditRecord.QuoteNum,
+					type: "GET",
+					async: false,
+					xhrFields: {
+						withCredentials: true
+					},
+					error: function (xhr, status, error) {
+
+					},
+					success: function (json) {},
+					context: this
+				}).done(function (results) {
+					if (results.length <= 0) {
+
+					} else {
+						this.oMdlAllAmortSched.setJSON( JSON.stringify(results) );
+						this.getView().setModel(this.oMdlAllAmortSched, "oMdlAllAmortSched");
+					}
+				});
+
+				this.oTableAmortSched = new sap.ui.table.Table({
+					selectionMode: sap.ui.table.SelectionMode.Single
+				});
+				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
+					label: new sap.m.Label({
+						text: "Description"
+					}),
+					template: new sap.m.Text({
+						text: "{StartDate}"
+					})
+				}));
+				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
+					label: new sap.m.Label({
+						text: "Due Date"
+					}),
+					template: new sap.m.Text({
+						text: "{oMdlAllAmortSched>StartDate}"
+					})
+				}));
+				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
+					label: new sap.m.Label({
+						text: "Amount"
+					}),
+					template: new sap.m.Text({
+						text: "{oMdlAllAmortSched>Amount}"
+					})
+				}));
+				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
+					label: new sap.m.Label({
+						text: "Interest"
+					}),
+					template: new sap.m.Text({
+						text: "{oMdlAllAmortSched>Interest}"
+					})
+				}));
+				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
+					label: new sap.m.Label({
+						text: "Principal"
+					}),
+					template: new sap.m.Text({
+						text: "{Interest}"
+					})
+				}));
+				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
+					label: new sap.m.Label({
+						text: "Running Balance"
+					}),
+					template: new sap.m.Text({
+						text: "Run"
+					})
+				}));
 				
+
+				this.oTableAmortSched.setModel(this.oMdlAllAmortSched);
+				this.oTableAmortSched.bindRows("oMdlAllAmortSched>/");
+				
+
 				if (!this.amortDialog) {
 					this.amortDialog = new Dialog({
 						title: "Amortization Schedule",
 						contentWidth: "70rem",
 						contentHeight: "50rem",
 						draggable: true,
-						content: new sap.ui.table.Table({
-							
-						}),
+						content: this.oTableAmortSched,
 						endButton: new Button({
 							text: "Close",
 							press: function () {
@@ -290,11 +368,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			}
 
 			MessageToast.show("Selected action is '" + oEvent.getSource().getText() + "'");
-		},
-		onExit: function () {
-			if (this._dialogViewComputation) {
-				this._dialogViewComputation.destroy();
-			}
 		},
 		//ACTION BUTTON---------------------------
 
@@ -672,7 +745,6 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 			this.oMdlTerms.refresh();
 
 		},
-
 		onSelectionChangeTranType: function (oEvent) {
 			//console.log("onSelectionChangeTranType");
 		},
