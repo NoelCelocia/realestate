@@ -1,13 +1,12 @@
 ## Real Estate Management for HANA 
 
-*APPTechnology Experts, Inc.*
+### Context:
+ - Real Estate Management System that is running under SCP
+ - Adapting the [Fiori](https://www.sap.com/products/fiori.html)  principle to provide enhanced User Experience
+ - Out-of-the-box application to cater Real Estate companies in the
+   Philippines
 
-Context:
-	Real Estate Management System that is running under SCP
-	Adapting the Fiori principles and loosely-coupled system to provide enhanced User Experience
-	Out-of-the-box application to cater Real Estate companies in the Philippines
-
-Scope:
+### Scope:
 	Quotations
 	Reservations
 	Contracts
@@ -18,10 +17,10 @@ Scope:
 	Commissions and Incentives
 	Analytics
 
-Tech Stack:
-	SAPUI5 (Frontend)
-	SAP HANA XSJS (Middleware)
-	SAP Business One / ByDesign / HANA (Backend)
-	SAP Cloud Platform (PaaS)
+### Tech Stack:
+`SAPUI5 (Frontend)`
+`SAP HANA XSJS (Middleware)`
+`SAP Business One / ByDesign / HANA (Backend)`
+`SAP Cloud Platform (PaaS)`
 	
 	
