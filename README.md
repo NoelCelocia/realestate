@@ -18,8 +18,8 @@
 	Analytics
 
 ### Tech Stack:
-- `SAPUI5 (Frontend)`
-- `SAP HANA XSJS (Middleware)`
+- `UI5 (Frontend)`
+- `HANA XSJS (Middleware)`
 - `SAP Business One / ByDesign / HANA (Backend)`
 - `SAP Cloud Platform (PaaS)`
 	
