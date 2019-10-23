@@ -8,7 +8,7 @@
 					<GenericTile class="sapUiTinyMarginBegin sapUiTinyMarginTop tileLayout" header="Reservations" frameType="TwoByOne"
 						subheader="Manage Reservations" press="tileREQuotations">
 						<TileContent unit="Count">
-							<NumericContent scale="" value="69" valueColor="Good" withMargin="false"/>
+							<NumericContent scale="" value="80" valueColor="Good" withMargin="false"/>
 						</TileContent>
 						<TileContent>
 							<content>
