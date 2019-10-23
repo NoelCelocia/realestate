@@ -1,4 +1,6 @@
-<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns="sap.m" xmlns:uxap="sap.uxap" xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table" controllerName="com.apptech.realestate.controller.PaymentEntry">
+<mvc:View xmlns:core="sap.ui.core" xmlns:mvc="sap.ui.core.mvc" xmlns:l="sap.ui.layout" xmlns="sap.m" xmlns:uxap="sap.uxap"
+	xmlns:f="sap.ui.layout.form" xmlns:tnt="sap.tnt" xmlns:html="http://www.w3.org/1999/xhtml" xmlns:t="sap.ui.table"
+	controllerName="com.apptech.realestate.controller.PaymentEntry">
 	<App>
 		<pages>
 			<Page title="Payment Entries">
@@ -21,30 +23,96 @@
 							</IconTabFilter>
 							<IconTabFilter id="tab2" text="Add / Edit" key="tab2">
 								<Button text="Save Changes" tooltip="Save" press="onSave" icon="sap-icon://save"/>
+								<Button text="Actions.." press="handleOpen" class="sapUiSmallMarginBottom"/>
 								<VBox class="sapUiTinyMargin">
-									<f:SimpleForm id="basicForm" editable="false" layout="ResponsiveGridLayout" labelSpanXL="3" labelSpanL="3" labelSpanM="3" labelSpanS="12" adjustLabelSpan="false" emptySpanXL="0" emptySpanL="0" emptySpanM="0" emptySpanS="0" columnsXL="1" columnsL="1" columnsM="1" singleContainerFullSize="false">
+									<f:SimpleForm editable="true" layout="ResponsiveGridLayout" id="form0" width="100%">
 										<f:content>
-											<Label text="Project Code"/>
-											<Input value="{oMdlEditRecord>/EditRecord/ProjectCode}" enabled="false"/>
-											<Label text="Project Description"/>
-											<Input value="{oMdlEditRecord>/EditRecord/ProjectDesc}"/>
-											<Label text="Project Area"/>
-											<Input value="{oMdlEditRecord>/EditRecord/ProjArea}"/>
-											<Label text="Project Location"/>
-											<Input value="{oMdlEditRecord>/EditRecord/ProjLocation}"/>
-											<Label text="Build Type"/>
-											<Select id="selectRefBuildTypes" items="{oMdlBuildTypes>/allbuildtypes}" selectedKey="{oMdlEditRecord>/EditRecord/BuildTypeCode}">
-												<core:ListItem key="{oMdlBuildTypes>Code}" text="{oMdlBuildTypes>Code} - {oMdlBuildTypes>Desc} "/>
+											<Label text="Quote Number" width="100%">
+												<layoutData>
+													<l:GridData span="L2 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Input value="{oMdlEditRecord>/EditRecord/QuoteNum}" width="100%" enabled="false">
+												<layoutData>
+													<l:GridData span="L10 M10 S12"/>
+												</layoutData>
+											</Input>
+											<Label text="Status" width="100%">
+												<layoutData>
+													<l:GridData span="L2 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Select id="selectRefDocStatus" items="{oMdlDocStatus>/alldocstatus}" selectedKey="{oMdlEditRecord>/EditRecord/DocStatus}" enabled="true">
+												<core:ListItem key="{oMdlDocStatus>Code}" text="{oMdlDocStatus>Code} - {oMdlDocStatus>Desc} "/>
+												<layoutData>
+													<l:GridData span="L10 M10 S12"/>
+												</layoutData>
 											</Select>
-											<Label text="Is Active?"/>
-											<Input value="{oMdlEditRecord>/EditRecord/IsActive}"/>
-											<Label text="Project Status"/>
-											<Select id="selectRefProjectStatus" items="{oMdlProjectStatus>/ProjectStatus}" selectedKey="" change="onChangeProjStatus">
-												<core:ListItem key="{oMdlProjectStatus>key}" text="{oMdlProjectStatus>key}"/>
-											</Select>
-											<!--<Input value="{oMdlEditRecord>/EditRecord/ProjStatus}"/>-->
+											<!--Buyer-->
+											<Label text="Buyer" width="100%" id="label00">
+												<layoutData>
+													<l:GridData span="L2 M2 S12"/>
+												</layoutData>
+											</Label>
+											<Input id="bpInput" type="Text" value="{oMdlEditRecord>/EditRecord/CustomerCode}" placeholder="Enter Buyer ..." showValueHelp="true"
+												valueHelpOnly="true" valueHelpRequest="handleValueHelpBP" class="sapUiSmallMarginBottom" width="100%">
+												<layoutData>
+													<l:GridData span="L4 M4 S12"/>
+												</layoutData>
+											</Input>
+											<Input width="100%" id="bpName" value="{oMdlEditRecord>/EditRecord/CustomerName}" required="true" editable="false" enabled="false">
+												<layoutData>
+													<l:GridData span="L6 M6 S12"/>
+												</layoutData>
+											</Input>
 										</f:content>
 									</f:SimpleForm>
+									<IconTabBar id="idIconTabBarAddEdit" enableTabReordering="false" stretchContentHeight="false" backgroundDesign="Transparent"
+										applyContentPadding="false" expanded="true" class="sapUiResponsiveContentPadding" expandable="false" tabDensityMode="Compact"
+										select="onSelectIconTabBarAddEdit">
+										<items>
+											<IconTabFilter text="Payment Details">
+												<t:Table id="tblUnits" rows="{oMdlUnitTable>/unitrows}" selectionMode="Single" visibleRowCount="5" ariaLabelledBy="title"
+													selectionBehavior="Row">
+													<t:extension>
+														<Toolbar>
+															<content>
+																<ToolbarSpacer/>
+																<Button tooltip="Add Unit" press="onAddUnit" icon="sap-icon://add"/>
+																<Button tooltip="Remove Unit" press="onRemoveUnit" icon="sap-icon://decline"/>
+															</content>
+														</Toolbar>
+													</t:extension>
+													<t:columns>
+														<t:Column width="10%">
+															<Label text="Unit Code"/>
+															<t:template>
+																<Text text="{oMdlUnitTable>UnitCode}"/>
+															</t:template>
+														</t:Column>
+														<t:Column width="10%">
+															<Label text="Unit Desc"/>
+															<t:template>
+																<Text text="{oMdlUnitTable>UnitDesc}"/>
+															</t:template>
+														</t:Column>
+														<t:Column width="15%">
+															<Label text="Lot Area"/>
+															<t:template>
+																<Text text="{oMdlUnitTable>LotArea}"/>
+															</t:template>
+														</t:Column>
+														<t:Column width="10%">
+															<Label text="Selling Price"/>
+															<t:template>
+																<Text text="{oMdlUnitTable>Price}"/>
+															</t:template>
+														</t:Column>
+													</t:columns>
+												</t:Table>
+											</IconTabFilter>
+										</items>
+									</IconTabBar>
 								</VBox>
 							</IconTabFilter>
 						</items>

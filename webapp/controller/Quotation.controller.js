@@ -295,7 +295,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 						text: "Description"
 					}),
 					template: new sap.m.Text({
-						text: "{StartDate}"
+						text: "{oMdlAllAmortSched>Description}"
 					})
 				}));
 				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
@@ -303,7 +303,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 						text: "Due Date"
 					}),
 					template: new sap.m.Text({
-						text: "{oMdlAllAmortSched>StartDate}"
+						text: "{path: 'oMdlAllAmortSched>StartDate'}"
+						
 					})
 				}));
 				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
@@ -311,7 +312,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 						text: "Amount"
 					}),
 					template: new sap.m.Text({
-						text: "{oMdlAllAmortSched>Amount}"
+						text: "{path: 'oMdlAllAmortSched>Amount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }"
+						
 					})
 				}));
 				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
@@ -319,7 +321,17 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 						text: "Interest"
 					}),
 					template: new sap.m.Text({
-						text: "{oMdlAllAmortSched>Interest}"
+						
+						text: "{path: 'oMdlAllAmortSched>Interest', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }"
+					})
+				}));
+				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
+					label: new sap.m.Label({
+						text: "Rate"
+					}),
+					template: new sap.m.Text({
+						
+						text: "{oMdlAllAmortSched>InterestRate}"
 					})
 				}));
 				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
@@ -327,7 +339,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 						text: "Principal"
 					}),
 					template: new sap.m.Text({
-						text: "{Interest}"
+						text: "{path: 'oMdlAllAmortSched>Principal', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }"
+						
 					})
 				}));
 				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
@@ -335,7 +348,8 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 						text: "Running Balance"
 					}),
 					template: new sap.m.Text({
-						text: "Run"
+						text: "{path: 'oMdlAllAmortSched>Running Balance', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }"
+						
 					})
 				}));
 				

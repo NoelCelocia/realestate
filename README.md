@@ -1,5 +1,6 @@
-Real Estate Management System
-APPTechnology Experts, Inc.
+## Real Estate Management for HANA 
+
+*APPTechnology Experts, Inc.*
 
 Context:
 	Real Estate Management System that is running under SCP

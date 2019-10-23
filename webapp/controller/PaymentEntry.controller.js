@@ -11,7 +11,7 @@ sap.ui.define([
 		 * @memberOf com.apptech.realestate.view.PaymentEntry
 		 */
 		onInit: function () {
-
+			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 		},
 
 		/**
