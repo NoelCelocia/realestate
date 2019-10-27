@@ -4,8 +4,7 @@
   "description": "",
   "private": true,
   "devDependencies": {
-    "@ui5/cli": "1.6.0",
-    "@sap/ui5-builder-webide-extension": "1.0.5"
+    "@ui5/cli": "1.6.0"
   },
   "engines": {
     "node": "10.16.3"
@@ -15,7 +14,7 @@
   },
   "ui5": {
     "dependencies": [
-      "@sap/ui5-builder-webide-extension"
+    
     ]
   }
 }

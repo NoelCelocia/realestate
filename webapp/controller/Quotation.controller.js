@@ -282,7 +282,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 					if (results.length <= 0) {
 
 					} else {
-						this.oMdlAllAmortSched.setJSON( JSON.stringify(results) );
+						this.oMdlAllAmortSched.setJSON(JSON.stringify(results));
 						this.getView().setModel(this.oMdlAllAmortSched, "oMdlAllAmortSched");
 					}
 				});
@@ -304,7 +304,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 					}),
 					template: new sap.m.Text({
 						text: "{path: 'oMdlAllAmortSched>StartDate'}"
-						
+
 					})
 				}));
 				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
@@ -313,7 +313,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 					}),
 					template: new sap.m.Text({
 						text: "{path: 'oMdlAllAmortSched>Amount', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }"
-						
+
 					})
 				}));
 				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
@@ -321,7 +321,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 						text: "Interest"
 					}),
 					template: new sap.m.Text({
-						
+
 						text: "{path: 'oMdlAllAmortSched>Interest', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }"
 					})
 				}));
@@ -330,7 +330,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 						text: "Rate"
 					}),
 					template: new sap.m.Text({
-						
+
 						text: "{oMdlAllAmortSched>InterestRate}"
 					})
 				}));
@@ -340,7 +340,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 					}),
 					template: new sap.m.Text({
 						text: "{path: 'oMdlAllAmortSched>Principal', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }"
-						
+
 					})
 				}));
 				this.oTableAmortSched.addColumn(new sap.ui.table.Column({
@@ -349,14 +349,23 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 					}),
 					template: new sap.m.Text({
 						text: "{path: 'oMdlAllAmortSched>Running Balance', type: 'sap.ui.model.type.Float', formatOptions: {maxFractionDigits: 2, minFractionDigits: 2} }"
-						
+
 					})
 				}));
 				
+				this.oMdlAllAmortSched.getData();
+				//unfinish
+				// var resultAjaxCall = AppUI5.postData(oRecord);
+				// if (resultAjaxCall === 0) {
+				// 	MessageToast.show("Saved Successfully " + QuoteNum);
+				// 	that.prepareTable(false);
+				// } else {
+				// 	MessageToast.show("Error");
+				// 	jQuery.sap.log.error("Error on onSave() Quotation controller");
+				// }
 
 				this.oTableAmortSched.setModel(this.oMdlAllAmortSched);
 				this.oTableAmortSched.bindRows("oMdlAllAmortSched>/");
-				
 
 				if (!this.amortDialog) {
 					this.amortDialog = new Dialog({
