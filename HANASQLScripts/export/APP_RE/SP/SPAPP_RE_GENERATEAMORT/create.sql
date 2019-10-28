@@ -75,7 +75,7 @@ BEGIN
     CREATE LOCAL TEMPORARY TABLE "#TEMPDP"
     as
     (
-    SELECT  top 0 "Code", "QuoteNum"
+    SELECT  top 0 '123123123123123.00001' "Code", "QuoteNum"
     , 'DOWNPAYMENT 999999' "Description"
     ,  "StartDate"
     , 124234243.00000000001 "Amount"
@@ -88,7 +88,7 @@ BEGIN
     CREATE LOCAL TEMPORARY TABLE "#TEMPRB"
     as
     (
-    SELECT  top 0 "Code", "QuoteNum"
+    SELECT  top 0 '123123123123123.00001' "Code", "QuoteNum"
     , 'INSTALLMENT 999999' "Description"
     ,  "StartDate"
     , 124234243.00000000001 "Amount"
@@ -101,7 +101,7 @@ BEGIN
     CREATE LOCAL TEMPORARY TABLE "#TEMPMF"
     as
     (
-    SELECT  top 0 "Code", "QuoteNum"
+    SELECT  top 0 '123123123123123.00001' "Code", "QuoteNum"
     , 'INSTALLMENT 999999' "Description"
     ,  "StartDate"
     , 124234243.00000000001 "Amount"
@@ -148,7 +148,7 @@ BEGIN
             
             INSERT INTO "#TEMPDP"
             SELECT 
-                a."Code"
+                (SELECT "APP_RE"."FNAPP_RE_GENERATECODE"() FROM DUMMY) "Code"
                 , a."QuoteNum"
                 , 'Downpayment ' || counter3 "Description"
                 , ADD_MONTHS("StartDate", :counter2) "StartDate"
@@ -210,7 +210,8 @@ BEGIN
             currInterest = rbAmount * annualizedInt;
             
             INSERT INTO "#TEMPRB"
-            SELECT "Code"
+            SELECT
+            (SELECT "APP_RE"."FNAPP_RE_GENERATECODE"() FROM DUMMY) "Code"
             , "QuoteNum"
             , 'Installment ' || counter3 "Description"
             ,  ADD_MONTHS("StartDate", :counter2) "StartDate"
@@ -262,7 +263,8 @@ BEGIN
             currInterest = mfAmount * annualizedInt;
             
             INSERT INTO "#TEMPMF"
-            SELECT "Code"
+            SELECT 
+            (SELECT "APP_RE"."FNAPP_RE_GENERATECODE"() FROM DUMMY) "Code"
             , "QuoteNum"
             , 'Misc Fee ' || counter3 "Description"
             ,  ADD_MONTHS("StartDate", :counter2) "StartDate"
