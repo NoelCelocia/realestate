@@ -354,6 +354,11 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 				}));
 				
 				this.oMdlAllAmortSched.getData();
+				
+				var oAmortSched = {};
+				oAmortSched.T_AMORTSCHED_QUOTE = [];
+				
+				
 				//unfinish
 				// var resultAjaxCall = AppUI5.postData(oRecord);
 				// if (resultAjaxCall === 0) {
