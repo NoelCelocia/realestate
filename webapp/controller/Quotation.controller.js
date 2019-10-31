@@ -352,22 +352,45 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 
 					})
 				}));
-				
+
 				this.oMdlAllAmortSched.getData();
-				
+
 				var oAmortSched = {};
 				oAmortSched.T_AMORTSCHED_QUOTE = [];
-				
-				
-				//unfinish
-				// var resultAjaxCall = AppUI5.postData(oRecord);
-				// if (resultAjaxCall === 0) {
-				// 	MessageToast.show("Saved Successfully " + QuoteNum);
-				// 	that.prepareTable(false);
-				// } else {
-				// 	MessageToast.show("Error");
-				// 	jQuery.sap.log.error("Error on onSave() Quotation controller");
-				// }
+				oAmortSched.T_AMORTSCHED_QUOTE = JSON.parse(JSON.stringify(this.oMdlAllAmortSched.getData()));
+
+				oAmortSched.T_AMORTSCHED_QUOTE.forEach(function (element) {
+					AppUI5.renameKey(element, "Running Balance", "DueBalance");
+					AppUI5.renameKey(element, "Amount", "DueAmt");
+					AppUI5.renameKey(element, "StartDate", "DueDate");
+					AppUI5.renameKey(element, "QuoteNum", "DocNum");
+					AppUI5.deleteKey(element, "InterestRate");
+					AppUI5.addKey(element, "Status", "1");
+					AppUI5.addKey(element, "O", "I");
+				});
+
+				//DELETE FROM T_AMORTSCHED_QUOTE WHERE DocNum = 1
+				$.ajax({
+					url: "/rexsjs/public/rexsjs/ExecQuery.xsjs?dbName=APP_RE&procName=SPAPP_RE_DELETE&whereCol1=DocNum&whereVal1=" + this.oMdlEditRecord.getData()
+						.EditRecord.QuoteNum + "&whereCol2=&whereVal=",
+					type: "GET",
+					xhrFields: {
+						withCredentials: true
+					},
+					error: function (xhr, status, error) {
+						MessageToast.show(error);
+					},
+					success: function (json) {},
+					context: this
+				}).done(function (results) {
+
+				});
+
+				var resultAjaxCall = AppUI5.postData(oAmortSched);
+				if (resultAjaxCall === 0) {} else {
+					MessageToast.show("Error");
+					jQuery.sap.log.error("Error on actionSelected() Quotation controller");
+				}
 
 				this.oTableAmortSched.setModel(this.oMdlAllAmortSched);
 				this.oTableAmortSched.bindRows("oMdlAllAmortSched>/");

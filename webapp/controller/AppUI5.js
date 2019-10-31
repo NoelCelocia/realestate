@@ -353,7 +353,6 @@ sap.ui.define([
 			return aReturnResult;
 
 		},
-		
 
 		getAllDataByColAJAX: function (sTableName, sColName, sColValue, sQueryType) {
 			var aReturnResult = [];
@@ -378,6 +377,21 @@ sap.ui.define([
 				}
 			});
 			return aReturnResult;
+		},
+
+		renameKey: function (obj, old_key, new_key) {
+			if (old_key !== new_key) {
+				Object.defineProperty(obj, new_key, Object.getOwnPropertyDescriptor(obj, old_key));
+				delete obj[old_key]; 
+			}
+		},
+		
+		deleteKey: function(obj, delete_key){
+			delete obj[delete_key];
+		},
+		
+		addKey: function(obj, add_key, add_value){
+			obj[add_key] = add_value;
 		}
 
 	});
