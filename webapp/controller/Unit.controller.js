@@ -7,7 +7,7 @@ sap.ui.define(["sap/ui/core/mvc/Controller",
 ], function (Controller, JSONModel, MessageToast, Filter, FilterOperator, AppUI5) {
 	"use strict";
 	return Controller.extend("com.apptech.realestate.controller.Unit", {
-
+		// added this comment for git demo
 		onRoutePatternMatched: function (event) {
 			this.getView().addStyleClass(this.getOwnerComponent().getContentDensityClass());
 			this.prepareTable(false);
